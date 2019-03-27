@@ -1,0 +1,62 @@
+---
+title: "Luiz Fernando"
+output: html_document
+---
+
+```{r}
+options(scipen=999999)
+```
+
+## Quero saber
+
+Quantos morreram por país na 1ª Guerra Mundial?
+
+### Dados
+
+Os dados foram encontrados no site **em**: [A Primeira Guerra Mundial em números](https://www.em.com.br/app/noticia/internacional/2014/06/28/interna_internacional,542894/a-primeira-guerra-mundial-em-numeros.shtml)
+
+## Pacotes utilizados
+
+```{r}
+library(dplyr)
+library(readxl)
+library(ggplot2)
+```
+
+## Visualização
+
+### Base de dados
+
+```{r}
+paises <- c("França", "Alemanha", "Áustria-Hungria", "Rússia", "Grã-Bretanha", "Itália", "Império Otomano", "Sérvia")
+mortos <- c(1400000, 2000000, 1400000, 2000000, 960000, 600000, 800000, 130000)
+
+base <- tibble(paises, mortos)
+```
+
+### Gráfico
+
+```{r}
+barplot(
+  base$mortos,
+  names.arg = base$paises,
+  col = "#9c171f",
+  cex.names = 0.6,
+  main = "Número de mortos por países na 1ª Guerra Mundial",
+  ylab = "Número de mortos"
+  )
+```
+
+
+```{r}
+base %>% 
+  ggplot(aes(x = paises, y = mortos)) +
+  geom_bar(stat = 'identity', fill = "#9c171f") +
+  #geom_text(aes(label = mortos), hjust = 0, color = "#727070") + 
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 2200000)) +
+  theme_minimal() +
+  labs(y = "Número de mortos", x = "", title = "Número de mortos por países na 1ª Guerra Mundial")
+  
+```
+
