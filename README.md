@@ -4,4 +4,4 @@
 
 Luiz Fernando Coelho Passos
 
-[Linkedin](https://www.linkedin.com/in/luizfernandocoelhopassos/)
+  * [Linkedin](https://www.linkedin.com/in/luizfernandocoelhopassos/)
