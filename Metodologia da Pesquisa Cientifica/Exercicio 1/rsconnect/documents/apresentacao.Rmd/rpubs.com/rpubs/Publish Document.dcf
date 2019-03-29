@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/480575/67b6c63563394a3d9e4dec145e9a8669
+bundleId: https://api.rpubs.com/api/v1/document/480575/67b6c63563394a3d9e4dec145e9a8669
+url: http://rpubs.com/luizfcp/480575
+when: 1553821810.01244

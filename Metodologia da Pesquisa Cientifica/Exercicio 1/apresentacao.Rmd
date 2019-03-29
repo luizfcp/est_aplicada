@@ -41,35 +41,41 @@ mortes <- c(1400000, 2000000, 1400000, 2000000, 960000, 600000, 800000, 130000)
 
 ### Gráfico
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+
 barplot(
   mortes,
-  names.arg = paises,
   col = "#9c171f",
-  cex.names = 0.6,
+  cex.axis = 0.75,
   main = "Número de mortes por países na 1ª Guerra Mundial",
-  ylab = "Número de mortes"
+  ylab = "Número de mortes",
+  xaxt="n"
+) %>% 
+  text(labels = paises, 
+       par("usr")[3],
+       srt = 45, 
+       adj = c(1,1), 
+       xpd = TRUE, 
+       cex = 0.75
   )
 ```
 
-
-
 ```{r message=FALSE, warning=FALSE, echo=FALSE, eval=FALSE}
-library(dplyr)
 library(ggplot2)
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
-base <- tibble(paises, mortos)
+base <- tibble(paises, mortes)
 
 base %>% 
-  ggplot(aes(x = paises, y = mortos)) +
+  ggplot(aes(x = paises, y = mortes)) +
   geom_bar(stat = 'identity', fill = "#9c171f") +
   #geom_text(aes(label = mortos), hjust = 0, color = "#727070") + 
   coord_flip() +
   scale_y_continuous(limits = c(0, 2200000)) +
   theme_minimal() +
-  labs(y = "Número de mortos", x = "", title = "Número de mortos por países na 1ª Guerra Mundial")
+  labs(y = "Número de mortes", x = "", title = "Número de mortes por países na 1ª Guerra Mundial")
   
 ```
 
