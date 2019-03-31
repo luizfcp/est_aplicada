@@ -50,7 +50,8 @@ barplot(
   cex.axis = 0.75,
   main = "Número de mortes por países na 1ª Guerra Mundial",
   ylab = "Número de mortes",
-  xaxt="n"
+  xaxt="n",
+  sub = "Fonte: Jornal Estado de Minas"
 ) %>% 
   text(labels = paises, 
        par("usr")[3],
