@@ -1,0 +1,368 @@
+---
+title: "Estatística Aplicada"
+author: "Luiz Fernando, Lyncoln Sousa"
+output:
+  prettydoc::html_pretty:
+    theme: hpstr
+    highlight: github
+---
+
+
+
+```{r message=FALSE, warning=FALSE}
+library(haven)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(gridExtra)
+library(tidyr)
+```
+
+# Base de dados
+
+```{r}
+base <- 
+  read_sav("BancoTeseCris_09_07_2013.sav") %>% 
+  mutate(
+    Sexo = factor(Sexo, labels = c("Homem", "Mulher"))
+  )
+```
+
+```{r}
+# Visualizacao sexo por idade
+base %>% 
+  select(Sexo, Idade) %>% 
+  na.omit() %>% 
+  ggplot(aes(x=Sexo, y=Idade, fill = Sexo)) + 
+  geom_boxplot() +
+  labs(x = "Sexo", title = "Boxplot Idade por Sexo") + 
+  theme_bw()
+```
+
+# PEW
+
+```{r}
+base_pew <- 
+  base %>% 
+  select(
+    Sexo, Idade, 
+    PEW_ANTES, PEW_APOS
+  ) %>% 
+  na.omit() %>% 
+  # Perda no PEW (2 = teve perda)
+  mutate(
+    PEW_ANTES = factor(PEW_ANTES, labels = c("Não", "Sim")),
+    PEW_APOS = factor(PEW_APOS, labels = c("Não", "Sim"))
+  )
+
+# Visualizacao PEW ANTES
+graf_pew_antes <- 
+  base_pew$PEW_ANTES %>% table() %>% as_tibble() %>% 
+  ggplot() +
+  geom_bar(aes(x=., y=n), stat = "identity") +
+  theme_bw() +
+  labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW ANTES do RETP nos pacientes") +
+  scale_y_continuous(limits = c(0, 30))
+
+# Visualizacao PEW APOS
+graf_pew_apos <- 
+  base_pew$PEW_APOS %>% table() %>% as_tibble() %>% 
+  ggplot() +
+  geom_bar(aes(x=., y=n), stat = "identity") +
+  theme_bw() +
+  labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW APOS do RETP nos pacientes") + 
+  scale_y_continuous(limits = c(0, 30))
+
+grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
+```
+
+Em geral, com base no gráfico, parece que houve perda no PEW após o RETP.
+
+## Teste de Hipótese
+
+```{r}
+# Hipotese: O estudo teve efeito sobre o PEW? 
+
+# H0: Não teve diferença
+# H1: Teve dirença
+
+base_pew %>% 
+  select(PEW_ANTES, PEW_APOS) %>% 
+  table() %>% 
+  mcnemar.test()
+```
+
+Com base num nivel de significancia de 5% rejeitamos a hipotese nula, ou seja, há evidencias de que teve diferença entre as variaveis.
+
+# Inflamação
+
+Marcadores de Inflamacao:
+  * TNFa01, TNFa02
+  * ICAM1, ICAM2
+  * PCR01, PCR02
+  * IL601, IL602
+  * VCAM1, VCAM2
+
+## TNFa
+
+### Análise Descritiva
+
+```{r}
+base_tnf <- 
+  base %>% 
+  select(TNFa01, TNFa02) %>% 
+  na.omit()
+
+base_tnf %>% summary()
+
+base_tnf %>% 
+  gather() %>% 
+  ggplot(aes(x = key, y = value, fill = key)) +
+  geom_boxplot() + 
+  labs(x = "TNFa", y = "Valor observado", title = "Boxplot TNFa por valor observado antes e depois")
+```
+
+Em geral, com base no gráfico, parece que houve uma redução no TNFa após o RETP.
+
+### Teste de Hipóstese
+
+```{r}
+# Normalidade: TNFa antes
+shapiro.test(base_tnf$TNFa01)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+```{r}
+# Normalidade: TNFa depois
+shapiro.test(base_tnf$TNFa02)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+#### Variancias são iguais?
+
+```{r}
+
+```
+
+#### Teste de Hipotese sobre a média para variâncias desconhecidas
+
+H0: mu1  =  mu2
+H1: mu1 =/= mu2
+
+```{r}
+t.test(base_tnf$TNFa01, base_tnf$TNFa02, alternative = "two.sided", paired = T)
+```
+
+Com base num nível de significância de 5%, não rejeitamos a hipótese nula, ou seja, há evidências de que a média da variável TNFa antes é igual a média da variável TNFa depois.
+
+## ICAM
+
+### Análise Descritiva
+
+```{r}
+base_icam <- 
+  base %>% 
+  select(ICAM1, ICAM2) %>% 
+  na.omit()
+
+base_icam %>% summary()
+
+base_icam %>% 
+  gather() %>% 
+  ggplot(aes(x = key, y = value, fill = key)) +
+  geom_boxplot() + 
+  labs(x = "ICAM", y = "Valor observado", title = "Boxplot ICAM por valor observado antes e depois")
+```
+
+Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
+
+### Teste de Hipóstese
+
+```{r}
+# Normalidade: ICAM antes
+shapiro.test(base_icam$ICAM1)
+```
+
+Com base num nivel de significancia de 5%, não rejeitamos a hipótese de normalidade para a variavel.
+
+```{r}
+# Normalidade: ICAM depois
+shapiro.test(base_icam$ICAM2)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+#### Teste de Hipotese sobre a média para variâncias desconhecidas
+
+H0: mu1  =  mu2
+H1: mu1 =/= mu2
+
+```{r}
+t.test(base_icam$ICAM1, base_icam$ICAM2, alternative = "two.sided", paired = T)
+```
+
+Com base num nível de significância de 5%, rejeitamos a hipótese nula, ou seja, há evidências de que a média da variável ICAM antes é diferente da média da variável ICAM depois.
+
+
+## PCR
+
+### Análise Descritiva
+
+```{r}
+base_pcr <- 
+  base %>% 
+  select(PCR01, PCR02) %>% 
+  na.omit()
+
+base_pcr %>% summary()
+
+base_pcr %>% 
+  gather() %>% 
+  ggplot(aes(x = key, y = value, fill = key)) +
+  geom_boxplot() + 
+  labs(x = "PCR", y = "Valor observado", title = "Boxplot PCR por valor observado antes e depois")
+```
+
+Em geral, com base no gráfico, parece que houve uma redução no PCR após o RETP.
+
+### Teste de Hipóstese
+
+```{r}
+# Normalidade: PCR antes
+shapiro.test(base_pcr$PCR01)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+```{r}
+# Normalidade: PCR depois
+shapiro.test(base_pcr$PCR02)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+`Considerando normalidade mesmo não sendo normal`
+
+#### Teste de Hipotese sobre a média para variâncias desconhecidas
+
+H0: mu1  =  mu2
+H1: mu1 =/= mu2
+
+```{r}
+t.test(base_pcr$PCR01, base_pcr$PCR02, alternative = "two.sided", paired = T)
+```
+
+Com base num nível de significância de 5%, rejeitamos a hipótese nula, ou seja, há evidências de que a média da variável PCR antes é diferente da média da variável PCR depois.
+
+
+## IL-6
+
+### Análise Descritiva
+
+```{r}
+base_il6 <- 
+  base %>% 
+  select(IL601, IL602) %>% 
+  na.omit()
+
+base_il6 %>% summary()
+
+base_il6 %>% 
+  gather() %>% 
+  ggplot(aes(x = key, y = value, fill = key)) +
+  geom_boxplot() + 
+  labs(x = "IL-6", y = "Valor observado", title = "Boxplot IL-6 por valor observado antes e depois")
+```
+
+Em geral, com base no gráfico, parece que houve uma redução no IL-6 após o RETP.
+
+### Teste de Hipóstese
+
+```{r}
+# Normalidade: IL-6 antes
+shapiro.test(base_il6$IL601)
+```
+
+Com base num nivel de significancia de 5%, não rejeitamos a hipótese de normalidade para a variavel.
+
+```{r}
+# Normalidade: IL-6 depois
+shapiro.test(base_il6$IL602)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+`Considerando normalidade mesmo não sendo normal`
+
+#### Teste de Hipotese sobre a média para variâncias desconhecidas
+
+H0: mu1  =  mu2
+H1: mu1 =/= mu2
+
+```{r}
+t.test(base_il6$IL601, base_il6$IL602, alternative = "two.sided", paired = T)
+```
+
+Com base num nível de significância de 5%, não rejeitamos a hipótese nula, ou seja, há evidências de que a média da variável IL-6 antes não é diferente da média da variável IL-6 depois.
+
+
+## VCAM
+
+### Análise Descritiva
+
+```{r}
+base_vcam <- 
+  base %>% 
+  select(VCAM1, VCAM2) %>% 
+  na.omit()
+
+base_vcam %>% summary()
+
+base_vcam %>% 
+  gather() %>% 
+  ggplot(aes(x = key, y = value, fill = key)) +
+  geom_boxplot() + 
+  labs(x = "VCAM", y = "Valor observado", title = "Boxplot VCAM por valor observado antes e depois")
+```
+
+Em geral, com base no gráfico, parece que houve uma redução no VCAM após o RETP.
+
+### Teste de Hipóstese
+
+```{r}
+# Normalidade: VCAM antes
+shapiro.test(base_vcam$VCAM1)
+```
+
+Com base num nivel de significancia de 5%, não rejeitamos a hipótese de normalidade para a variavel.
+
+```{r}
+# Normalidade: VCAM depois
+shapiro.test(base_vcam$VCAM2)
+```
+
+Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+`Considerando normalidade mesmo não sendo normal`
+
+#### Teste de Hipotese sobre a média para variâncias desconhecidas
+
+H0: mu1  =  mu2
+H1: mu1 =/= mu2
+
+```{r}
+t.test(base_vcam$VCAM1, base_vcam$VCAM2, alternative = "two.sided", paired = T)
+```
+
+Com base num nível de significância de 5%, rejeitamos a hipótese nula, ou seja, há evidências de que a média da variável VCAM antes é diferente da média da variável VCAM depois.
+
+
+
+
+
+
+
+
+
