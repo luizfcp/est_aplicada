@@ -1,5 +1,5 @@
 ---
-title: Visualização de Dados
+title: "Visualização de Dados"
 author: Luiz Fernando
 output:
   prettydoc::html_pretty:
@@ -23,7 +23,9 @@ Os dados foram encontrados no site **EM**: [A Primeira Guerra Mundial em número
 
 ### Base de dados
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+
 paises <- c(
   "França",
   "Alemanha",
@@ -36,16 +38,16 @@ paises <- c(
   )
 
 mortes <- c(1400000, 2000000, 1400000, 2000000, 960000, 600000, 800000, 130000)
+
+base <- tibble(paises, mortes) %>% arrange(desc(mortes))
 ```
 
 
 ### Gráfico
 
 ```{r message=FALSE, warning=FALSE}
-library(dplyr)
-
 barplot(
-  mortes,
+  base$mortes,
   col = "#9c171f",
   cex.axis = 0.75,
   main = "Número de mortes por países na 1ª Guerra Mundial",
@@ -53,7 +55,7 @@ barplot(
   xaxt="n",
   sub = "Fonte: Jornal Estado de Minas"
 ) %>% 
-  text(labels = paises, 
+  text(labels = base$paises, 
        par("usr")[3],
        srt = 45, 
        adj = c(1,1), 
