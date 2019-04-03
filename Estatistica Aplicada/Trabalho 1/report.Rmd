@@ -1,12 +1,18 @@
 ---
 title: "Estatística Aplicada"
 author: "Luiz Fernando, Lyncoln Sousa"
+date: "`r format(Sys.Date(),'%d de %B de %Y')`"
 output:
-  prettydoc::html_pretty:
-    theme: hpstr
-    highlight: github
+  rmdformats::readthedown:
+    self_contained: true
+    toc_depth: 3 
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
 ---
 
+![](man/figures/UFF_brasao.png)
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -140,6 +146,8 @@ shapiro.test(base_tnf$TNFa02)
 
 Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
+`Considerando normalidade mesmo não sendo normal`
+
 #### Variancias são iguais?
 
 ```{r}
@@ -193,6 +201,8 @@ shapiro.test(base_icam$ICAM2)
 ```
 
 Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+`Considerando normalidade mesmo não sendo normal`
 
 #### Teste de Hipotese sobre a média para variâncias desconhecidas
 
