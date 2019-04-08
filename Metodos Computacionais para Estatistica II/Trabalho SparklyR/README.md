@@ -8,6 +8,11 @@ Informar sobre o pacote de forma resumida, dando uma intuição do que é e como
 
 ---
 
+>- [Apresentação](https://rpubs.com/luizfcp/apresentacao_sparklyr)
+>- [Material Teórico](https://rpubs.com/luizfcp/sparklyr)
+
+---
+
 Alunos participante do grupo:
 
 + Iasmin Lugon
