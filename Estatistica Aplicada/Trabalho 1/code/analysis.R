@@ -7,10 +7,11 @@ library(magrittr)
 library(ggplot2)
 library(gridExtra)
 library(tidyr)
+library(ggpubr)
 
 # Importacao base de dados
 base <- 
-  read_sav("UFF/Estatistica Aplicada/Trabalho 1/BancoTeseCris_09_07_2013.sav") %>% 
+  read_sav("../data/BancoTeseCris_09_07_2013.sav") %>% 
   mutate(
     Sexo = factor(Sexo, labels = c("Homem", "Mulher"))
   )
