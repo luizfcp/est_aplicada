@@ -1,0 +1,153 @@
+---
+title: 'Met. Pesq. Cientifica'
+author: "Luiz Fernando"
+date: "8 de abril de 2019"
+output: html_document
+---
+
+## Capítulo 2
+
+```{r}
+library(dplyr)
+library(magrittr)
+```
+
+## 2.4.7
+
+### Questão 1
+
+```{r}
+base <- 
+  tibble(
+    "Área do conhecimento" = c("Saúde", "Exatas", "Humanas", "Comunicação"),
+    "Instituição A" = c(1751, 2186, 947,  29),
+    "Instituição B" = c(2528, 2132, 1843, 280)
+  )
+
+base %<>% mutate("Relação B com A" = `Instituição B`/`Instituição A`)
+
+barplot(
+  base$`Relação B com A`, names.arg = base$`Área do conhecimento`,
+  main = "Relação Instituição B/A", ylab = "Área do Conhecimento"
+)
+```
+
+### Questão 2
+
+```{r}
+barplot(
+  base$`Relação B com A`, names.arg = base$`Área do conhecimento`,
+  main = "Relação Instituição B/A", ylab = "Área do Conhecimento",
+  horiz = T
+)
+```
+
+## Questão 3
+
+```{r}
+barplot(
+  base$`Relação B com A`, names.arg = base$`Área do conhecimento`,
+  main = "Relação Instituição B/A", ylab = "Área do Conhecimento",
+  density = 60, col = "lightblue"
+)
+```
+
+## Quetão 4
+
+```{r}
+barplot(
+  base$`Relação B com A`, names.arg = base$`Área do conhecimento`,
+  main = "Relação Instituição B/A", ylab = "Área do Conhecimento",
+  density = 50, angle = 75, col = "lightgreen"
+)
+```
+
+## Questão 5
+
+```{r}
+base <- 
+  tibble(
+    "Dias de Nascido" = c(2,4,6,8,10) %>% as.character(),
+    Peso = c(42,51,59,64,76)
+  )
+
+barplot(
+  base$Peso, names.arg = base$`Dias de Nascido`,
+  main = "Peso médio dos pintinhos por dia de nascidos",
+  xlab = "Dias de nascido", ylab = "Peso médio"
+)
+```
+
+## Questão 6
+
+```{r}
+barplot(
+  base$Peso, names.arg = base$`Dias de Nascido`,
+  main = "Peso médio dos pintinhos por dia de nascidos",
+  xlab = "Dias de nascido", ylab = "Peso médio",
+  col = c("blue", "pink", "yellow", "green", "red")
+)
+```
+
+## Questão 7
+
+```{r}
+barplot(
+  base$Peso, names.arg = base$`Dias de Nascido`,
+  main = "Peso médio dos pintinhos por dia de nascidos",
+  xlab = "Dias de nascido", ylab = "Peso médio",
+  col = c("blue", "pink", "yellow", "green", "red"),
+  horiz = T
+)
+```
+ 
+## Questão 8
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+lista_de_verificacao <- 
+  tibble(
+    "Tipo de defeito" = c("Linha Ruidosa", "Linha aberta", "Alarme", "Não responde", "Não toca"),
+    "Número de ocorrência" = c(250,110,85,45,25)
+  )
+
+barplot(
+  lista_de_verificacao$`Número de ocorrência`, names.arg = lista_de_verificacao$`Tipo de defeito`,
+  main = "Lista de Verificação", xlab = "Tipo de defeito", ylab = "Número de ocorrência",
+  density = 80, angle = 120
+)
+```
+
+## Questão 9
+
+```{r}
+base_cotinina <- 
+  tibble(
+    "Nível de Cotinina (ng/ml)" = c("0-13", "14-49", "50-99", "100-149", "150-199", "200-249", "250-299", "300+"),
+    Fumantes = c(78,133,142,206,197,220,151,412),
+    "Não-fumantes" = c(3300,72,23,15,7,8,9,11)
+  )
+
+matrix(
+  c(base_cotinina$Fumantes, base_cotinina$`Não-fumantes`), ncol = 2,
+  dimnames = list(base_cotinina$`Nível de Cotinina (ng/ml)`, c("Fumantes", "Não-fumantes"))
+) %>% 
+  t %>% 
+  barplot(
+    beside = T, cex.names = 0.9, legend.text = c("Fumantes", "Não-fumantes"),
+    xlab = "Nível de Cotinina (ng/ml)", ylab = "Frequência",
+    main = "Frequência do nível de cotinina em fumantes e não-fumantes",
+    col = c("#000000", "#5F021F")
+  )
+```
+
