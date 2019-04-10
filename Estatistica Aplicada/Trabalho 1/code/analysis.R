@@ -65,7 +65,10 @@ graf_pew_apos <-
   scale_y_continuous(limits = c(0, 30)) +
   guides(fill = F)
 
-grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
+grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2) 
+  # ggsave("../man/figures/pew.png", dpi = "retina")
+
+
 
 # Hipotese: O estudo teve efeito sobre PEW? 
 
@@ -97,17 +100,32 @@ base_inflamacao <-
 base_inflamacao %>% map(~ summary(.x))
 
 ## Boxplot de cada marcador
-base_inflamacao$ICAM %>% 
-  select(-marcador) %>% 
-  gather() %>% 
-ggpaired(x = "key", y = "value", color = "key", ggtheme = theme_bw(),
-         line.color = "gray", line.size = 0.4, palette = "jco") +
-  labs(x = "ICAM", y = "Valor observado", title = "Boxplot TNFa por valor observado antes e depois") +
-  guides(color = F) +
-  scale_y_continuous(breaks = seq(0, 6000, 1000))
-
+base_inflamacao %<>% 
+  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
+  bind_rows() %>% 
+  nest(-marcador) %>% 
+  mutate(
+    boxplot = map2(
+      data, marcador,
+      ~ .x %>%
+        gather() %>% 
+        ggpaired(x = "key", y = "value", color = "key", ggtheme = theme_bw(),
+                 line.color = "gray", line.size = 0.4, palette = "jco") +
+        labs(x = .y, y = "Valor observado", 
+             title = paste("Boxplot", .y, "por valor observado antes e depois")) +
+        guides(color = F)
+    )
+  )
 
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
+
+# Salvando
+walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"), 
+        plot = .x, dpi = "retina", width = 9.66, height = 8.02
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -123,22 +141,13 @@ shapiro.test(base_tnf$TNFa02)
 
 # Tabela ------------------------------------------------------------------
 
-base_aux <- 
-  base_inflamacao %>% 
-  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
-  bind_rows() %>% 
-  nest(-marcador) %>% 
-  mutate(
-    "p-valor" = map(
-      data,
-      ~ t.test(.x$Antes, .x$Depois, paired = T)
-    )
-  )
+base_inflamacao %<>% 
+  mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
 
 tabela_inflamacao <- 
   base_inflamacao %>% 
-  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
-  bind_rows() %>% 
+  select(marcador, data) %>% 
+  unnest %>% 
   group_by(marcador) %>% 
   summarise(
     # Antes
@@ -151,7 +160,7 @@ tabela_inflamacao <-
     n = length(Antes)
   ) %>% 
   bind_cols(
-    base_aux$`p-valor` %>% 
+    base_inflamacao$p_valor %>% 
       map(~ .x$p.value %>% as.data.frame) %>% 
       bind_rows() %>% 
       round(3) %>% 
@@ -190,7 +199,181 @@ tabela_inflamacao <-
 #   # )
 
 
+# Antropometricos ---------------------------------------------------------
 
+base_antropometricos <- 
+  list(
+    IMC = base %>% select(IMC1, IMC2) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "IMC"),
+    AMB = base %>% select(AMBc1, AMBc2) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "AMB"),
+    # Massa gorda não foi possível encontrar no banco
+    M_Magra  = base %>% select(Mas_Magra1, Mas_Magra2)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Massa Magra")
+  ) %>% 
+  map(~ .x %>% as_tibble)
+
+# Análise descritiva ------------------------------------------------------
+
+## Resumo dos marcadores de inflamação
+base_antropometricos %>% map(~ summary(.x))
+
+## Boxplot de cada marcador
+base_antropometricos %<>% 
+  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
+  bind_rows() %>% 
+  nest(-marcador) %>% 
+  mutate(
+    boxplot = map2(
+      data, marcador,
+      ~ .x %>%
+        gather() %>% 
+        ggpaired(x = "key", y = "value", color = "key", ggtheme = theme_bw(),
+                 line.color = "gray", line.size = 0.4, palette = "jco") +
+        labs(x = .y, y = "Valor observado", 
+             title = paste("Boxplot", .y, "por valor observado antes e depois")) +
+        guides(color = F)
+    )
+  )
+
+
+## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
+
+# Salvando
+walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"), 
+        plot = .x, dpi = "retina", width = 9.66, height = 8.02
+      )
+)
+
+
+# Normalidade -------------------------------------------------------------
+
+## Normalidade: TNFa antes
+shapiro.test(base_tnf$TNFa01)
+## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+## Normalidade: TNFa depois
+shapiro.test(base_tnf$TNFa02)
+## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+
+# Tabela ------------------------------------------------------------------
+
+base_antropometricos %<>% 
+  mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
+
+tabela_antropometricos <- 
+  base_antropometricos %>% 
+  select(marcador, data) %>% 
+  unnest %>% 
+  group_by(marcador) %>% 
+  summarise(
+    # Antes
+    media_antes = mean(Antes) %>% round(1) %>% as.character(),
+    desv_pad_antes = sd(Antes) %>% round(1) %>% as.character(),
+    # Depois
+    media_depois = mean(Depois) %>% round(1) %>% as.character(),
+    desv_pad_depois = sd(Depois) %>% round(1) %>% as.character(),
+    
+    n = length(Antes)
+  ) %>% 
+  bind_cols(
+    base_antropometricos$p_valor %>% 
+      map(~ .x$p.value %>% as.data.frame) %>% 
+      bind_rows() %>% 
+      round(3) %>% 
+      `colnames<-`("p_valor") %>% 
+      mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor))
+  )
+
+
+
+# Capacidade Física -------------------------------------------------------
+
+base_cf <- 
+  list(
+    SL10 = base %>% select(SL101, SL102) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "SL10"),
+    SL60 = base %>% select(SL601, SL602) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "SL60"),
+    torq_ext_E = base %>% select(TorqueextNmE1, TorqueextNmE2) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Torque Extensor Esquerdo"),
+    torq_ext_D = base %>% select(TorqueextNmD1, TorqueextNmD2) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Torque Extensor Direito"),
+    torq_flex_E = base %>% select(TorqueFLX.NmE01, TorqueFLX.NmE02) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Torque Flexor Esquerdo"),
+    torq_flex_D = base %>% select(TorqueFLX.NmD01, TorqueFLX.NmD02) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Torque Flexor Direito")
+  ) %>% 
+  map(~ .x %>% as_tibble)
+
+# Análise descritiva ------------------------------------------------------
+
+## Resumo dos marcadores de inflamação
+base_cf %>% map(~ summary(.x))
+
+## Boxplot de cada marcador
+base_cf %<>% 
+  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
+  bind_rows() %>% 
+  nest(-marcador) %>% 
+  mutate(
+    boxplot = map2(
+      data, marcador,
+      ~ .x %>%
+        gather() %>% 
+        ggpaired(x = "key", y = "value", color = "key", ggtheme = theme_bw(),
+                 line.color = "gray", line.size = 0.4, palette = "jco") +
+        labs(x = .y, y = "Valor observado", 
+             title = paste("Boxplot", .y, "por valor observado antes e depois")) +
+        guides(color = F)
+    )
+  )
+
+
+## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
+
+# Salvando
+walk2(base_cf$boxplot, base_cf$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"), 
+        plot = .x, dpi = "retina", width = 9.66, height = 8.02
+      )
+)
+
+
+# Normalidade -------------------------------------------------------------
+
+## Normalidade: TNFa antes
+shapiro.test(base_tnf$TNFa01)
+## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+## Normalidade: TNFa depois
+shapiro.test(base_tnf$TNFa02)
+## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
+
+
+# Tabela ------------------------------------------------------------------
+
+base_cf %<>% 
+  mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
+
+tabela_cf <- 
+  base_cf %>% 
+  select(marcador, data) %>% 
+  unnest %>% 
+  group_by(marcador) %>% 
+  summarise(
+    # Antes
+    media_antes = mean(Antes) %>% round(1) %>% as.character(),
+    desv_pad_antes = sd(Antes) %>% round(1) %>% as.character(),
+    # Depois
+    media_depois = mean(Depois) %>% round(1) %>% as.character(),
+    desv_pad_depois = sd(Depois) %>% round(1) %>% as.character(),
+    
+    n = length(Antes)
+  ) %>% 
+  bind_cols(
+    base_cf$p_valor %>% 
+      map(~ .x$p.value %>% as.data.frame) %>% 
+      bind_rows() %>% 
+      round(3) %>% 
+      `colnames<-`("p_valor") %>% 
+      mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor))
+  )
 
 
 
