@@ -192,4 +192,7 @@ tabela_inflamacao <-
 
 
 
+
+
+
   
