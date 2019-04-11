@@ -12,6 +12,7 @@ library(tidyr)
 library(ggpubr)
 library(purrr)
 library(flextable)
+library(stringr)
 
 # Importacao base de dados
 base <- 
@@ -24,10 +25,11 @@ base <-
 base %>% 
   select(Sexo, Idade) %>% 
   na.omit() %>% 
-  ggplot(aes(x=Sexo, y=Idade)) + 
+  ggplot(aes(x=Sexo, y=Idade, fill=Sexo)) + 
   geom_boxplot() +
   labs(x = "Sexo", title = "Boxplot Idade por Sexo") + 
-  theme_bw()
+  theme_bw() +
+  guides(fill = F)
 
 
 # PEW ---------------------------------------------------------------------
@@ -165,29 +167,53 @@ tabela_inflamacao <-
       bind_rows() %>% 
       round(3) %>% 
       `colnames<-`("p_valor") %>% 
-      mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor))
+      mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor) %>% str_replace("\\.", ","))
   )
 
+typology_tabela <-
+  data.frame(
+    col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
+    type = c("", "Antes", "Antes", "Depois", "Depois", "", " "),
+    what = c("Marcador \n Inflamatório","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    stringsAsFactors = FALSE
+  )
 
-# typology_tabela <- 
-#   data.frame(
-#     col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
-#     type = c("", "Antes", "Antes", "Depois", "Depois", "", ""),
-#     what = c("Marcador \n Inflamatório","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
-#     stringsAsFactors = FALSE
-#   )
-# 
+border <- officer::fp_border(color = "black")
+
+tabela_inflamacao %>%
+  map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
+  as_tibble() %>%
+  regulartable() %>%
+  set_header_df(mapping = typology_tabela, key = "col_keys") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header") %>%
+  merge_v(j = 1:3) %>% 
+  width(width = c(rep(1.1, 6), 0.8)) %>%
+  align(align = "center", part = "all") %>%
+  # color(part = "header", color = "white") %>%
+  border(j = c(1,3,5,6), border.right = border) %>%
+  border(j = c(1,3,5,6), i = 1:2, part = "header", border.right = border) %>% 
+  border(i = 2, part = "header", border.bot = border) %>% 
+  border(i = 1, part = "header", border.top = border)
+
+
 # tabela_inflamacao %>% 
-#   map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>% 
-#   as_tibble() %>% 
-#   regulartable() %>% 
-#   set_header_df(mapping = typology_tabela, key = "col_keys") %>% 
-#   merge_h(part = "header") %>% 
-#   merge_v(part = "header") %>% 
-#   # theme_zebra() %>% 
-#   theme_booktabs() %>% 
-#   width(width = c(rep(1.1, 6), 0.8)) %>% 
-#   align(align = "center", part = "all")
+#   map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
+#   as_tibble() %>%
+#   regulartable() %>%
+#   set_header_df(mapping = typology_tabela, key = "col_keys") %>%
+#   merge_h(part = "header") %>%
+#   merge_v(part = "header") %>%
+#   merge_v(j = 1:3) %>%
+#   theme_zebra(odd_header = "#800000", even_header = "#800000",
+#               odd_body = "#FED9D9") %>%
+#   # theme_booktabs() %>%
+#   width(width = c(rep(1.1, 6), 0.8)) %>%
+#   align(align = "center", part = "all") %>% 
+#   color(part = "header", color = "white") %>% 
+#   border(j = c(1,3,5,6), border.right = border) %>% 
+#   border(j = c(1,3,5,6), i = 2, part = "header", border.right = border)
+#   
 #   # set_header_labels(
 #   #   marcador = "Marcador \n Inflamatório",
 #   #   media_antes = "Média",
