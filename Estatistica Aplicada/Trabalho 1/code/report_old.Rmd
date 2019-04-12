@@ -12,8 +12,6 @@ output:
     highlight: tango
 ---
 
-![](man/figures/UFF_brasao.png)
-
 
 ```{r message=FALSE, warning=FALSE}
 library(haven)
