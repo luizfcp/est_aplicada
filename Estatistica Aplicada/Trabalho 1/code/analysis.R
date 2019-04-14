@@ -13,6 +13,11 @@ library(ggpubr)
 library(purrr)
 library(flextable)
 library(stringr)
+library(pacotin)
+
+# source("src")
+# Bordas para as tabelas
+border <- officer::fp_border(color = "black")
 
 # Importacao base de dados
 base <- 
@@ -55,6 +60,7 @@ graf_pew_antes <-
   theme_bw() +
   labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW ANTES do RETP nos pacientes") +
   scale_y_continuous(limits = c(0, 30)) +
+  scale_fill_manual(values = c("darkblue", "chocolate")) +
   guides(fill = F)
 
 # Visualizacao PEW APOS
@@ -63,13 +69,13 @@ graf_pew_apos <-
   ggplot() +
   geom_bar(aes(x=., y=n, fill = .), stat = "identity") +
   theme_bw() +
-  labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW APOS do RETP nos pacientes") + 
+  labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW APOS o RETP nos pacientes") + 
   scale_y_continuous(limits = c(0, 30)) +
+  scale_fill_manual(values = c("darkblue", "chocolate")) +
   guides(fill = F)
 
 grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2) 
   # ggsave("../man/figures/pew.png", dpi = "retina")
-
 
 
 # Hipotese: O estudo teve efeito sobre PEW? 
@@ -77,10 +83,65 @@ grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
 # H0: Não teve diferença
 # H1: Teve dirença
 
-base_pew %>% select(PEW_ANTES, PEW_APOS) %>% table() %>% mcnemar.test()
+mc_test <- base_pew %>% select(PEW_ANTES, PEW_APOS) %>% table() %>% mcnemar.test()
 
 #  Com base num nivel de significancia de 5% rejeitamos a hipotese nula, ou seja,
 # há evidencias de que teve diferença entre as variaveis.
+
+
+df_tabela_pew <- 
+  base_pew %>% 
+  cbind("marcador" = "PEW") %>% 
+  select(marcador, PEW_ANTES, PEW_APOS) %>% 
+  mutate_at(2:3, ~ if_else(.x == "Não", 0, 1)) %>% 
+  group_by(marcador) %>% 
+  summarise(
+    # Antes
+    # Sem presença de perda
+    # Com presença de perda
+    "sem_pres_de_perda_antes" = length(PEW_ANTES)-sum(PEW_ANTES),
+    "com_pres_de_perda_antes" = sum(PEW_ANTES),
+    # Depois
+    "sem_pres_de_perda_apos" = length(PEW_APOS)-sum(PEW_APOS),
+    "com_pres_de_perda_apos" = sum(PEW_APOS),
+    
+    n = length(PEW_ANTES)
+  ) %>% 
+  bind_cols(
+    mc_test$p.value %>% 
+      as.data.frame %>% 
+      round(3) %>% 
+      `colnames<-`("p_valor") %>% 
+      mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor) %>% str_replace("\\.", ","))
+  )
+
+typology_tabela <-
+  data.frame(
+    col_keys = c("marcador","sem_pres_de_perda_antes","com_pres_de_perda_antes","sem_pres_de_perda_apos","com_pres_de_perda_apos","n","p_valor"),
+    type = c("", "Presença de perda \n antes do RETP", "Presença de perda \n antes do RETP", "Presença de perda \n depois do RETP", "Presença de perda \n depois do RETP", "", " "),
+    what = c("Marcador","Apresentou perda","Não apresentou perda","Apresentou perda","Não apresentou perda","Tamanho da amostra","P-valor \n (Teste de McNemar)"),
+    stringsAsFactors = FALSE
+  )
+
+tabela_pew <- 
+  df_tabela_pew %>%
+  map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
+  as_tibble() %>%
+  regulartable() %>%
+  set_header_df(mapping = typology_tabela, key = "col_keys") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header") %>%
+  merge_v(j = 1:3) %>% 
+  width(width = c(1.1, rep(1.5, 4), 1.1, 1.5)) %>%
+  align(align = "center", part = "all") %>%
+  # color(part = "header", color = "white") %>%
+  border(j = c(1,3,5,6), border.right = border) %>%
+  border(j = c(1,3,5,6), i = 1:2, part = "header", border.right = border) %>% 
+  border(i = 2, part = "header", border.bot = border) %>% 
+  border(i = 1, part = "header", border.top = border)
+
+# Salvando
+# save_html("tabela_pew", "../man/figures/tabela_pew.png")
 
 
 # Inflamacao --------------------------------------------------------------
@@ -121,23 +182,23 @@ base_inflamacao %<>%
 
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
 
-# Salvando
-walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"), 
-        plot = .x, dpi = "retina", width = 9.66, height = 8.02
-      )
-)
+# # Salvando
+# walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"), 
+#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
 
 ## Normalidade: TNFa antes
-shapiro.test(base_tnf$TNFa01)
+# shapiro.test(base_tnf$TNFa01)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 ## Normalidade: TNFa depois
-shapiro.test(base_tnf$TNFa02)
+# shapiro.test(base_tnf$TNFa02)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 
@@ -146,7 +207,7 @@ shapiro.test(base_tnf$TNFa02)
 base_inflamacao %<>% 
   mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
 
-tabela_inflamacao <- 
+df_tabela_inflamacao <- 
   base_inflamacao %>% 
   select(marcador, data) %>% 
   unnest %>% 
@@ -173,14 +234,13 @@ tabela_inflamacao <-
 typology_tabela <-
   data.frame(
     col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
-    type = c("", "Antes", "Antes", "Depois", "Depois", "", " "),
+    type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
     what = c("Marcador \n Inflamatório","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
     stringsAsFactors = FALSE
   )
 
-border <- officer::fp_border(color = "black")
-
-tabela_inflamacao %>%
+tabela_inflamacao <- 
+  df_tabela_inflamacao %>%
   map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
   as_tibble() %>%
   regulartable() %>%
@@ -195,6 +255,9 @@ tabela_inflamacao %>%
   border(j = c(1,3,5,6), i = 1:2, part = "header", border.right = border) %>% 
   border(i = 2, part = "header", border.bot = border) %>% 
   border(i = 1, part = "header", border.top = border)
+
+# Salvando
+# save_html("tabela_inflamacao", "../man/figures/tabela_inflamacao.png")
 
 
 # tabela_inflamacao %>% 
@@ -262,23 +325,23 @@ base_antropometricos %<>%
 
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
-# Salvando
-walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"), 
-        plot = .x, dpi = "retina", width = 9.66, height = 8.02
-      )
-)
+# # Salvando
+# walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"), 
+#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
 
 ## Normalidade: TNFa antes
-shapiro.test(base_tnf$TNFa01)
+# shapiro.test(base_tnf$TNFa01)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 ## Normalidade: TNFa depois
-shapiro.test(base_tnf$TNFa02)
+# shapiro.test(base_tnf$TNFa02)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 
@@ -287,7 +350,7 @@ shapiro.test(base_tnf$TNFa02)
 base_antropometricos %<>% 
   mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
 
-tabela_antropometricos <- 
+df_tabela_antropometricos <- 
   base_antropometricos %>% 
   select(marcador, data) %>% 
   unnest %>% 
@@ -311,6 +374,33 @@ tabela_antropometricos <-
       mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor))
   )
 
+typology_tabela <-
+  data.frame(
+    col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
+    type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
+    what = c("Marcador \n Antropométrico","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    stringsAsFactors = FALSE
+  )
+
+tabela_antropometricos <- 
+  df_tabela_antropometricos %>%
+  map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
+  as_tibble() %>%
+  regulartable() %>%
+  set_header_df(mapping = typology_tabela, key = "col_keys") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header") %>%
+  merge_v(j = 1:3) %>% 
+  width(width = c(rep(1.1, 6), 0.8)) %>%
+  align(align = "center", part = "all") %>%
+  # color(part = "header", color = "white") %>%
+  border(j = c(1,3,5,6), border.right = border) %>%
+  border(j = c(1,3,5,6), i = 1:2, part = "header", border.right = border) %>% 
+  border(i = 2, part = "header", border.bot = border) %>% 
+  border(i = 1, part = "header", border.top = border)
+
+# Salvando
+# save_html("tabela_antropometricos", "../man/figures/tabela_antropometricos.png")
 
 
 # Capacidade Física -------------------------------------------------------
@@ -352,23 +442,23 @@ base_cf %<>%
 
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
-# Salvando
-walk2(base_cf$boxplot, base_cf$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"), 
-        plot = .x, dpi = "retina", width = 9.66, height = 8.02
-      )
-)
+# # Salvando
+# walk2(base_cf$boxplot, base_cf$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"), 
+#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
 
 ## Normalidade: TNFa antes
-shapiro.test(base_tnf$TNFa01)
+# shapiro.test(base_tnf$TNFa01)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 ## Normalidade: TNFa depois
-shapiro.test(base_tnf$TNFa02)
+# shapiro.test(base_tnf$TNFa02)
 ## Com base num nivel de significancia de 5%, rejeitamos a hipótese de normalidade para a variavel.
 
 
@@ -377,7 +467,7 @@ shapiro.test(base_tnf$TNFa02)
 base_cf %<>% 
   mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
 
-tabela_cf <- 
+df_tabela_cf <- 
   base_cf %>% 
   select(marcador, data) %>% 
   unnest %>% 
@@ -401,6 +491,33 @@ tabela_cf <-
       mutate(p_valor = ifelse(p_valor < 0.001, "<0.001", p_valor))
   )
 
+typology_tabela <-
+  data.frame(
+    col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
+    type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
+    what = c("Marcador \n Capac. Física","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    stringsAsFactors = FALSE
+  )
+
+tabela_cf <- 
+  df_tabela_cf %>%
+  map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
+  as_tibble() %>%
+  regulartable() %>%
+  set_header_df(mapping = typology_tabela, key = "col_keys") %>%
+  merge_h(part = "header") %>%
+  merge_v(part = "header") %>%
+  merge_v(j = 1:3) %>% 
+  width(width = c(rep(1.1, 6), 0.8)) %>%
+  align(align = "center", part = "all") %>%
+  # color(part = "header", color = "white") %>%
+  border(j = c(1,3,5,6), border.right = border) %>%
+  border(j = c(1,3,5,6), i = 1:2, part = "header", border.right = border) %>% 
+  border(i = 2, part = "header", border.bot = border) %>% 
+  border(i = 1, part = "header", border.top = border)
+
+# Salvando
+# save_html("tabela_cf", "../man/figures/tabela_cf.png")
 
 
 
