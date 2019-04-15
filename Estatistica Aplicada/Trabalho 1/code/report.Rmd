@@ -18,19 +18,10 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-source("analysis.R", encoding = "UTF-8")
+# source("analysis.R", encoding = "UTF-8")
 ```
 
-
-
-\fancypagestyle{rodape}{
-  \fancyhf{}
-  \fancyhead{}
-  \fancyfoot[C]{\hspace*{17 cm} {\color{black}\thepage}}
-}
-\pagestyle{rodape}
-
-
+\fontsize{12}{12}\selectfont
 
 \centering
 
@@ -39,13 +30,13 @@ source("analysis.R", encoding = "UTF-8")
 \includegraphics[width=0.15\textwidth]{../man/figures/uff_brasao.png}
 \end{figure}
 
-\Large{UNIVERSIDADE FEDERAL FLUMINENSE}
+UNIVERSIDADE FEDERAL FLUMINENSE
 
 \vspace*{5 cm}
-\Large{ANÁLISE SOBRE A INFLUÊNCIA DE UM PROGRAMA DE EXERCÍCIOS RESISTIDOS EM PACIENTES QUE FAZEM HEMODIÁLISE}
+ANÁLISE SOBRE A INFLUÊNCIA DE UM PROGRAMA DE EXERCÍCIOS RESISTIDOS EM PACIENTES QUE FAZEM HEMODIÁLISE
 
 \vspace*{5 cm}
-\Large{Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira}
+Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
 
 
 

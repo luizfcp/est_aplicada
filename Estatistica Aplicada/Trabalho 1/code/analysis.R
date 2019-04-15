@@ -88,7 +88,7 @@ graf_pew_apos <-
 
 graf_pew <- grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
 
-ggsave("../man/figures/pew.png", dpi = "retina", plot = graf_pew, width = w+1, height = h-0.8)
+# ggsave("../man/figures/pew.png", dpi = "retina", plot = graf_pew, width = w+1, height = h-0.8)
 
 
 # Hipotese: O estudo teve efeito sobre PEW? 
@@ -154,7 +154,7 @@ tabela_pew <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-save_html("tabela_pew", "../man/figures/tabela_pew.png")
+# save_html("tabela_pew", "../man/figures/tabela_pew.png")
 
 
 # Inflamacao --------------------------------------------------------------
@@ -197,12 +197,12 @@ base_inflamacao %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
 
 # Salvando
-walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"),
-        plot = .x, dpi = "retina", width = w, height = h
-      )
-)
+# walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"),
+#         plot = .x, dpi = "retina", width = w, height = h
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
@@ -341,12 +341,12 @@ base_antropometricos %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
 # Salvando
-walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"),
-        plot = .x, dpi = "retina", width = w, height = h
-      )
-)
+# walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"),
+#         plot = .x, dpi = "retina", width = w, height = h
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
@@ -459,12 +459,12 @@ base_cf %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
 # Salvando
-walk2(base_cf$boxplot, base_cf$marcador,
-      ~ ggsave(
-        paste0("../man/figures/", .y, ".png"),
-        plot = .x, dpi = "retina", width = w, height = h
-      )
-)
+# walk2(base_cf$boxplot, base_cf$marcador,
+#       ~ ggsave(
+#         paste0("../man/figures/", .y, ".png"),
+#         plot = .x, dpi = "retina", width = w, height = h
+#       )
+# )
 
 
 # Normalidade -------------------------------------------------------------
