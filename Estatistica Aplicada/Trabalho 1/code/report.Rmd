@@ -25,26 +25,22 @@ header-includes:
 
 \centering
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=0.15\textwidth]{../man/figures/uff_brasao.png}
-\end{figure}
+Relatório de consultoria Estatística
 
-UNIVERSIDADE FEDERAL FLUMINENSE
-
-\vspace*{5 cm}
+\vspace*{7 cm}
 ANÁLISE SOBRE A INFLUÊNCIA DE UM PROGRAMA DE EXERCÍCIOS RESISTIDOS EM PACIENTES QUE FAZEM HEMODIÁLISE
 
-\vspace*{5 cm}
-Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
+\vspace*{7 cm}
+Consultores: Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
 
 
 
 \newpage
 
-\setcounter{page}{1}
 
 \justifying 
+
+\newpage
 
 \renewcommand*\contentsname{Sumário}
 \tableofcontents
@@ -53,21 +49,37 @@ Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
 
 \newpage
 
+\section{Apresentação}
+
+\subsection{Luiz Fernando Coelho Passos}
+
+Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
+
+\subsection{Lyncoln Sousa de Oliveira}
+
+Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
+
+
+
+\newpage
+
 \section{Resumo}
 
 
-Pacientes submetidos à hemodiálise apresentam inflamação persistente e perda de energia protéica (PEW), o que contribui para altas taxas de mortalidade. Este estudo teve como objetivo avaliar os efeitos de um programa de treinamento de exercícios resistidos (RETP) sobre inflamação e PEW em pacientes em hemodiálise. Foi coletado dados dos paciêntes antes da realização do RETP e depois de 6 meses da prática dos exercícios. Foi utilizado a linguagem de programação R para auxiliar na análise para avaliar o resultado desse programa de treinamento. 
+\hspace*{1.25 cm}Pacientes submetidos à hemodiálise apresentam inflamação persistente e perda de energia protéica (PEW), o que contribui para altas taxas de mortalidade. Este estudo teve como objetivo avaliar os efeitos de um programa de treinamento de exercícios resistidos (RETP) sobre inflamação e PEW em pacientes em hemodiálise. Foi coletado dados dos paciêntes antes da realização do RETP e depois de 6 meses da prática dos exercícios. Foi utilizado a linguagem de programação R para auxiliar na análise para avaliar o resultado desse programa de treinamento. 
 
 
 \newpage
 
 \section{Metodologia}
 
-Com o banco de dados em mãos foi percebido que havia muitos valores faltantes, pois por alguma razão alguns pacientes tiveram dados coletados antes do RETP e mas não depois, e dentre esses que foram coletados havia exercícios sem dados preenchidos. Por se tratar de amostra dependente, mesmo paciente antes e depois da intervenção, foi necessário um tratamento na base de dados para que assim pudesse utilizar métodos aconselhados para tal amostra. 
+\hspace*{1.25 cm}Com o banco de dados em mãos foi percebido que havia muitos valores faltantes, pois por alguma razão alguns pacientes tiveram dados coletados antes do RETP e mas não depois, e dentre esses que foram coletados havia exercícios sem dados preenchidos. Por se tratar de amostra dependente, mesmo paciente antes e depois da intervenção, foi necessário um tratamento na base de dados para que assim pudesse utilizar métodos aconselhados para tal amostra. 
 
-Aplicando a correção em todo o banco de dado, excluindo os indivíduos que não respoderam pelo menos 1 questão, teríamos no final uma amostra pouco informativa, com apenas 2 indivíduos dentre o total de 54, devido a isso, foi decido realizar o estudo de maneira focada nas variáveis, ou seja, comparar a variável antes com a variável depois para todas as variáveis do banco de dados. Assim, pode-se obter uma amostra para cada comparação de pelo menos 20 pacientes, ainda não é muito representativa, porém foi a melhor maneira encontrada. A hipótese de fazer o estudo dividindo os pacientes por sexo foi levantada, porém como o tamanho da amostra é de 54 pacientes, dividi-la deixaria muito pouco representativa, devido a isso o estudo baseado nesta hipótese não foi realizado.
+\hspace*{1.25 cm}Aplicando a correção em todo o banco de dado, excluindo os indivíduos que não respoderam pelo menos 1 questão, teríamos no final uma amostra pouco informativa, com apenas 2 indivíduos dentre o total de 54, devido a isso, foi decido realizar o estudo de maneira focada nas variáveis, ou seja, comparar a variável antes com a variável depois para todas as variáveis do banco de dados. Assim, pode-se obter uma amostra para cada comparação de pelo menos 20 pacientes, ainda não é muito representativa, porém foi a melhor maneira encontrada. A hipótese de fazer o estudo dividindo os pacientes por sexo foi levantada, porém como o tamanho da amostra é de 54 pacientes, dividi-la deixaria muito pouco representativa, devido a isso o estudo baseado nesta hipótese não foi realizado.
 
-As variáveis do banco de dados, para a análise, foram separadas nos seguintes grupos:
+\hspace*{1.25 cm}As variáveis do banco de dados, para a análise, foram separadas nos seguintes grupos:
+
+* PEW: Perda de Energia Protéica. Para a Análise, 1 representa \textbf{sim}, ou seja, há presença do PEW no paciente e 2 representa \textbf{não}.
 
 * Inflamação: 
     + TNFa
@@ -89,23 +101,23 @@ As variáveis do banco de dados, para a análise, foram separadas nos seguintes 
     + Torque flexor Esquerdo
     + Torque flexor Direito
 
-Ao decorrer das análises foram utilizados testes de hipóteses estatísticos, metodologia estatística que nos auxilia a tomar decisões sobre uma ou mais populações baseado na informação obtida da amostra, são eles:
+\hspace*{1.25 cm}Ao decorrer das análises foram utilizados testes de hipóteses estatísticos, metodologia estatística que nos auxilia a tomar decisões sobre uma ou mais populações baseado na informação obtida da amostra, são eles:
 
 * Shapiro: teste para verificar se a distribuição de probabilidade associada a um conjunto de dados pode ser aproximada pela distribuição normal. O teste foi utilizado para verificar normalidade das variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física.
 * McNemar: teste apropriado para comparar frequências oriundas de amostras pareadas. O teste foi utilizado para verificar se o estudo teve efeito sobre PEW.
 * Teste-t: usado para verificar se houve diferença da média das variáveis antes do REPT para a mesma variável depois do REPT. 
 
-Em todos os testes de hipótese aplicados adotou-se um nível de significância de 5%. Considerou-se normalidade para todas as variáveis quantitativas da base de dados. Foi definido a hipótese nula como a igualdade entre as médias das variáveis coletadas antes e depois do REPT e a hipótese alternativa a diferença. Para mais detalhes sobre os testes utilizados é aconselhado a leitura do livro Estatística Básica escrito por Bussab e Morettin.
+\hspace*{1.25 cm}Em todos os testes de hipótese aplicados adotou-se um nível de significância de 5%. Considerou-se normalidade para todas as variáveis quantitativas da base de dados. Foi definido a hipótese nula como a igualdade entre as médias das variáveis coletadas antes e depois do REPT e a hipótese alternativa a diferença. Para mais detalhes sobre os testes utilizados é aconselhado a leitura do livro Estatística Básica escrito por Bussab e Morettin.
 
-Com a análise exploratória dos dados, examinar os dados previamente, pode-se obter um resumo dos dados e confeccionou-se:
+\hspace*{1.25 cm}Com a análise exploratória dos dados, examinar os dados previamente, pode-se obter um resumo dos dados e confeccionou-se:
 
 * Gráfico de barras: utilizado para realizar comparações entre as categorias de uma variável qualitativa ou quantitativa discreta. O gráfico foi utilizado para comparar a PEW antes e depois do RETP.
-* Boxplot: gráfico utilizado para avaliar a distribuição empírica das idades dos paciente em relação ao sexo e as variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física. As linhas cinzas que ligam alguns boxplots representa a posição do mesmo pacinte antes e depois.
+* Boxplot: gráfico utilizado para avaliar a distribuição empírica das idades dos paciente em relação ao sexo e as variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física. As linhas cinzas que ligam alguns boxplots feitos na análise representam a posição do mesmo pacinte antes e depois do RETP.
 
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\textwidth]{../man/figures/boxplot_explicao.png}
+\includegraphics[width=0.7\textwidth]{../man/figures/boxplot_explicao.png}
 \caption{Explicação sobre o boxplot.}
 \end{figure}
 
@@ -121,9 +133,10 @@ Com a análise exploratória dos dados, examinar os dados previamente, pode-se o
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_pew.png}
 \caption{Marcador PEW}
+\label{tab:PEW}
 \end{table}
 
-Pode-se observar pelo gráfico de barras e pela tabela uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obtivemos de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do REPET. 
+\hspace*{1.25 cm}Pode-se observar pela \ref{fig:PEW} e pela \ref{tab:PEW} uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obtivemos de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do REPET. 
 
 
 
@@ -133,11 +146,12 @@ Pode-se observar pelo gráfico de barras e pela tabela uma diminuição na quant
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_inflamacao.png}
 \caption{Marcadores de Inflamação}
+\label{tab:inflamacao}
 \end{table}
 
-Para as variáveis ICAM e PCR pode-se observar pelo boxplot e pela tabela uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Para as variáveis ICAM e PCR pode-se observar pelas \ref{fig:ICAM}, \ref{fig:PCR} e pela \ref{tab:inflamacao} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
 
-Já para as variáveis IL6, TNFa e VCAM pode-se observar pelo boxplot e pela tabela uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis IL6, TNFa e VCAM pode-se observar pelas \ref{fig:IL6}, \ref{fig:TNFa}, \ref{fig:VCAM} e pela \ref{tab:inflamacao} uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
 
 
 \newpage
@@ -148,11 +162,12 @@ Já para as variáveis IL6, TNFa e VCAM pode-se observar pelo boxplot e pela tab
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_antropometricos.png}
 \caption{Marcadores Antropométricos}
+\label{tab:antropometricos}
 \end{table}
 
-Para a variável AMB pode-se observar pelo boxplot e pela tabela uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Para a variável AMB pode-se observar pela \ref{fig:AMB} e pela \ref{tab:antropometricos} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
 
-Já para as variáveis IMC e Massa Magra pode-se observar pelo boxplot e pela tabela um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis IMC e Massa Magra pode-se observar pelas \ref{fig:IMC}, \ref{fig:massa_magra} e pela \ref{tab:antropometricos} um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
 
 
 
@@ -162,11 +177,12 @@ Já para as variáveis IMC e Massa Magra pode-se observar pelo boxplot e pela ta
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_cf.png}
 \caption{Marcadores de Capacidade Física}
+\label{tab:cf}
 \end{table}
 
-Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelo boxplot e pela tabela uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do REPET.
+\hspace*{1.25 cm}Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelas \ref{fig:SL10}, \ref{fig:Torque Extensor Esquerdo} e pela \ref{tab:cf} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do REPET.
 
-Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelo boxplot e pela tabela um aumento de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelas \ref{fig:SL60}, \ref{fig:Torque Extensor Direito}, \ref{fig:Torque Flexor Direito}, \ref{fig:Torque Flexor Esquerdo} e pela \ref{tab:cf} um aumento de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
 
 
 
@@ -174,10 +190,11 @@ Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e To
 
 \section{Conclusão}
 
-O foco do estudo foi verificar se os pacientes submetidos à hemodiálise apresentaram melhoras nas variáveis com respeito a inflamação e perca de energia proteica(PEW)  depois do programa de treinamento de exercícios resistidos(RETP). 
+\hspace*{1.25 cm}O foco do estudo foi verificar se os pacientes submetidos à hemodiálise apresentaram melhoras nas variáveis com respeito a inflamação e perda de energia proteica (PEW)  depois do programa de treinamento de exercícios resistidos (RETP). 
 A base de dados  tratada para o estudo possui poucos indivíduos aptos para realizar as análises, o que pode gerar um problema de representividade da amostra para a população alvo.  Porém, com os dados obtidos é possível visualizar alteração nas variáveis  ICAM e TNFa ligados a inflamação, o que pode significar melhoria dos pacientes em questão a inflamação. 
-Sobre o PEW, analisando os dados obtidos, foi notado uma grande redução dos pacientes que possuíam essa perca de energia proteica.
-Logo, foi concluído que o programa de treinamento de exercícios resistidos(REPT) trouxe benefícios para os pacientes de hemodiálise, o que pode gerar diminuição da taxa de mortalidade dos mesmos.
+
+\hspace*{1.25 cm}Sobre o PEW, analisando os dados obtidos, foi notado uma redução dos pacientes que possuíam essa perda de energia proteica.
+Logo, foi concluído que o programa de treinamento de exercícios resistidos (RETP) trouxe benefícios para os pacientes de hemodiálise, o que pode gerar diminuição da taxa de mortalidade dos mesmos.
 
 
 
@@ -189,6 +206,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
 \centering
 \includegraphics[width=0.65\textwidth]{../man/figures/graf_idade_sexo.png}
 \caption{Idade dos pacientes por Sexo.}
+\label{fig:idade_sexo}
 \end{figure}
 
 
@@ -199,6 +217,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
 \centering
 \includegraphics[width=0.85\textwidth]{../man/figures/pew.png}
 \caption{Presença da PEW antes e depois do RETP.}
+\label{fig:PEW}
 \end{figure}
 
 
@@ -280,7 +299,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Massa Magra.png}
   \captionof{figure}{??}
-  \label{fig:Massa Magra}
+  \label{fig:massa_magra}
 \end{minipage}%
 \end{figure}
 
@@ -357,7 +376,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
 \item R Core Team (2019). R: A language and environment for statistical computing. R
   Foundation for Statistical Computing, Vienna, Austria. URL https://www.r-project.org/.
 \item Hadley Wickham and Evan Miller (2018). haven: Import and Export
-  'SPSS', 'Stata' and 'SAS' Files. R package version 1.1.2.
+  `SPSS', `Stata' and `SAS' Files. R package version 1.1.2.
   https://CRAN.R-project.org/package=haven
 \item Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
   (2018). dplyr: A Grammar of Data Manipulation. R package version
@@ -367,13 +386,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
   https://CRAN.R-project.org/package=magrittr
 \item H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
   Springer-Verlag New York, 2016.
-\item Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for "Grid"
+\item Baptiste Auguie (2017). gridExtra: Miscellaneous Functions for ``Grid''
   Graphics. R package version 2.3.
   https://CRAN.R-project.org/package=gridExtra
 \item Hadley Wickham and Lionel Henry (2018). tidyr: Easily Tidy Data with
-  'spread()' and 'gather()' Functions. R package version 0.8.1.
+  `spread()' and 'gather()' Functions. R package version 0.8.1.
   https://CRAN.R-project.org/package=tidyr
-\item Alboukadel Kassambara (2018). ggpubr: 'ggplot2' Based Publication
+\item Alboukadel Kassambara (2018). ggpubr: `ggplot2' Based Publication
   Ready Plots. R package version 0.2.
   https://CRAN.R-project.org/package=ggpubr
 \item Lionel Henry and Hadley Wickham (2018). purrr: Functional Programming
