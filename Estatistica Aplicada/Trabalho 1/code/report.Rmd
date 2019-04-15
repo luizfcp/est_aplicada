@@ -14,11 +14,12 @@ header-includes:
     - \usepackage{enumerate}
     - \usepackage{caption}
     - \usepackage{subcaption}
-    - \usepackage{fancyhdr}
+    - \renewcommand{\figurename}{Figura}
+    - \renewcommand{\tablename}{Tabela}
 ---
 
 ```{r setup, include=FALSE}
-# source("analysis.R", encoding = "UTF-8")
+source("analysis.R", encoding = "UTF-8")
 ```
 
 \fontsize{12}{12}\selectfont
@@ -136,7 +137,7 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:PEW}
 \end{table}
 
-\hspace*{1.25 cm}Pode-se observar pela \ref{fig:PEW} e pela \ref{tab:PEW} uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obtivemos de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do REPET. 
+\hspace*{1.25 cm}Pode-se observar pela Figura \ref{fig:PEW} e pela Tabela \ref{tab:PEW} uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obtivemos de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do RETP. 
 
 
 
@@ -149,9 +150,9 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:inflamacao}
 \end{table}
 
-\hspace*{1.25 cm}Para as variáveis ICAM e PCR pode-se observar pelas \ref{fig:ICAM}, \ref{fig:PCR} e pela \ref{tab:inflamacao} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Para as variáveis ICAM e PCR pode-se observar pelas Figuras \ref{fig:ICAM}, \ref{fig:PCR} e pela Tabela \ref{tab:inflamacao} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
 
-\hspace*{1.25 cm}Já para as variáveis IL6, TNFa e VCAM pode-se observar pelas \ref{fig:IL6}, \ref{fig:TNFa}, \ref{fig:VCAM} e pela \ref{tab:inflamacao} uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis IL6, TNFa e VCAM pode-se observar pelas Figuras \ref{fig:IL6}, \ref{fig:TNFa}, \ref{fig:VCAM} e pela Tabela \ref{tab:inflamacao} uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do RETP. Diferente da variável Albumina que pela Figura \ref{fig:ALB} e pela Tabela \ref{tab:inflamacao} pode-se observar que teve um aumento em sua média mas uma diminuição no desvio padrão. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
 
 
 \newpage
@@ -165,9 +166,9 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:antropometricos}
 \end{table}
 
-\hspace*{1.25 cm}Para a variável AMB pode-se observar pela \ref{fig:AMB} e pela \ref{tab:antropometricos} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Para a variável AMB pode-se observar pela Figura \ref{fig:AMB} e pela Tabela \ref{tab:antropometricos} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
 
-\hspace*{1.25 cm}Já para as variáveis IMC e Massa Magra pode-se observar pelas \ref{fig:IMC}, \ref{fig:massa_magra} e pela \ref{tab:antropometricos} um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis IMC e Massa Magra pode-se observar pelas Figuras \ref{fig:IMC}, \ref{fig:massa_magra} e pela Tabela \ref{tab:antropometricos} um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
 
 
 
@@ -180,9 +181,9 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:cf}
 \end{table}
 
-\hspace*{1.25 cm}Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelas \ref{fig:SL10}, \ref{fig:Torque Extensor Esquerdo} e pela \ref{tab:cf} uma diminuição de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do REPET.
+\hspace*{1.25 cm}Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelas Figuras \ref{fig:SL10}, \ref{fig:Torque Extensor Esquerdo} e pela Tabela \ref{tab:cf} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do RETP.
 
-\hspace*{1.25 cm}Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelas \ref{fig:SL60}, \ref{fig:Torque Extensor Direito}, \ref{fig:Torque Flexor Direito}, \ref{fig:Torque Flexor Esquerdo} e pela \ref{tab:cf} um aumento de sua média e desvio padrão para a coleta de dados depois do REPET. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do REPET. 
+\hspace*{1.25 cm}Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelas Figuras \ref{fig:SL60}, \ref{fig:Torque Extensor Direito}, \ref{fig:Torque Flexor Direito}, \ref{fig:Torque Flexor Esquerdo} e pela Tabela \ref{tab:cf} um aumento de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
 
 
 
@@ -229,9 +230,9 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{../man/figures/TNFa.png}
+  \includegraphics[width=1\linewidth]{../man/figures/Albumina.png}
   \captionof{figure}{??}
-  \label{fig:TNFa}
+  \label{fig:ALB}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
@@ -245,15 +246,15 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{../man/figures/PCR.png}
-  \captionof{figure}{??}
-  \label{fig:PCR}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
   \includegraphics[width=1\linewidth]{../man/figures/IL6.png}
   \captionof{figure}{??}
   \label{fig:IL6}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/PCR.png}
+  \captionof{figure}{??}
+  \label{fig:PCR}
 \end{minipage}
 \end{figure}
 
@@ -263,10 +264,16 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
+  \includegraphics[width=1\linewidth]{../man/figures/TNFa.png}
+  \captionof{figure}{??}
+  \label{fig:TNFa}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
   \includegraphics[width=1\linewidth]{../man/figures/VCAM.png}
   \captionof{figure}{??}
   \label{fig:VCAM}
-\end{minipage}%
+\end{minipage}
 \end{figure}
 
 

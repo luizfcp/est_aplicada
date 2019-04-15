@@ -88,7 +88,7 @@ graf_pew_apos <-
 
 graf_pew <- grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
 
-# ggsave("../man/figures/pew.png", dpi = "retina", plot = graf_pew, width = w+1, height = h-0.8)
+ggsave("../man/figures/pew.png", dpi = "retina", plot = graf_pew, width = w+1, height = h-0.8)
 
 
 # Hipotese: O estudo teve efeito sobre PEW? 
@@ -154,18 +154,19 @@ tabela_pew <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-# save_html("tabela_pew", "../man/figures/tabela_pew.png")
+save_html("tabela_pew", "../man/figures/tabela_pew.png")
 
 
 # Inflamacao --------------------------------------------------------------
 
 base_inflamacao <- 
   list(
-    TNFa = base %>% select(TNFa01, TNFa02) %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "TNFa"),
-    ICAM = base %>% select(ICAM1, ICAM2)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "ICAM"),
-    PCR  = base %>% select(PCR01, PCR02)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "PCR"),
-    IL6  = base %>% select(IL601, IL602)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "IL6"),
-    VCAM = base %>% select(VCAM1, VCAM2)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "VCAM")
+    TNFa  = base %>% select(TNFa01, TNFa02)           %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "TNFa"),
+    ICAM  = base %>% select(ICAM1, ICAM2)             %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "ICAM"),
+    PCR   = base %>% select(PCR01, PCR02)             %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "PCR"),
+    IL6   = base %>% select(IL601, IL602)             %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "IL6"),
+    VCAM  = base %>% select(VCAM1, VCAM2)             %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "VCAM"),
+    ALBUM = base %>% select(Albumina01, albumina02)   %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "Albumina")
   ) %>% 
   map(~ .x %>% as_tibble)
 
@@ -197,12 +198,12 @@ base_inflamacao %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
 
 # Salvando
-# walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"),
-#         plot = .x, dpi = "retina", width = w, height = h
-#       )
-# )
+walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -249,7 +250,7 @@ typology_tabela <-
   data.frame(
     col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
     type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
-    what = c("Marcador \n Inflamatório","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    what = c("Marcador \n Inflamatorio","Media","Desvio Padrao","Media","Desvio Padrao","Tamanho da amostra","P-valor \n (Teste t)"),
     stringsAsFactors = FALSE
   )
 
@@ -271,7 +272,7 @@ tabela_inflamacao <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-# save_html("tabela_inflamacao", "../man/figures/tabela_inflamacao.png")
+save_html("tabela_inflamacao", "../man/figures/tabela_inflamacao.png")
 
 
 # tabela_inflamacao %>% 
@@ -341,12 +342,12 @@ base_antropometricos %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
 # Salvando
-# walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"),
-#         plot = .x, dpi = "retina", width = w, height = h
-#       )
-# )
+walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -393,7 +394,7 @@ typology_tabela <-
   data.frame(
     col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
     type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
-    what = c("Marcador \n Antropométrico","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    what = c("Marcador \n Antropometrico","Madia","Desvio Padrao","Madia","Desvio Padrao","Tamanho da amostra","P-valor \n (Teste t)"),
     stringsAsFactors = FALSE
   )
 
@@ -415,7 +416,7 @@ tabela_antropometricos <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-# save_html("tabela_antropometricos", "../man/figures/tabela_antropometricos.png")
+save_html("tabela_antropometricos", "../man/figures/tabela_antropometricos.png")
 
 
 # Capacidade Física -------------------------------------------------------
@@ -459,12 +460,12 @@ base_cf %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
 # Salvando
-# walk2(base_cf$boxplot, base_cf$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"),
-#         plot = .x, dpi = "retina", width = w, height = h
-#       )
-# )
+walk2(base_cf$boxplot, base_cf$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -511,7 +512,7 @@ typology_tabela <-
   data.frame(
     col_keys = c("marcador","media_antes","desv_pad_antes","media_depois","desv_pad_depois","n","p_valor"),
     type = c("", "Antes do RETP", "Antes do RETP", "Depois do RETP", "Depois do RETP", "", " "),
-    what = c("Marcador \n Capac. Física","Média","Desvio Padrão","Média","Desvio Padrão","Tamanho da amostra","P-valor \n (Teste t)"),
+    what = c("Marcador \n Capac. Fisica","Media","Desvio Padrao","Media","Desvio Padrao","Tamanho da amostra","P-valor \n (Teste t)"),
     stringsAsFactors = FALSE
   )
 
@@ -533,7 +534,7 @@ tabela_cf <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-# save_html("tabela_cf", "../man/figures/tabela_cf.png")
+save_html("tabela_cf", "../man/figures/tabela_cf.png")
 
 
 
