@@ -1,6 +1,6 @@
 ---
 output: pdf_document
-geometry: "left = 2 cm, right = 2 cm, top = 2 cm, bottom = 2 cm"
+geometry: "left = 3 cm, right = 2 cm, top = 3 cm, bottom = 2 cm"
 classoption: a4paper
 header-includes:
     - \usepackage[utf8]{inputenc}
@@ -54,6 +54,7 @@ Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
 \newpage
 
 \section{Resumo}
+
 
 Pacientes submetidos à hemodiálise apresentam inflamação persistente e perda de energia protéica (PEW), o que contribui para altas taxas de mortalidade. Este estudo teve como objetivo avaliar os efeitos de um programa de treinamento de exercícios resistidos (RETP) sobre inflamação e PEW em pacientes em hemodiálise. Foi coletado dados dos paciêntes antes da realização do RETP e depois de 6 meses da prática dos exercícios. Foi utilizado a linguagem de programação R para auxiliar na análise para avaliar o resultado desse programa de treinamento. 
 
