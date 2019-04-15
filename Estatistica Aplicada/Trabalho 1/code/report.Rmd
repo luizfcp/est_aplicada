@@ -12,16 +12,29 @@ header-includes:
     - \usepackage{framed}
     - \usepackage{multicol}
     - \usepackage{enumerate}
+    - \usepackage{caption}
+    - \usepackage{subcaption}
+    - \usepackage{fancyhdr}
 ---
 
 ```{r setup, include=FALSE}
-source("analysis.R")
+source("analysis.R", encoding = "UTF-8")
 ```
+
+
+
+\fancypagestyle{rodape}{
+  \fancyhf{}
+  \fancyhead{}
+  \fancyfoot[C]{\hspace*{17 cm} {\color{black}\thepage}}
+}
+\pagestyle{rodape}
+
 
 
 \centering
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=0.15\textwidth]{../man/figures/uff_brasao.png}
 \end{figure}
@@ -36,8 +49,9 @@ source("analysis.R")
 
 
 
-
 \newpage
+
+\setcounter{page}{1}
 
 \justifying 
 
@@ -97,7 +111,7 @@ Com a análise exploratória dos dados, examinar os dados previamente, pode-se o
 * Boxplot: gráfico utilizado para avaliar a distribuição empírica das idades dos paciente em relação ao sexo e as variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física. As linhas cinzas que ligam alguns boxplots representa a posição do mesmo pacinte antes e depois.
 
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=0.6\textwidth]{../man/figures/boxplot_explicao.png}
 \caption{Explicação sobre o boxplot.}
@@ -111,7 +125,7 @@ Com a análise exploratória dos dados, examinar os dados previamente, pode-se o
 
 \subsection{Perda de Energia Protéica - PEW}
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_pew.png}
 \caption{Marcador PEW}
@@ -123,7 +137,7 @@ Pode-se observar pelo gráfico de barras e pela tabela uma diminuição na quant
 
 \subsection{Marcadores de Inflamação}
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_inflamacao.png}
 \caption{Marcadores de Inflamação}
@@ -138,7 +152,7 @@ Já para as variáveis IL6, TNFa e VCAM pode-se observar pelo boxplot e pela tab
 
 \subsection{Marcadores Antropométricos}
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_antropometricos.png}
 \caption{Marcadores Antropométricos}
@@ -152,7 +166,7 @@ Já para as variáveis IMC e Massa Magra pode-se observar pelo boxplot e pela ta
 
 \subsection{Marcadores de Capacidade Física}
 
-\begin{table}[h!]
+\begin{table}[ht!]
 \centering
 \includegraphics[width=1\textwidth]{../man/figures/tabela_cf.png}
 \caption{Marcadores de Capacidade Física}
@@ -179,36 +193,69 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
 
 \section{Anexo}
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.65\textwidth]{../man/figures/graf_idade_sexo.png}
+\caption{Idade dos pacientes por Sexo.}
+\end{figure}
+
+
+
+\subsection{Perda de Energia Protéica - PEW}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.85\textwidth]{../man/figures/pew.png}
+\caption{Presença da PEW antes e depois do RETP.}
+\end{figure}
+
+
+\newpage
+
 \subsection{Marcadores de Inflamação}
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\textwidth]{../man/figures/ICAM.png}
-\caption{Explicação sobre o boxplot.}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/TNFa.png}
+  \captionof{figure}{??}
+  \label{fig:TNFa}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/ICAM.png}
+  \captionof{figure}{??}
+  \label{fig:ICAM}
+\end{minipage}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\textwidth]{../man/figures/IL6.png}
-\caption{Explicação sobre o boxplot.}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/PCR.png}
+  \captionof{figure}{??}
+  \label{fig:PCR}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/IL6.png}
+  \captionof{figure}{??}
+  \label{fig:IL6}
+\end{minipage}
 \end{figure}
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.6\textwidth]{../man/figures/PCR.png}
-\caption{Explicação sobre o boxplot.}
-\end{figure}
+\newpage
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\textwidth]{../man/figures/TNFa.png}
-\caption{Explicação sobre o boxplot.}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.6\textwidth]{../man/figures/VCAM.png}
-\caption{Explicação sobre o boxplot.}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/VCAM.png}
+  \captionof{figure}{??}
+  \label{fig:VCAM}
+\end{minipage}%
 \end{figure}
 
 
@@ -217,14 +264,88 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos(REP
 \subsection{Marcadores Antropométricos}
 
 
+\begin{figure}[ht!]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/IMC.png}
+  \captionof{figure}{??}
+  \label{fig:IMC}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/AMB.png}
+  \captionof{figure}{??}
+  \label{fig:AMB}
+\end{minipage}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht!]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/Massa Magra.png}
+  \captionof{figure}{??}
+  \label{fig:Massa Magra}
+\end{minipage}%
+\end{figure}
+
 
 
 
 \subsection{Marcadores de Capacidade Física}
 
+\begin{figure}[ht!]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/SL10.png}
+  \captionof{figure}{??}
+  \label{fig:SL10}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/SL60.png}
+  \captionof{figure}{??}
+  \label{fig:SL60}
+\end{minipage}
+\end{figure}
 
+\newpage
 
+\begin{figure}[ht!]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/Torque Extensor Esquerdo.png}
+  \captionof{figure}{??}
+  \label{fig:Torque Extensor Esquerdo}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/Torque Extensor Direito.png}
+  \captionof{figure}{??}
+  \label{fig:Torque Extensor Direito}
+\end{minipage}
+\end{figure}
 
+\begin{figure}[ht!]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/Torque Flexor Esquerdo.png}
+  \captionof{figure}{??}
+  \label{fig:Torque Flexor Esquerdo}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{../man/figures/Torque Flexor Direito.png}
+  \captionof{figure}{??}
+  \label{fig:Torque Flexor Direito}
+\end{minipage}
+\end{figure}
 
 
 

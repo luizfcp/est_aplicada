@@ -15,9 +15,13 @@ library(flextable)
 library(stringr)
 library(pacotin)
 
-# source("src")
 # Bordas para as tabelas
 border <- officer::fp_border(color = "black")
+
+# Tamanhos globais para os gráficos
+w <- 6.73
+h <- 3.11*2
+
 
 # Importacao base de dados
 base <- 
@@ -27,14 +31,22 @@ base <-
   )
 
 # Visualizacao sexo por idade
-base %>% 
+graf_idade_sexo <- 
+  base %>% 
   select(Sexo, Idade) %>% 
   na.omit() %>% 
   ggplot(aes(x=Sexo, y=Idade, fill=Sexo)) + 
   geom_boxplot() +
   labs(x = "Sexo", title = "Boxplot Idade por Sexo") + 
   theme_bw() +
+  scale_fill_manual(values = c("#4285F5", "#DB4438")) +
   guides(fill = F)
+
+graf_idade_sexo + 
+  ggsave(
+    paste0("../man/figures/graf_idade_sexo.png"),
+    dpi = "retina", width = w, height = h
+  )
 
 
 # PEW ---------------------------------------------------------------------
@@ -60,7 +72,7 @@ graf_pew_antes <-
   theme_bw() +
   labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW ANTES do RETP nos pacientes") +
   scale_y_continuous(limits = c(0, 30)) +
-  scale_fill_manual(values = c("darkblue", "chocolate")) +
+  scale_fill_manual(values = c("#4285F5", "#DB4438")) +
   guides(fill = F)
 
 # Visualizacao PEW APOS
@@ -71,11 +83,12 @@ graf_pew_apos <-
   theme_bw() +
   labs(x = "Presença de perda", y = "Número de pacientes", title = "PEW APOS o RETP nos pacientes") + 
   scale_y_continuous(limits = c(0, 30)) +
-  scale_fill_manual(values = c("darkblue", "chocolate")) +
+  scale_fill_manual(values = c("#4285F5", "#DB4438")) +
   guides(fill = F)
 
-grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2) 
-  # ggsave("../man/figures/pew.png", dpi = "retina")
+graf_pew <- grid.arrange(graf_pew_antes, graf_pew_apos, ncol = 2)
+
+ggsave("../man/figures/pew.png", dpi = "retina", plot = graf_pew, width = w+1, height = h-0.8)
 
 
 # Hipotese: O estudo teve efeito sobre PEW? 
@@ -141,7 +154,7 @@ tabela_pew <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-# save_html("tabela_pew", "../man/figures/tabela_pew.png")
+save_html("tabela_pew", "../man/figures/tabela_pew.png")
 
 
 # Inflamacao --------------------------------------------------------------
@@ -176,19 +189,20 @@ base_inflamacao %<>%
                  line.color = "gray", line.size = 0.4, palette = "jco") +
         labs(x = .y, y = "Valor observado", 
              title = paste("Boxplot", .y, "por valor observado antes e depois")) +
-        guides(color = F)
+        guides(color = F) +
+        scale_color_manual(values = c("#800000", "royalblue"))
     )
   )
 
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
 
-# # Salvando
-# walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"), 
-#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
-#       )
-# )
+# Salvando
+walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -318,20 +332,21 @@ base_antropometricos %<>%
                  line.color = "gray", line.size = 0.4, palette = "jco") +
         labs(x = .y, y = "Valor observado", 
              title = paste("Boxplot", .y, "por valor observado antes e depois")) +
-        guides(color = F)
+        guides(color = F) +
+        scale_color_manual(values = c("#800000", "royalblue"))
     )
   )
 
 
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
-# # Salvando
-# walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"), 
-#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
-#       )
-# )
+# Salvando
+walk2(base_antropometricos$boxplot, base_antropometricos$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
@@ -435,20 +450,21 @@ base_cf %<>%
                  line.color = "gray", line.size = 0.4, palette = "jco") +
         labs(x = .y, y = "Valor observado", 
              title = paste("Boxplot", .y, "por valor observado antes e depois")) +
-        guides(color = F)
+        guides(color = F) +
+        scale_color_manual(values = c("#800000", "royalblue"))
     )
   )
 
 
 ## Em geral, com base no gráfico, parece que houve uma redução no IMC após o RETP.
 
-# # Salvando
-# walk2(base_cf$boxplot, base_cf$marcador,
-#       ~ ggsave(
-#         paste0("../man/figures/", .y, ".png"), 
-#         plot = .x, dpi = "retina", width = 9.66, height = 8.02
-#       )
-# )
+# Salvando
+walk2(base_cf$boxplot, base_cf$marcador,
+      ~ ggsave(
+        paste0("../man/figures/", .y, ".png"),
+        plot = .x, dpi = "retina", width = w, height = h
+      )
+)
 
 
 # Normalidade -------------------------------------------------------------
