@@ -13,6 +13,7 @@ library(ggpubr)
 library(purrr)
 library(flextable)
 library(stringr)
+library(broom)
 library(pacotin)
 
 # Bordas para as tabelas
@@ -536,6 +537,58 @@ tabela_cf <-
 # Salvando
 save_html("tabela_cf", "../man/figures/tabela_cf.png")
 
+
+# Teste de normalidade nas variaveis --------------------------------------
+
+base_inflamacao %<>% select(marcador, data) %>% unnest()
+base_antropometricos %<>% select(marcador, data) %>% unnest()
+base_cf %<>% select(marcador, data) %>% unnest()
+
+base_normalidade <- 
+  base_inflamacao %>% 
+  bind_rows(base_antropometricos) %>% 
+  bind_rows(base_cf) %>% 
+  nest(-marcador) %>% 
+  mutate(
+    # Antes
+    teste_normalidade_Antes = map(
+      data,
+      ~ .x %$% 
+        Antes %>% 
+        shapiro.test %>% 
+        tidy
+    ),
+    # Depois
+    teste_normalidade_Depois = map(
+      data,
+      ~ .x %$% 
+        Depois %>% 
+        shapiro.test %>% 
+        tidy
+    ),
+    # Tamanho da amostra
+    n = map(
+      data,
+      ~ .x %>% nrow()
+    )
+  )
+
+tabela_normalidade <- 
+  base_normalidade %>% 
+  select(-data) %>% 
+  unnest() %>% 
+  select(marcador, p.value, p.value1, n) %>% 
+  `colnames<-`(c("Marcador", "P-valor (Teste de Shapiro) \n Antes do RETP",  "P-valor (Teste de Shapiro) \n Depois do RETP", "Tamanho da amostra")) %>% 
+  mutate_at(2:3, ~ .x %>% round(3) %>% ifelse(. < 0.001, "<0.001", .) %>% str_replace_all("\\.", ",")) %>% 
+  regulartable() %>%
+  align(align = "center", part = "all") %>%
+  width(width = c(1.3, rep(1.8, 2), 1.1)) %>% 
+  # color(part = "header", color = "white") %>%
+  border(j = c(1:3), border.right = border) %>% 
+  border(j = c(1:3), part = "header", border.right = border)
+
+# Salvando
+save_html("tabela_normalidade", "../man/figures/tabela_normalidade.png")
 
 
   

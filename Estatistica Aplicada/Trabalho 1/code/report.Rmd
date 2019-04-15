@@ -19,7 +19,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-source("analysis.R", encoding = "UTF-8")
+# source("analysis.R", encoding = "UTF-8")
 ```
 
 \fontsize{12}{12}\selectfont
@@ -84,6 +84,7 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 
 * Inflamação: 
     + TNFa
+    + Albumina
     + ICAM: Níveis de moléculas de adesão plasmática
     + PCR: Proteína C-reativa
     + IL6: Interleucina-6
@@ -104,7 +105,7 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 
 \hspace*{1.25 cm}Ao decorrer das análises foram utilizados testes de hipóteses estatísticos, metodologia estatística que nos auxilia a tomar decisões sobre uma ou mais populações baseado na informação obtida da amostra, são eles:
 
-* Shapiro: teste para verificar se a distribuição de probabilidade associada a um conjunto de dados pode ser aproximada pela distribuição normal. O teste foi utilizado para verificar normalidade das variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física.
+* Shapiro-Wilk: teste para verificar se a distribuição de probabilidade associada a um conjunto de dados pode ser aproximada pela distribuição normal. O teste foi utilizado para verificar normalidade das variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física.
 * McNemar: teste apropriado para comparar frequências oriundas de amostras pareadas. O teste foi utilizado para verificar se o estudo teve efeito sobre PEW.
 * Teste-t: usado para verificar se houve diferença da média das variáveis antes do REPT para a mesma variável depois do REPT. 
 
@@ -201,7 +202,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 
 \newpage
 
-\section{Anexo}
+\section{Apêndice}
 
 \begin{figure}[ht!]
 \centering
@@ -365,6 +366,18 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \end{minipage}
 \end{figure}
 
+\newpage
+
+\subsection{Teste de normalidade para os Marcadores}
+
+\begin{table}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{../man/figures/tabela_normalidade.png}
+\caption{Teste de normalidade para os Marcadores}
+\label{tab:normalidade}
+\end{table}
+
+
 
 
 \newpage
@@ -410,6 +423,10 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \item Hadley Wickham (2019). stringr: Simple, Consistent Wrappers for
   Common String Operations. R package version 1.4.0.
   https://CRAN.R-project.org/package=stringr
+\item David Robinson and Alex Hayes (2018). broom: Convert
+  Statistical Analysis Objects into Tidy Tibbles. R
+  package version 0.5.0.
+  https://CRAN.R-project.org/package=broom
 \item Luiz Passos (2019). pacotin: Trying to make your life easier. R
   package version 0.0.0.9000.
 
