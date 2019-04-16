@@ -1,0 +1,38 @@
+---
+title: "Twitter Análise"
+output: html_document
+---
+
+# Introdução
+
+Com o surgimento e avanço da globalização a acessibilidade ao acesso à internet vem crescendo continuamente e alcançado todas as classes sociais. Com isso é bem comum as
+redes sociais ganharem mais usuários e consequentemente visualização. Além dessa expansão observou-se que muitos governantes, de diversos países (desenvolvidos ou não), vem usando redes sociais para comunicar-se com internautas de seus países.
+
+Dentre estas plataformas se destaca o Twitter, uma rede social focada em comunicação por mensagens textuais curtas e diretas (tweets), onde um governante pode se expressar e ter uma interação rápida com seus seguidores, assim tendo um feedback dos internautas em relação a sua mensagem.
+
+Esses tweets são dados e sua análise gera informações relevantes sobre o usuário, podendo ser utilizadas para observar como se comporta a frequência das palavras que os governantes usam para se comunicar, ou até mesmo usar mecanismos de análise de
+sentimentos para ranquear essas mensagens em números positivos ou negativos.
+
+
+# Metodologia
+
+Os conceitos e etapas foram baseados em (SILGE e ROBINSON, 2016). O método segue 2 etapas: para obter os tweets do presidente e ex presidentes foi necessário utilizar a API do Twitter, cujo acesso foi feito através da biblioteca tweepy da linguagem computacional python e as análises foram feitas utilizando as bibliotecas tidytext para manipulação dos tweets, ggplot2 para visualização em gráfico de barras das 20 palavras mais frequentes, ggwordcloud para confecção da nuvem de palavras, ggraph para confecção de grafos e lexiconPT para realizar a análise de sentimento.
+
+
+# Resultados
+
+Foram analisados os últimos 16.090 tweets, coletados no dia 03 de abril de 2019, divididos entre os governantes e ex-governantes: Jair Bolsonaro, Dilma  Collor de Melo, Michel Temer e Luiz Inácio Lula da Silva. Para obtenção dos resultados foram usados as seguintes análises gráficas: Nuvem de Palavras, Gráfico de Barras e Grafos, a partir delas pode-se observar:
+
+* Na Nuvem de Palavras as 150 palavras mais frequentes de cada presidente
+sendo diferenciadas pelo tamanho da própria palavra.
+
+* No Gráfico de Barras as 20 palavras mais frequentes de cada presidente e a
+quantidade das mesmas.
+
+* A relação entre as palavras na visualização de Grafos Orientados.
+
+Já para a criação do ranque de sentimentos foi usado a técnica de Análise de Sentimento que foi baseada em todos os tweets coletados e a partir deles pode-se observar os tweets com maior(es) e menor(es) classificação(ões). Baseado na classificação recuperou-se o tweet para ser visualizado.
+
+
+# Referências
+
