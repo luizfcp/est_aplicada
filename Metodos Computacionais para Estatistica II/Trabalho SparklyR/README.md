@@ -17,6 +17,6 @@ Alunos participante do grupo:
 
 + Iasmin Lugon
 + Lucas Mattos
-+ Luiz Fernando
++ Luiz Fernando Passos
 + Lyncoln Sousa
 + Marcson Azevedo
