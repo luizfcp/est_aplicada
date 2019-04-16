@@ -589,6 +589,3 @@ tabela_normalidade <-
 
 # Salvando
 save_html("tabela_normalidade", "../man/figures/tabela_normalidade.png")
-
-
-  
