@@ -59,10 +59,10 @@ base_pew <-
     PEW_ANTES, PEW_APOS
   ) %>% 
   na.omit() %>% 
-  # Perda no PEW (2 = teve perda)
+  # Perda no PEW (1 = teve perda)
   mutate(
-    PEW_ANTES = factor(PEW_ANTES, labels = c("Não", "Sim")),
-    PEW_APOS = factor(PEW_APOS, labels = c("Não", "Sim"))
+    PEW_ANTES = factor(PEW_ANTES, labels = c("Sim", "Não")),
+    PEW_APOS = factor(PEW_APOS, labels = c("Sim", "Não"))
   )
 
 # Visualizacao PEW ANTES
@@ -158,9 +158,9 @@ tabela_pew <-
 save_html("tabela_pew", "../man/figures/tabela_pew.png")
 
 
-# Inflamacao --------------------------------------------------------------
+# Bioquimicos --------------------------------------------------------------
 
-base_inflamacao <- 
+base_bioquimicos <- 
   list(
     TNFa  = base %>% select(TNFa01, TNFa02)           %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "TNFa"),
     ICAM  = base %>% select(ICAM1, ICAM2)             %>% `colnames<-`(c("Antes", "Depois")) %>% na.omit() %>% cbind(marcador = "ICAM"),
@@ -175,10 +175,10 @@ base_inflamacao <-
 # Análise descritiva ------------------------------------------------------
 
 ## Resumo dos marcadores de inflamação
-base_inflamacao %>% map(~ summary(.x))
+base_bioquimicos %>% map(~ summary(.x))
 
 ## Boxplot de cada marcador
-base_inflamacao %<>% 
+base_bioquimicos %<>% 
   map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
   bind_rows() %>% 
   nest(-marcador) %>% 
@@ -199,7 +199,7 @@ base_inflamacao %<>%
 ## Em geral, com base no gráfico, parece que houve uma redução no ICAM após o RETP.
 
 # Salvando
-walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
+walk2(base_bioquimicos$boxplot, base_bioquimicos$marcador,
       ~ ggsave(
         paste0("../man/figures/", .y, ".png"),
         plot = .x, dpi = "retina", width = w, height = h
@@ -220,11 +220,11 @@ walk2(base_inflamacao$boxplot, base_inflamacao$marcador,
 
 # Tabela ------------------------------------------------------------------
 
-base_inflamacao %<>% 
+base_bioquimicos %<>% 
   mutate("p_valor" = map(data,~ t.test(.x$Antes, .x$Depois, paired = T)))
 
-df_tabela_inflamacao <- 
-  base_inflamacao %>% 
+df_tabela_bioquimicos <- 
+  base_bioquimicos %>% 
   select(marcador, data) %>% 
   unnest %>% 
   group_by(marcador) %>% 
@@ -239,7 +239,7 @@ df_tabela_inflamacao <-
     n = length(Antes)
   ) %>% 
   bind_cols(
-    base_inflamacao$p_valor %>% 
+    base_bioquimicos$p_valor %>% 
       map(~ .x$p.value %>% as.data.frame) %>% 
       bind_rows() %>% 
       round(3) %>% 
@@ -255,8 +255,8 @@ typology_tabela <-
     stringsAsFactors = FALSE
   )
 
-tabela_inflamacao <- 
-  df_tabela_inflamacao %>%
+tabela_bioquimicos <- 
+  df_tabela_bioquimicos %>%
   map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
   as_tibble() %>%
   regulartable() %>%
@@ -273,10 +273,10 @@ tabela_inflamacao <-
   border(i = 1, part = "header", border.top = border)
 
 # Salvando
-save_html("tabela_inflamacao", "../man/figures/tabela_inflamacao.png")
+save_html("tabela_bioquimicos", "../man/figures/tabela_bioquimicos.png")
 
 
-# tabela_inflamacao %>% 
+# tabela_bioquimicos %>% 
 #   map_at(2:6, ~ .x %>% str_replace_all("\\.", ",")) %>%
 #   as_tibble() %>%
 #   regulartable() %>%
@@ -540,12 +540,12 @@ save_html("tabela_cf", "../man/figures/tabela_cf.png")
 
 # Teste de normalidade nas variaveis --------------------------------------
 
-base_inflamacao %<>% select(marcador, data) %>% unnest()
+base_bioquimicos %<>% select(marcador, data) %>% unnest()
 base_antropometricos %<>% select(marcador, data) %>% unnest()
 base_cf %<>% select(marcador, data) %>% unnest()
 
 base_normalidade <- 
-  base_inflamacao %>% 
+  base_bioquimicos %>% 
   bind_rows(base_antropometricos) %>% 
   bind_rows(base_cf) %>% 
   nest(-marcador) %>% 

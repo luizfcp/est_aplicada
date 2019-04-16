@@ -19,20 +19,25 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-# source("analysis.R", encoding = "UTF-8")
+source("analysis.R", encoding = "UTF-8")
 ```
 
 \fontsize{12}{12}\selectfont
 
 \centering
 
-Relatório de consultoria Estatística
+RELATÓRIO DE CONSULTORIA ESTATÍSTICA
 
 \vspace*{7 cm}
-ANÁLISE SOBRE A INFLUÊNCIA DE UM PROGRAMA DE EXERCÍCIOS RESISTIDOS EM PACIENTES QUE FAZEM HEMODIÁLISE
+ANÁLISE SOBRE OS EFEITOS DE UM PROGRAMA DE TREINAMENTO DE EXERCÍCIOS RESISTIDOS SOBRE INFLAMAÇÃO E PERDA DE ENERGIA PROTÉICA EM PACIENTES EM HEMODIÁLISE
 
-\vspace*{7 cm}
+\vspace*{6.8 cm}
 Consultores: Luiz Fernando Coelho Passos, Lyncoln Sousa de Oliveira
+
+\vspace*{7 cm}
+Niterói
+
+2019
 
 
 
@@ -67,22 +72,22 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \section{Resumo}
 
 
-\hspace*{1.25 cm}Pacientes submetidos à hemodiálise apresentam inflamação persistente e perda de energia protéica (PEW), o que contribui para altas taxas de mortalidade. Este estudo teve como objetivo avaliar os efeitos de um programa de treinamento de exercícios resistidos (RETP) sobre inflamação e PEW em pacientes em hemodiálise. Foi coletado dados dos paciêntes antes da realização do RETP e depois de 6 meses da prática dos exercícios. Foi utilizado a linguagem de programação R para auxiliar na análise para avaliar o resultado desse programa de treinamento. 
+Pacientes submetidos à hemodiálise apresentam inflamação persistente e perda de energia protéica (PEW), o que contribui para altas taxas de mortalidade. Este estudo teve como objetivo avaliar os efeitos de um programa de treinamento de exercícios resistidos (RETP) sobre inflamação e PEW em pacientes em hemodiálise. Foi coletado dados dos paciêntes antes da realização do RETP e depois de 6 meses da prática dos exercícios. Foi utilizado a linguagem de programação R para auxiliar na análise para avaliar o resultado desse programa de treinamento. 
 
 
 \newpage
 
 \section{Metodologia}
 
-\hspace*{1.25 cm}Com o banco de dados em mãos foi percebido que havia muitos valores faltantes, pois por alguma razão alguns pacientes tiveram dados coletados antes do RETP e mas não depois, e dentre esses que foram coletados havia exercícios sem dados preenchidos. Por se tratar de amostra dependente, mesmo paciente antes e depois da intervenção, foi necessário um tratamento na base de dados para que assim pudesse utilizar métodos aconselhados para tal amostra. 
+Com o banco de dados em mãos foi percebido que havia muitos valores faltantes, pois por alguma razão alguns pacientes tiveram dados coletados antes do RETP e mas não depois, e dentre esses que foram coletados havia exercícios sem dados preenchidos. Por se tratar de amostra dependente, mesmo paciente antes e depois da intervenção, foi necessário um tratamento na base de dados para que assim pudesse utilizar métodos aconselhados para tal amostra. 
 
-\hspace*{1.25 cm}Aplicando a correção em todo o banco de dado, excluindo os indivíduos que não respoderam pelo menos 1 questão, teríamos no final uma amostra pouco informativa, com apenas 2 indivíduos dentre o total de 54, devido a isso, foi decido realizar o estudo de maneira focada nas variáveis, ou seja, comparar a variável antes com a variável depois para todas as variáveis do banco de dados. Assim, pode-se obter uma amostra para cada comparação de pelo menos 20 pacientes, ainda não é muito representativa, porém foi a melhor maneira encontrada. A hipótese de fazer o estudo dividindo os pacientes por sexo foi levantada, porém como o tamanho da amostra é de 54 pacientes, dividi-la deixaria muito pouco representativa, devido a isso o estudo baseado nesta hipótese não foi realizado.
+Aplicando a correção em todo o banco de dado, excluindo os indivíduos que não respoderam pelo menos 1 questão, teríamos no final uma amostra pouco informativa, com apenas 2 indivíduos dentre o total de 54, devido a isso, foi decido realizar o estudo de maneira focada nas variáveis, ou seja, comparar a variável antes com a variável depois para todas as variáveis do banco de dados. Assim, pode-se obter uma amostra para cada comparação de pelo menos 20 pacientes, ainda não é muito representativa, porém foi a melhor maneira encontrada. A hipótese de fazer o estudo dividindo os pacientes por sexo foi levantada, porém como o tamanho da amostra é de 54 pacientes, dividi-la deixaria muito pouco representativa, devido a isso o estudo baseado nesta hipótese não foi realizado.
 
-\hspace*{1.25 cm}As variáveis do banco de dados, para a análise, foram separadas nos seguintes grupos:
+As variáveis do banco de dados, para a análise, foram separadas nos seguintes marcadores:
 
 * PEW: Perda de Energia Protéica. Para a Análise, 1 representa \textbf{sim}, ou seja, há presença do PEW no paciente e 2 representa \textbf{não}.
 
-* Inflamação: 
+* Bioquímicos: 
     + TNFa
     + Albumina
     + ICAM: Níveis de moléculas de adesão plasmática
@@ -103,15 +108,15 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
     + Torque flexor Esquerdo
     + Torque flexor Direito
 
-\hspace*{1.25 cm}Ao decorrer das análises foram utilizados testes de hipóteses estatísticos, metodologia estatística que nos auxilia a tomar decisões sobre uma ou mais populações baseado na informação obtida da amostra, são eles:
+Ao decorrer das análises foram utilizados testes de hipóteses estatísticos, metodologia estatística que nos auxilia a tomar decisões sobre uma ou mais populações baseado na informação obtida da amostra, são eles:
 
 * Shapiro-Wilk: teste para verificar se a distribuição de probabilidade associada a um conjunto de dados pode ser aproximada pela distribuição normal. O teste foi utilizado para verificar normalidade das variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física.
 * McNemar: teste apropriado para comparar frequências oriundas de amostras pareadas. O teste foi utilizado para verificar se o estudo teve efeito sobre PEW.
 * Teste-t: usado para verificar se houve diferença da média das variáveis antes do REPT para a mesma variável depois do REPT. 
 
-\hspace*{1.25 cm}Em todos os testes de hipótese aplicados adotou-se um nível de significância de 5%. Considerou-se normalidade para todas as variáveis quantitativas da base de dados. Foi definido a hipótese nula como a igualdade entre as médias das variáveis coletadas antes e depois do REPT e a hipótese alternativa a diferença. Para mais detalhes sobre os testes utilizados é aconselhado a leitura do livro Estatística Básica escrito por Bussab e Morettin.
+Em todos os testes de hipótese aplicados adotou-se um nível de significância de 5%. Considerou-se normalidade para todas as variáveis quantitativas da base de dados. Foi definido a hipótese nula como a igualdade entre as médias das variáveis coletadas antes e depois do REPT e a hipótese alternativa a diferença. Para mais detalhes sobre os testes utilizados é aconselhado a leitura do livro Estatística Básica escrito por Bussab e Morettin.
 
-\hspace*{1.25 cm}Com a análise exploratória dos dados, examinar os dados previamente, pode-se obter um resumo dos dados e confeccionou-se:
+Com a análise exploratória dos dados, examinar os dados previamente, pode-se obter um resumo dos dados e confeccionou-se:
 
 * Gráfico de barras: utilizado para realizar comparações entre as categorias de uma variável qualitativa ou quantitativa discreta. O gráfico foi utilizado para comparar a PEW antes e depois do RETP.
 * Boxplot: gráfico utilizado para avaliar a distribuição empírica das idades dos paciente em relação ao sexo e as variáveis referentes aos marcadores inflamatórios, antropométricos e capacidade física. As linhas cinzas que ligam alguns boxplots feitos na análise representam a posição do mesmo pacinte antes e depois do RETP.
@@ -138,22 +143,22 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:PEW}
 \end{table}
 
-\hspace*{1.25 cm}Pode-se observar pela Figura \ref{fig:PEW} e pela Tabela \ref{tab:PEW} uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obtivemos de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do RETP. 
+Pode-se observar pela Figura \ref{fig:PEW} e pela Tabela \ref{tab:PEW} uma diminuição na quantidade de pacientes que apresentaram perda e um aumento na quantidade de pacientes que não apresentaram perda antes e depois RETP. Pelo teste de McNemar, obteve-se de fato que houve diferença entre os pacientes na coleta dos dados antes e depois do RETP. 
 
 
 
-\subsection{Marcadores de Inflamação}
+\subsection{Marcadores Bioquímicos}
 
 \begin{table}[ht!]
 \centering
-\includegraphics[width=1\textwidth]{../man/figures/tabela_inflamacao.png}
-\caption{Marcadores de Inflamação}
-\label{tab:inflamacao}
+\includegraphics[width=1\textwidth]{../man/figures/tabela_bioquimicos.png}
+\caption{Marcadores Bioquímicos}
+\label{tab:bioquimicos}
 \end{table}
 
-\hspace*{1.25 cm}Para as variáveis ICAM e PCR pode-se observar pelas Figuras \ref{fig:ICAM}, \ref{fig:PCR} e pela Tabela \ref{tab:inflamacao} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
+Para as variáveis ICAM e PCR pode-se observar pelas Figuras \ref{fig:ICAM}, \ref{fig:PCR} e pela Tabela \ref{tab:bioquimicos} uma diminuição de sua média e desvio padrão, mas não expressivo para a variável PCR. Pelo teste-t, obteve-se de fato que houve diferença entre as médias de antes e depois do RETP para a variável ICAM mas não para PCR. 
 
-\hspace*{1.25 cm}Já para as variáveis IL6, TNFa e VCAM pode-se observar pelas Figuras \ref{fig:IL6}, \ref{fig:TNFa}, \ref{fig:VCAM} e pela Tabela \ref{tab:inflamacao} uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do RETP. Diferente da variável Albumina que pela Figura \ref{fig:ALB} e pela Tabela \ref{tab:inflamacao} pode-se observar que teve um aumento em sua média mas uma diminuição no desvio padrão. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
+Já para as variáveis IL6, TNFa e VCAM pode-se observar pelas Figuras \ref{fig:IL6}, \ref{fig:TNFa}, \ref{fig:VCAM} e pela Tabela \ref{tab:bioquimicos} uma diminuição de sua média mas um crescimento no desvio padrão para a coleta de dados depois do RETP. Diferente da variável Albumina que pela Figura \ref{fig:ALB} e pela Tabela \ref{tab:bioquimicos} pode-se observar que teve um aumento em sua média e uma diminuição no desvio padrão, porém ambos não expressivos. Pelo teste-t, obteve-se que houve diferença para as médias de antes e depois do RETP das variáveis citadas anteriormente, excluindo a albumina, que indicou pelo teste não haver diferença para as médias.
 
 
 \newpage
@@ -167,9 +172,9 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:antropometricos}
 \end{table}
 
-\hspace*{1.25 cm}Para a variável AMB pode-se observar pela Figura \ref{fig:AMB} e pela Tabela \ref{tab:antropometricos} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
+Para a variável AMB pode-se observar pela Figura \ref{fig:AMB} e pela Tabela \ref{tab:antropometricos} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obteve-se de fato que houve diferença entre as médias de antes e depois do RETP. 
 
-\hspace*{1.25 cm}Já para as variáveis IMC e Massa Magra pode-se observar pelas Figuras \ref{fig:IMC}, \ref{fig:massa_magra} e pela Tabela \ref{tab:antropometricos} um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
+Já para as variáveis IMC e Massa Magra pode-se observar pelas Figuras \ref{fig:IMC}, \ref{fig:massa_magra} e pela Tabela \ref{tab:antropometricos} um aumento de sua média, porém um aumento e uma dimunuição, respectivamente, ppara o desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obteve-se de fato que houve diferença entre as médias de antes e depois do RETP. 
 
 
 
@@ -182,9 +187,9 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 \label{tab:cf}
 \end{table}
 
-\hspace*{1.25 cm}Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelas Figuras \ref{fig:SL10}, \ref{fig:Torque Extensor Esquerdo} e pela Tabela \ref{tab:cf} uma diminuição de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do RETP.
+Para as variáveis SL10 e Torque Extensor Esquerdo pode-se observar pelas Figuras \ref{fig:SL10}, \ref{fig:Torque Extensor Esquerdo} e pela Tabela \ref{tab:cf} uma diminuição de sua média e desvio padrão, porém não expressivo para a variável Torque Extensor Esquerdo. Pelo teste-t, obteve-se de fato que houve diferença entre as médias de antes e depois do RETP para a variável SL10, já para a variável Torque Extensor Esquerdo obteve-se, pelo teste-t, que não houve diferença entre as médias de antes e depois do RETP.
 
-\hspace*{1.25 cm}Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelas Figuras \ref{fig:SL60}, \ref{fig:Torque Extensor Direito}, \ref{fig:Torque Flexor Direito}, \ref{fig:Torque Flexor Esquerdo} e pela Tabela \ref{tab:cf} um aumento de sua média e desvio padrão para a coleta de dados depois do RETP. Pelo teste-t, obtivemos de fato que houve diferença entre as médias de antes e depois do RETP. 
+Já para as variáveis SL60, Torque Extensor Direito, Torque Flexor Direito e Torque Flexor Esquerdo pode-se observar pelas Figuras \ref{fig:SL60}, \ref{fig:Torque Extensor Direito}, \ref{fig:Torque Flexor Direito}, \ref{fig:Torque Flexor Esquerdo} e pela Tabela \ref{tab:cf} um aumento de sua média e desvio padrão, mas expressivo apenas para a variável SL60. Pelo teste-t, obteve-se de fato que houve diferença entre as médias de antes e depois do RETP apenas para a variável SL60. 
 
 
 
@@ -192,10 +197,16 @@ Estudante do curso Bacharel em Estatística na Universidade Federal Fluminense.
 
 \section{Conclusão}
 
-\hspace*{1.25 cm}O foco do estudo foi verificar se os pacientes submetidos à hemodiálise apresentaram melhoras nas variáveis com respeito a inflamação e perda de energia proteica (PEW)  depois do programa de treinamento de exercícios resistidos (RETP). 
-A base de dados  tratada para o estudo possui poucos indivíduos aptos para realizar as análises, o que pode gerar um problema de representividade da amostra para a população alvo.  Porém, com os dados obtidos é possível visualizar alteração nas variáveis  ICAM e TNFa ligados a inflamação, o que pode significar melhoria dos pacientes em questão a inflamação. 
+O foco do estudo foi verificar se os pacientes submetidos à hemodiálise apresentaram melhoras sobre a inflamação, ou seja, às variáveis com respeito aos marcadores bioquímicos, antropométricos e de capacidade física e perda de energia proteica (PEW) após o programa de treinamento de exercícios resistidos (RETP). 
+A base de dados  tratada para o estudo possui poucos indivíduos aptos para realizar as análises, o que pode gerar um problema de representividade da amostra para a população alvo. Porém, com os dados obtidos é possível visualizar alteração nas variáveis:
+  
+  * Bioquímicas: ICAM, IL6, TNFa e VCAM 
+  * Antropométricas: AMB, IMC e Massa Magra
+  * Capacidade Física: SL10 e SL60
+  
+  O que pode significar alguma melhoria dos pacientes em questão a inflamação. 
 
-\hspace*{1.25 cm}Sobre o PEW, analisando os dados obtidos, foi notado uma redução dos pacientes que possuíam essa perda de energia proteica.
+Sobre o PEW, analisando os dados obtidos, foi notado uma redução dos pacientes que possuíam essa perda de energia proteica. Pelo teste de McNemar, obteve-se de fato que houve diferença na PEW em relação antes e depois do RETP.
 Logo, foi concluído que o programa de treinamento de exercícios resistidos (RETP) trouxe benefícios para os pacientes de hemodiálise, o que pode gerar diminuição da taxa de mortalidade dos mesmos.
 
 
@@ -225,20 +236,20 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 
 \newpage
 
-\subsection{Marcadores de Inflamação}
+\subsection{Marcadores Bioquímicos}
 
 \begin{figure}[ht!]
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Albumina.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Albumina por valor observado antes e depois}
   \label{fig:ALB}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/ICAM.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot ICAM por valor observado antes e depois}
   \label{fig:ICAM}
 \end{minipage}
 \end{figure}
@@ -248,13 +259,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/IL6.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot IL6 por valor observado antes e depois}
   \label{fig:IL6}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/PCR.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot PCR por valor observado antes e depois}
   \label{fig:PCR}
 \end{minipage}
 \end{figure}
@@ -266,13 +277,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/TNFa.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot TNFa por valor observado antes e depois}
   \label{fig:TNFa}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/VCAM.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot VCAM por valor observado antes e depois}
   \label{fig:VCAM}
 \end{minipage}
 \end{figure}
@@ -288,13 +299,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/IMC.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot IMC por valor observado antes e depois}
   \label{fig:IMC}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/AMB.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot AMB por valor observado antes e depois}
   \label{fig:AMB}
 \end{minipage}
 \end{figure}
@@ -306,7 +317,7 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Massa Magra.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Massa Magra por valor observado antes e depois}
   \label{fig:massa_magra}
 \end{minipage}%
 \end{figure}
@@ -321,13 +332,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/SL10.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot SL10 por valor observado antes e depois}
   \label{fig:SL10}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/SL60.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot SL60 por valor observado antes e depois}
   \label{fig:SL60}
 \end{minipage}
 \end{figure}
@@ -339,13 +350,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Torque Extensor Esquerdo.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Torque Extensor Esquerdo por valor observado antes e depois}
   \label{fig:Torque Extensor Esquerdo}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Torque Extensor Direito.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Torque Extensor Direito por valor observado antes e depois}
   \label{fig:Torque Extensor Direito}
 \end{minipage}
 \end{figure}
@@ -355,13 +366,13 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Torque Flexor Esquerdo.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Torque Flexor Esquerdo por valor observado antes e depois}
   \label{fig:Torque Flexor Esquerdo}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{../man/figures/Torque Flexor Direito.png}
-  \captionof{figure}{??}
+  \captionof{figure}{Boxplot Torque Flexor Direito por valor observado antes e depois}
   \label{fig:Torque Flexor Direito}
 \end{minipage}
 \end{figure}
@@ -376,7 +387,6 @@ Logo, foi concluído que o programa de treinamento de exercícios resistidos (RE
 \caption{Teste de normalidade para os Marcadores}
 \label{tab:normalidade}
 \end{table}
-
 
 
 
