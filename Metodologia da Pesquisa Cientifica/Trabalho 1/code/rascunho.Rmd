@@ -35,4 +35,3 @@ Já para a criação do ranque de sentimentos foi usado a técnica de Análise d
 
 
 # Referências
-
