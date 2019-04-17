@@ -55,9 +55,9 @@ base %<>%
 {
   base$tidytext[[1]] %<>% filter(!word %in% c("dilma", "dilmabr"))                 # Dilma
   base$tidytext[[2]] %<>% filter(!word %in% c("collor"))                           # Collor
-  base$tidytext[[3]] %<>% filter(!word %in% c("jair", "bolsonaro"))                #Bolsonaro
-  base$tidytext[[4]] %<>% filter(!word %in% c("lula", "lulapresidente"))           #Lula
-  base$tidytext[[5]] %<>% filter(!word %in% c("michel", "temer"))                  #Temer
+  base$tidytext[[3]] %<>% filter(!word %in% c("jair", "bolsonaro"))                # Bolsonaro
+  base$tidytext[[4]] %<>% filter(!word %in% c("lula", "lulapresidente"))           # Lula
+  base$tidytext[[5]] %<>% filter(!word %in% c("michel", "temer"))                  # Temer
 }
 
 
@@ -202,11 +202,19 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(6,6,5,8,9,10),
+      data, c(8,8,8,9,9),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", ""),
-          line = 1:nrow(.)
+          line = 1:nrow(.),
+          tweet = case_when(
+            str_detect(tweet, "Dilma Rousseff") ~ str_replace_all(tweet, "Dilma Rousseff", "Jair_Bolsonaro"),
+            str_detect(tweet, "Fernando Collor") ~ str_replace_all(tweet, "Fernando Collor", "Fernando_Collor"),
+            str_detect(tweet, "Jair Bolsonaro") ~ str_replace_all(tweet, "Jair Bolsonaro", "Jair_Bolsonaro"),
+            str_detect(tweet, "Luiz Inácio Lula da Silva") ~ str_replace_all(tweet, "Luiz Inácio Lula da Silva", "Luiz_Inácio_Lula_da_Silva"),
+            str_detect(tweet, "Michel Temer") ~ str_replace_all(tweet, "Michel Temer", "Michel_Temer"),
+            TRUE ~ as.character(tweet)
+          )
         ) %>%
         select(line, tweet) %>%
         unnest_tokens(bigram, tweet, token = "ngrams", n = 2) %>%
