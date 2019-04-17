@@ -199,13 +199,15 @@ base %<>%
 
 # Grafos ------------------------------------------------------------------
 
+
+
 base %<>% 
   mutate(
     base_grafo = map2(
       data, c(8,8,8,9,9),
       ~ .x %>% 
         mutate(
-          tweet = as.character(tweet) %>% str_replace_all("(://|/)", ""),
+          tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
           line = 1:nrow(.),
           tweet = case_when(
             str_detect(tweet, "Dilma Rousseff") ~ str_replace_all(tweet, "Dilma Rousseff", "Jair_Bolsonaro"),
@@ -213,6 +215,10 @@ base %<>%
             str_detect(tweet, "Jair Bolsonaro") ~ str_replace_all(tweet, "Jair Bolsonaro", "Jair_Bolsonaro"),
             str_detect(tweet, "Luiz Inácio Lula da Silva") ~ str_replace_all(tweet, "Luiz Inácio Lula da Silva", "Luiz_Inácio_Lula_da_Silva"),
             str_detect(tweet, "Michel Temer") ~ str_replace_all(tweet, "Michel Temer", "Michel_Temer"),
+            str_detect(tweet, "Fernando Haddad") ~ str_replace_all(tweet, "Fernando Haddad", "Fernando_Haddad"),
+            str_detect(tweet, "Célia Rocha") ~ str_replace_all(tweet, "Célia Rocha", "Célia_Rocha"),
+            str_detect(tweet, "Renan Calheiros") ~ str_replace_all(tweet, "Renan Calheiros", "Renan_Calheiros"),
+            str_detect(tweet, "Ronaldo Lessa") ~ str_replace_all(tweet, "Ronaldo Lessa", "Ronaldo_Lessa"),
             TRUE ~ as.character(tweet)
           )
         ) %>%
@@ -227,7 +233,7 @@ base %<>%
         filter(!word1 %in% sw) %>%
         filter(!word2 %in% sw) %>%
         count(word1, word2, sort = TRUE) %>%
-        filter(n > .y) %>%
+        filter(n > 10) %>%
         graph_from_data_frame()
     )
   )
@@ -246,12 +252,13 @@ base %<>%
         geom_node_point() +
         geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
         theme_void() +
-        ggtitle(.y)
+        ggtitle(.y) +
+        theme(plot.title = element_text(size = 20))
     )
   )
 
 # Salvando
-walk2(base$grafos, base$presidente,
+# walk2(base$grafos, base$presidente,
       ~ ggsave(
         paste0("../man/figures/grafos/", .y, ".png"), 
         plot = .x, dpi = "retina", width = 13, height = 13
