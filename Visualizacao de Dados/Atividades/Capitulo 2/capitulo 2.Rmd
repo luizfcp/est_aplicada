@@ -5,14 +5,14 @@ date: "8 de abril de 2019"
 output: html_document
 ---
 
-## Capítulo 2
+# Capítulo 2
 
 ```{r}
 library(dplyr)
 library(magrittr)
 ```
 
-## 2.4.7
+## 2.4.7 - Gráficos de Barra
 
 ### Questão 1
 
@@ -42,7 +42,7 @@ barplot(
 )
 ```
 
-## Questão 3
+### Questão 3
 
 ```{r}
 barplot(
@@ -52,7 +52,7 @@ barplot(
 )
 ```
 
-## Quetão 4
+### Quetão 4
 
 ```{r}
 barplot(
@@ -62,7 +62,7 @@ barplot(
 )
 ```
 
-## Questão 5
+### Questão 5
 
 ```{r}
 base <- 
@@ -78,7 +78,7 @@ barplot(
 )
 ```
 
-## Questão 6
+### Questão 6
 
 ```{r}
 barplot(
@@ -89,7 +89,7 @@ barplot(
 )
 ```
 
-## Questão 7
+### Questão 7
 
 ```{r}
 barplot(
@@ -101,18 +101,7 @@ barplot(
 )
 ```
  
-## Questão 8
-
-
-
-
-
-
-
-
-
-
-
+### Questão 8
 
 ```{r}
 lista_de_verificacao <- 
@@ -128,7 +117,7 @@ barplot(
 )
 ```
 
-## Questão 9
+### Questão 9
 
 ```{r}
 base_cotinina <- 
@@ -150,4 +139,49 @@ matrix(
     col = c("#000000", "#5F021F")
   )
 ```
+
+## 2.7.1 - Boxplot
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+```
+
+### Questão 1
+
+```{r}
+data("InsectSprays")
+
+InsectSprays %>% 
+  boxplot(count~spray, data = ., col = "lightgray",
+          main = "Contagem por tipos de inseticida")
+```
+
+### Questão 2
+
+```{r}
+InsectSprays %>% 
+  boxplot(count~spray, data = ., col = "lightgray",
+          main = "Contagem por tipos de inseticida", outline = F)
+```
+
+### Questão 3
+
+```{r}
+InsectSprays %>% 
+  boxplot(count~spray, data = ., col = "lightgray",
+          main = "Contagem por tipos de inseticida", boxwex = 0.3)
+```
+
+### Questão 4
+
+```{r}
+data("rock")
+
+x <- rock$peri[rock$area <= mean(rock$area)]
+y <- rock$peri[rock$area >  mean(rock$area)]
+```
+
+
+
+
 
