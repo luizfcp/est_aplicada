@@ -20,8 +20,8 @@ library(ggraph)
 # Leitura dos dados -------------------------------------------------------
 
 base <- 
-  map(list.files("../../data/csv"),
-      ~ read.csv2(paste0("../../data/csv/", .x), encoding = "UTF-8") %>% 
+  map(list.files("../data/csv"),
+      ~ read.csv2(paste0("../data/csv/", .x), encoding = "UTF-8") %>% 
         cbind(presidente = .x %>% str_sub(end = -5)) %>% as_tibble  
   ) %>% 
   map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
@@ -114,8 +114,6 @@ base %<>%
         geom_text(aes(label = n), hjust = 1.3, color = "white", fontface = "bold")
     )
   )
-
-base$barras[[1]]
 
 # Salvando
 # walk2(base$barras, base$presidente,

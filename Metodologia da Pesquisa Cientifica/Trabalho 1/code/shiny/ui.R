@@ -2,14 +2,14 @@
 # user-interface
 
 dashboardPage(
-    dashboardHeader(title = "Presidentes"),
+    dashboardHeader(title = "Twittadas Presidenciais", titleWidth = 250),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Dilma Rousseff", tabName = "dilma"),
             menuItem("Fernando Collor", tabName = "collor"),
-            menuItem("Jair Bolsonaro", tabName = "bolsonaro"),
             menuItem("Luiz Inacio Lula da Silva", tabName = "lula"),
-            menuItem("Michel Temer", tabName = "temer")
+            menuItem("Dilma Rousseff", tabName = "dilma"),
+            menuItem("Michel Temer", tabName = "temer"),
+            menuItem("Jair Bolsonaro", tabName = "bolsonaro")
         )
     ),
     dashboardBody(
@@ -19,35 +19,12 @@ dashboardPage(
         #     valueBoxOutput("")
         # ),
         tabItems(
-            tabItem("dilma",
-                    fluidRow(
-                        box(
-                            width = 3, status = "primary", 
-                            img(src='', height = '500px'), height = 300
-                        ),
-                        box(
-                            width = 9, title = "Tweets", status = "info", solidHeader = T,
-                            verbatimTextOutput("tweets_neg_dilma"),
-                            verbatimTextOutput("tweets_pos_dilma"), height = 300 
-                        )
-                    ),
-                    fluidRow(
-                        box(
-                            width = 6, plotOutput("wc_dilma"), height = 450
-                        ),
-                        box(
-                            width = 6, plotOutput("bc_dilma"), height = 450
-                        ),
-                        box(
-                            width = 9, plotOutput("grafo_dilma")
-                        )
-                    )
-            ),
             tabItem("collor",
                     fluidRow(
                         box(
-                            width = 3, status = "primary", 
-                            img(src='', height = '500px'), height = 300
+                            width = 3, status = "primary", height = 300,
+                            img(src='collor.jpg', height = '280px', 
+                                style="display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -67,35 +44,13 @@ dashboardPage(
                         )
                     )
             ),
-            tabItem("bolsonaro",
-                    fluidRow(
-                        box(
-                            width = 3, status = "primary", 
-                            img(src='', height = '500px'), height = 300
-                        ),
-                        box(
-                            width = 9, title = "Tweets", status = "info", solidHeader = T,
-                            verbatimTextOutput("tweets_neg_bolsonaro"),
-                            verbatimTextOutput("tweets_pos_bolsonaro"), height = 300 
-                        )
-                    ),
-                    fluidRow(
-                        box(
-                            width = 6, plotOutput("wc_bolsonaro"), height = 450
-                        ),
-                        box(
-                            width = 6, plotOutput("bc_bolsonaro"), height = 450
-                        ),
-                        box(
-                            width = 9, plotOutput("grafo_bolsonaro")
-                        )
-                    )
-            ),
+            
             tabItem("lula",
                     fluidRow(
                         box(
-                            width = 3, status = "primary", 
-                            img(src='', height = '500px'), height = 300
+                            width = 3, status = "primary", height = 300, 
+                            img(src='lula.jpg', height = '280px', 
+                                style="display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -115,11 +70,39 @@ dashboardPage(
                         )
                     )
             ),
+            
+            tabItem("dilma",
+                    fluidRow(
+                        box(
+                            width = 3, status = "primary", height = 300, 
+                            img(src='dilma.jpg', height = '280px', 
+                                style="display: block; margin-left: auto; margin-right: auto;")
+                        ),
+                        box(
+                            width = 9, title = "Tweets", status = "info", solidHeader = T,
+                            verbatimTextOutput("tweets_neg_dilma"),
+                            verbatimTextOutput("tweets_pos_dilma"), height = 300 
+                        )
+                    ),
+                    fluidRow(
+                        box(
+                            width = 6, plotOutput("wc_dilma"), height = 450
+                        ),
+                        box(
+                            width = 6, plotOutput("bc_dilma"), height = 450
+                        ),
+                        box(
+                            width = 9, plotOutput("grafo_dilma")
+                        )
+                    )
+            ),
+            
             tabItem("temer",
                     fluidRow(
                         box(
-                            width = 3, status = "primary", 
-                            img(src='', height = '500px'), height = 300
+                            width = 3, status = "primary", height = 300, 
+                            img(src='temer.jpg', height = '280px', 
+                                style="display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -136,6 +119,32 @@ dashboardPage(
                         ),
                         box(
                             width = 9, plotOutput("grafo_temer")
+                        )
+                    )
+            ),
+            
+            tabItem("bolsonaro",
+                    fluidRow(
+                        box(
+                            width = 3, status = "primary", height = 300, 
+                            img(src='bolsonaro.jpg', height = '280px', 
+                                style="display: block; margin-left: auto; margin-right: auto;")
+                        ),
+                        box(
+                            width = 9, title = "Tweets", status = "info", solidHeader = T,
+                            verbatimTextOutput("tweets_neg_bolsonaro"),
+                            verbatimTextOutput("tweets_pos_bolsonaro"), height = 300 
+                        )
+                    ),
+                    fluidRow(
+                        box(
+                            width = 6, plotOutput("wc_bolsonaro"), height = 450
+                        ),
+                        box(
+                            width = 6, plotOutput("bc_bolsonaro"), height = 450
+                        ),
+                        box(
+                            width = 9, plotOutput("grafo_bolsonaro")
                         )
                     )
             )
