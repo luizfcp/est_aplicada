@@ -20,10 +20,11 @@ library(ggraph)
 # Leitura dos dados -------------------------------------------------------
 
 base <- 
-  map(list.files("../data/csv"),
-      ~ read.csv2(paste0("../data/csv/", .x), encoding = "UTF-8") %>% 
+  map(list.files("../../data/csv"),
+      ~ read.csv2(paste0("../../data/csv/", .x), encoding = "UTF-8") %>% 
         cbind(presidente = .x %>% str_sub(end = -5)) %>% as_tibble  
   ) %>% 
+  map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
   bind_rows() %>% 
   nest(-presidente)
 
@@ -78,17 +79,17 @@ base %<>%
         geom_text_wordcloud() + 
         theme_minimal() +
         ggtitle(paste0("Word Cloud - ", .y)) +
-        theme(plot.title = element_text(size = 8))
+        theme(plot.title = element_text(size = 16))
     )
   )
 
-# Salvando
-walk2(base$wordcloud, base$presidente,
-      ~ ggsave(
-        paste0("../man/figures/wordcloud/", .y, ".png"), 
-        plot = .x, dpi = "retina", width = 6.53, height = 3.11
-      )
-)
+# # Salvando
+# walk2(base$wordcloud, base$presidente,
+#       ~ ggsave(
+#         paste0("../man/figures/wordcloud/", .y, ".png"), 
+#         plot = .x, dpi = "retina", width = 6.53, height = 3.11
+#       )
+# )
 
 
 # 20 palavras mais frequentes ---------------------------------------------
@@ -104,7 +105,7 @@ base %<>%
         mutate(word = str_to_title(word)) %>% 
         
         ggplot(aes(x = reorder(word, n), y = n, fill = n)) +
-        geom_bar(stat = 'identity') +
+        geom_bar(stat = 'identity', width = 0.8) +
         coord_flip() +
         labs(x = "", y = "Frequência", title = paste0("As 20 palavras mais frequentes - ", .y),
              caption = "Fonte: Twitter pessoal") +
@@ -114,13 +115,15 @@ base %<>%
     )
   )
 
+base$barras[[1]]
+
 # Salvando
-walk2(base$barras, base$presidente,
-  ~ ggsave(
-    paste0("../man/figures/bar chart/", .y, ".png"), 
-    plot = .x, dpi = "retina", width = 12.38, height = 6.22    
-    )
-)
+# walk2(base$barras, base$presidente,
+#   ~ ggsave(
+#     paste0("../man/figures/bar chart/", .y, ".png"), 
+#     plot = .x, dpi = "retina", width = 12.38, height = 6.22    
+#     )
+# )
 
 
 # Analise de Sentimento ---------------------------------------------------
@@ -202,7 +205,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,10,10,9,9),
+      data, c(8,10,10,12,12),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -234,7 +237,7 @@ base %<>%
         filter(!word1 %in% sw) %>%
         filter(!word2 %in% sw) %>%
         count(word1, word2, sort = TRUE) %>%
-        filter(n > 10) %>%
+        filter(n > .y) %>%
         graph_from_data_frame()
     )
   )
@@ -253,16 +256,16 @@ base %<>%
         geom_node_point() +
         geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
         theme_void() +
-        ggtitle(.y) +
+        ggtitle(paste0("Grafo - ", .y)) +
         theme(plot.title = element_text(size = 20))
     )
   )
 
 # Salvando
 # walk2(base$grafos, base$presidente,
-      ~ ggsave(
-        paste0("../man/figures/grafos/", .y, ".png"), 
-        plot = .x, dpi = "retina", width = 13, height = 13
-      )
-)
+#       ~ ggsave(
+#         paste0("../man/figures/grafos/", .y, ".png"), 
+#         plot = .x, dpi = "retina", width = 13, height = 13
+#       )
+# )
  
