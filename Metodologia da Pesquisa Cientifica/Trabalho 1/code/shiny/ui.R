@@ -5,11 +5,11 @@ dashboardPage(
     dashboardHeader(title = "Twittadas Presidenciais", titleWidth = 250),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Fernando Collor", tabName = "collor"),
-            menuItem("Luiz Inacio Lula da Silva", tabName = "lula"),
-            menuItem("Dilma Rousseff", tabName = "dilma"),
-            menuItem("Michel Temer", tabName = "temer"),
-            menuItem("Jair Bolsonaro", tabName = "bolsonaro")
+            menuItem("Fernando Collor de Mello", tabName = "collor"),
+            menuItem("Luiz Inácio Lula da Silva", tabName = "lula"),
+            menuItem("Dilma Vana Rousseff", tabName = "dilma"),
+            menuItem("Michel Miguel Elias Temer", tabName = "temer"),
+            menuItem("Jair Messias Bolsonaro", tabName = "bolsonaro")
         )
     ),
     dashboardBody(
@@ -29,7 +29,7 @@ dashboardPage(
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
                             verbatimTextOutput("tweets_neg_collor"),
-                            verbatimTextOutput("tweets_pos_collor"), height = 300 
+                            verbatimTextOutput("tweets_pos_collor")
                         )
                     ),
                     fluidRow(
@@ -40,7 +40,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_collor"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_collor")
+                            width = 9, plotOutput("grafo_collor", width = "400px")
                         )
                     )
             ),
@@ -55,7 +55,7 @@ dashboardPage(
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
                             verbatimTextOutput("tweets_neg_lula"),
-                            verbatimTextOutput("tweets_pos_lula"), height = 300 
+                            verbatimTextOutput("tweets_pos_lula")
                         )
                     ),
                     fluidRow(
@@ -81,7 +81,7 @@ dashboardPage(
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
                             verbatimTextOutput("tweets_neg_dilma"),
-                            verbatimTextOutput("tweets_pos_dilma"), height = 300 
+                            verbatimTextOutput("tweets_pos_dilma")
                         )
                     ),
                     fluidRow(
@@ -107,7 +107,7 @@ dashboardPage(
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
                             verbatimTextOutput("tweets_neg_temer"),
-                            verbatimTextOutput("tweets_pos_temer"), height = 300 
+                            verbatimTextOutput("tweets_pos_temer")
                         )
                     ),
                     fluidRow(
@@ -133,7 +133,7 @@ dashboardPage(
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
                             verbatimTextOutput("tweets_neg_bolsonaro"),
-                            verbatimTextOutput("tweets_pos_bolsonaro"), height = 300 
+                            verbatimTextOutput("tweets_pos_bolsonaro")
                         )
                     ),
                     fluidRow(

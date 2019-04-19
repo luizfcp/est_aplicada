@@ -21,8 +21,8 @@ library(shinydashboard)
 # Leitura dos dados -------------------------------------------------------
 
 base <- 
-  map(list.files("../../data/csv"),
-      ~ read.csv2(paste0("../../data/csv/", .x), encoding = "UTF-8") %>% 
+  map(list.files("www/csv/"),
+      ~ read.csv2(paste0("www/csv/", .x), encoding = "UTF-8") %>% 
         cbind(presidente = .x %>% str_sub(end = -5)) %>% as_tibble  
   ) %>% 
   map(~ .x %>% mutate_if(is.factor, as.character)) %>% 
@@ -68,18 +68,19 @@ base %<>%
 base %<>% 
   mutate(
     wordcloud = map2(
-      tidytext, presidente,
+      tidytext, c(60,60,54,71,62),
       ~ .x %>% 
         select(word) %>%
         count(word, sort = T) %>%
-        head(150) %>%
+        head(100) %>%
         ggplot(aes(
           label = word, size = n, color = factor(n)
         )) +
-        scale_size_area(max_size = 7) +
+        scale_size_area(max_size = 11) +
         geom_text_wordcloud() + 
+        scale_color_manual(values = c(rep("#009c3b", .y/1.6), rep("#ffdf00", .y/3), rep("#002776", .y/10))) +
         theme_minimal() +
-        ggtitle(paste0("Word Cloud - ", .y)) +
+        # ggtitle(paste0("Word Cloud - ", .y)) +
         theme(plot.title = element_text(size = 16))
     )
   )
@@ -188,7 +189,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,10,10,12,12),
+      data, c(8,11,10,12,12),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -239,7 +240,7 @@ base %<>%
         geom_node_point() +
         geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
         theme_void() +
-        ggtitle(paste0("Grafo - ", .y)) +
+        #ggtitle(paste0("Grafo - ", .y)) +
         theme(plot.title = element_text(size = 20))
     )
   )
