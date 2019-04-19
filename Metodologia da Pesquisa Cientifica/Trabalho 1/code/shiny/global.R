@@ -189,7 +189,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,11,10,12,12),
+      data, c(8,10,8,11,11),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -240,7 +240,7 @@ base %<>%
         geom_node_point() +
         geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
         theme_void() +
-        #ggtitle(paste0("Grafo - ", .y)) +
-        theme(plot.title = element_text(size = 20))
+        ggtitle(paste0("Grafo - ", .y)) +
+        theme(plot.title = element_text(size = 18))
     )
   )

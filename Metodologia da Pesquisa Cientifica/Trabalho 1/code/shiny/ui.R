@@ -40,7 +40,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_collor"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_collor", width = "400px")
+                            width = 12, plotOutput("grafo_collor", width = "1200px", height = "1200px")
                         )
                     )
             ),
@@ -66,7 +66,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_lula"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_lula")
+                            width = 12, plotOutput("grafo_lula", width = "1200px", height = "1200px")
                         )
                     )
             ),
@@ -92,7 +92,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_dilma"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_dilma")
+                            width = 12, plotOutput("grafo_dilma", width = "1200px", height = "1200px")
                         )
                     )
             ),
@@ -118,7 +118,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_temer"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_temer")
+                            width = 12, plotOutput("grafo_temer", width = "1200px", height = "1200px")
                         )
                     )
             ),
@@ -144,7 +144,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_bolsonaro"), height = 450
                         ),
                         box(
-                            width = 9, plotOutput("grafo_bolsonaro")
+                            width = 12, plotOutput("grafo_bolsonaro", width = "1200px", height = "1200px")
                         )
                     )
             )
