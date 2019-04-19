@@ -4,6 +4,7 @@
 dashboardPage(
     dashboardHeader(title = "Twittadas Presidenciais", titleWidth = 250),
     dashboardSidebar(
+        width = 250,
         sidebarMenu(
             menuItem("Fernando Collor de Mello", tabName = "collor"),
             menuItem("Luiz Inácio Lula da Silva", tabName = "lula"),
@@ -23,8 +24,8 @@ dashboardPage(
                     fluidRow(
                         box(
                             width = 3, status = "primary", height = 300,
-                            img(src='collor.jpg', height = '280px', 
-                                style="display: block; margin-left: auto; margin-right: auto;")
+                            img(src = 'collor.jpg', height = '280px', 
+                                style = "display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -40,7 +41,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_collor"), height = 450
                         ),
                         box(
-                            width = 12, plotOutput("grafo_collor", width = "1200px", height = "1200px")
+                            width = 12, plotOutput("grafo_collor")
                         )
                     )
             ),
@@ -49,8 +50,8 @@ dashboardPage(
                     fluidRow(
                         box(
                             width = 3, status = "primary", height = 300, 
-                            img(src='lula.jpg', height = '280px', 
-                                style="display: block; margin-left: auto; margin-right: auto;")
+                            img(src = 'lula.jpg', height = '280px', 
+                                style = "display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -66,7 +67,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_lula"), height = 450
                         ),
                         box(
-                            width = 12, plotOutput("grafo_lula", width = "1200px", height = "1200px")
+                            width = 12, plotOutput("grafo_lula")
                         )
                     )
             ),
@@ -75,8 +76,8 @@ dashboardPage(
                     fluidRow(
                         box(
                             width = 3, status = "primary", height = 300, 
-                            img(src='dilma.jpg', height = '280px', 
-                                style="display: block; margin-left: auto; margin-right: auto;")
+                            img(src = 'dilma.jpg', height = '280px', 
+                                style = "display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -92,7 +93,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_dilma"), height = 450
                         ),
                         box(
-                            width = 12, plotOutput("grafo_dilma", width = "1200px", height = "1200px")
+                            width = 12, plotOutput("grafo_dilma")
                         )
                     )
             ),
@@ -101,8 +102,8 @@ dashboardPage(
                     fluidRow(
                         box(
                             width = 3, status = "primary", height = 300, 
-                            img(src='temer.jpg', height = '280px', 
-                                style="display: block; margin-left: auto; margin-right: auto;")
+                            img(src = 'temer.jpg', height = '280px', 
+                                style = "display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -118,7 +119,7 @@ dashboardPage(
                             width = 6, plotOutput("bc_temer"), height = 450
                         ),
                         box(
-                            width = 12, plotOutput("grafo_temer", width = "1200px", height = "1200px")
+                            width = 12, plotOutput("grafo_temer")
                         )
                     )
             ),
@@ -127,8 +128,8 @@ dashboardPage(
                     fluidRow(
                         box(
                             width = 3, status = "primary", height = 300, 
-                            img(src='bolsonaro.jpg', height = '280px', 
-                                style="display: block; margin-left: auto; margin-right: auto;")
+                            img(src = 'bolsonaro.jpg', height = '280px', 
+                                style = "display: block; margin-left: auto; margin-right: auto;")
                         ),
                         box(
                             width = 9, title = "Tweets", status = "info", solidHeader = T,
@@ -144,11 +145,10 @@ dashboardPage(
                             width = 6, plotOutput("bc_bolsonaro"), height = 450
                         ),
                         box(
-                            width = 12, plotOutput("grafo_bolsonaro", width = "1200px", height = "1200px")
+                            width = 12, plotOutput("grafo_bolsonaro")
                         )
                     )
             )
         )
     )
 )
-
