@@ -98,9 +98,10 @@ base %<>%
         head(20) %>% 
         mutate(word = str_to_title(word)) %>% 
         
-        ggplot(aes(x = reorder(word, n), y = n, fill = n)) +
+        ggplot(aes(x = reorder(word, n), y = n, fill = "black")) +
         geom_bar(stat = 'identity', width = 0.8) +
         coord_flip() +
+        scale_fill_manual(values = c("#3c8dbc")) +
         labs(x = "", y = "Frequência", title = paste0("As 20 palavras mais frequentes - ", .y),
              caption = "Fonte: Twitter pessoal") +
         theme_minimal() +
@@ -189,7 +190,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,10,8,12,12),
+      data, c(10,10,8,15,14),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -238,11 +239,13 @@ base %<>%
         ggraph(layout = 'fr') +
         geom_edge_link(
           aes(start_cap = label_rect(node1.name),
-              end_cap = label_rect(node2.name)), 
+              end_cap = label_rect(node2.name)),
+              # edge_alpha = n, edge_width = n), 
           arrow = arrow(length = unit(2, 'mm'))
         ) +
         geom_node_point() +
-        geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+        geom_node_text(aes(label = name), repel = TRUE,
+                       point.padding = unit(0.2, "lines")) +
         theme_void() +
         ggtitle(paste0("Grafo - ", .y)) +
         theme(plot.title = element_text(size = 18))
