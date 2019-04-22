@@ -189,7 +189,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,10,8,11,11),
+      data, c(8,10,8,12,12),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -206,7 +206,11 @@ base %<>%
             str_detect(tweet, "Renan Calheiros")           ~ str_replace_all(tweet, "Renan Calheiros", "Renan_Calheiros"),
             str_detect(tweet, "Ronaldo Lessa")             ~ str_replace_all(tweet, "Ronaldo Lessa", "Ronaldo_Lessa"),
             str_detect(tweet, "José Alexandre")            ~ str_replace_all(tweet, "José Alexandre", "José_Alexandre"),
-            str_detect(tweet, "Celso Amorim")            ~ str_replace_all(tweet, "Celso Amorim", "Celso_Amorim"),
+            str_detect(tweet, "Celso Amorim")              ~ str_replace_all(tweet, "Celso Amorim", "Celso_Amorim"),
+            str_detect(tweet, "Gleisi Hoffmann")           ~ str_replace_all(tweet, "Gleisi Hoffmann", "Gleisi_Hoffmann"),
+            str_detect(tweet, "Sérgio Moro")               ~ str_replace_all(tweet, "Sérgio Moro", "Sérgio_Moro"),
+            str_detect(tweet, "Rui Costa")                 ~ str_replace_all(tweet, "Rui Costa", "Rui_Costa"),
+            str_detect(tweet, "Ricardo Stuckert")          ~ str_replace_all(tweet, "Ricardo Stuckert", "Ricardo_Stuckert"),
             TRUE ~ as.character(tweet)
           )
         ) %>%
