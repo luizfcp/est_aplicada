@@ -142,10 +142,6 @@ matrix(
 
 ## 2.7.1 - Boxplot
 
-```{r message=FALSE, warning=FALSE}
-library(dplyr)
-```
-
 ### Questão 1
 
 ```{r}
@@ -181,7 +177,83 @@ x <- rock$peri[rock$area <= mean(rock$area)]
 y <- rock$peri[rock$area >  mean(rock$area)]
 ```
 
+## 2.9.1 - Gráfico de linhas
 
+### Questão 1
 
+```{r}
+plot(cars$speed, cars$dist, type = "l",
+     main = "Velocidade em que o carro está pela distância que ele demora a parar",
+     xlab = "Velocidade", ylab = "Distância", col = "red")
+```
 
+### Questão 2
+
+```{r}
+produto <- c(47.9, 48.8, 48.6, 47.9, 48.1, 48.0, 48.6, 48.3, 47.9, 48.0, 47.2, 48.3,
+             48.4, 48.9, 48.5, 48.1, 48.6, 48.1, 48.0, 48.0, 48.0, 48.6, 47.5, 48.3)
+tempo <- 1:length(produto)
+
+plot(tempo, produto, type = "b", 
+     main = "Viscosidade de um produto químico observado de hora em hora",
+     xlab = "Tempo (horas)", ylab = "Viscosidade", col = "blue")
+```
+
+### Questão 3
+
+```{r}
+anos <- 1990:1996
+alunos <- c(19.720, 20.567, 21.473, 21.887, 20.598, 22.473, 23.564)
+
+plot(anos, alunos, type = "b", 
+     main = "Número de alunos matriculados no ensino de 1o grau no Brasil nos anos de 1990 a 1996",
+     xlab = "Anos", ylab = "Número de alunos (mil)", col = "green")
+```
+
+## 2.10.1 - Gráfico da distribuição normal
+
+### Questão 1
+
+```{r}
+catalisador <- c(1176, 1191, 1214, 1220, 1205, 1192, 1201, 1190, 1183, 1185)
+curve(dnorm(x, mean = mean(catalisador), sd = sd(catalisador)), 
+      from=mean(catalisador)-50, to=mean(catalisador)+50, 
+      xlab = "x", ylab = "dnorm(x, mean(catalisador), sd(catalisador))",
+      main = "Distribuição normal do tempo efetivo de vida \n de um catalisador usado em reações químicas")
+```
+
+### Questão 2
+
+```{r}
+curve(dnorm(x, mean=  -1, sd=1), from=-5, to=5)
+curve(dnorm(x, mean=-0.5, sd=1), col="red", add=T)
+curve(dnorm(x, mean=   0, sd=1), col="green", add=T)
+curve(dnorm(x, mean= 0.5, sd=1), col="blue", add=T)
+curve(dnorm(x, mean=   1, sd=1), col="yellow", add=T)
+title("Distribuição normal variando a média no intervalo [-1,1] \n com tamanho de passo igual a 0.5 e desvio padrão igual a 1")
+```
+
+### Questão 3
+
+```{r}
+curve(dnorm(x, mean=0, sd=  0), col="red", from=-5, to=5)
+curve(dnorm(x, mean=0, sd=0.5), add=T)
+curve(dnorm(x, mean=0, sd=  1), col="green", add=T)
+curve(dnorm(x, mean=0, sd=1.5), col="blue", add=T)
+curve(dnorm(x, mean=0, sd=  2), col="yellow", add=T)
+title("Distribuição normal variando o desvio padrão no intervalo [0,2] \n com tamanho de passo igual a 0.5 e média igual a 0")
+```
+
+### Questão 4
+
+```{r}
+pesos <- c(0.9475,0.9705,0.9770,0.9775,0.9860,0.9960,0.9965,0.9975,1.0050,1.0075,1.0100,1.0175,1.0180,1.02000,1.0250)
+
+hist(pesos, freq=FALSE)
+curve(dnorm(x, mean=1, sd=0.05), add=TRUE, col=4)
+curve(dnorm(x, mean=mean(pesos), sd=sd(pesos)), add=TRUE, col="red")
+legend('topright', legend=c(expression(mu==1),  expression(sigma==0.05),
+                            expression(mu==0.997), expression(sigma==0.022)), 
+       text.col=c(4,4,2,2), cex=0.8)
+```
 
