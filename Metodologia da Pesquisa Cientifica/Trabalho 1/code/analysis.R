@@ -66,30 +66,33 @@ base %<>%
 
 base %<>% 
   mutate(
-    wordcloud = map2(
-      tidytext, presidente,
-      ~ .x %>% 
-        select(word) %>%
-        count(word, sort = T) %>%
-        head(150) %>%
-        ggplot(aes(
-          label = word, size = n, color = factor(n)
-        )) +
-        scale_size_area(max_size = 7) +
-        geom_text_wordcloud() + 
-        theme_minimal() +
-        ggtitle(paste0("Word Cloud - ", .y)) +
-        theme(plot.title = element_text(size = 16))
+    wordcloud = pmap(
+      list(x=tidytext, y=presidente, z=c(60,60,54,71,62)),
+      function(x,y,z) {
+        x %>% 
+          select(word) %>%
+          count(word, sort = T) %>%
+          head(100) %>%
+          ggplot(aes(
+            label = word, size = n, color = factor(n)
+          )) +
+          scale_size_area(max_size = 11) +
+          geom_text_wordcloud() + 
+          scale_color_manual(values = c(rep("#009c3b", z/1.6), rep("#ffdf00", z/3), rep("#002776", z/10))) +
+          theme_minimal() +
+          ggtitle(paste0("Word Cloud - ", y)) +
+          theme(plot.title = element_text(size = 13))
+      }
     )
   )
 
-# # Salvando
-# walk2(base$wordcloud, base$presidente,
-#       ~ ggsave(
-#         paste0("../man/figures/wordcloud/", .y, ".png"), 
-#         plot = .x, dpi = "retina", width = 6.53, height = 3.11
-#       )
-# )
+# Salvando
+walk2(base$wordcloud, base$presidente,
+      ~ ggsave(
+        paste0("../man/figures/word cloud/", .y, ".png"),
+        plot = .x, dpi = "retina", width = 6.53, height = 3.11
+      )
+)
 
 
 # 20 palavras mais frequentes ---------------------------------------------
@@ -104,9 +107,10 @@ base %<>%
         head(20) %>% 
         mutate(word = str_to_title(word)) %>% 
         
-        ggplot(aes(x = reorder(word, n), y = n, fill = n)) +
+        ggplot(aes(x = reorder(word, n), y = n, fill = "black")) +
         geom_bar(stat = 'identity', width = 0.8) +
         coord_flip() +
+        scale_fill_manual(values = c("#3c8dbc")) +
         labs(x = "", y = "Frequência", title = paste0("As 20 palavras mais frequentes - ", .y),
              caption = "Fonte: Twitter pessoal") +
         theme_minimal() +
@@ -116,12 +120,12 @@ base %<>%
   )
 
 # Salvando
-# walk2(base$barras, base$presidente,
-#   ~ ggsave(
-#     paste0("../man/figures/bar chart/", .y, ".png"), 
-#     plot = .x, dpi = "retina", width = 12.38, height = 6.22    
-#     )
-# )
+walk2(base$barras, base$presidente,
+  ~ ggsave(
+    paste0("../man/figures/bar chart/", .y, ".png"),
+    plot = .x, dpi = "retina", width = 12.38, height = 6.22
+    )
+)
 
 
 # Analise de Sentimento ---------------------------------------------------
@@ -203,7 +207,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(8,10,10,12,12),
+      data, c(10,10,8,15,14),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -220,7 +224,11 @@ base %<>%
             str_detect(tweet, "Renan Calheiros")           ~ str_replace_all(tweet, "Renan Calheiros", "Renan_Calheiros"),
             str_detect(tweet, "Ronaldo Lessa")             ~ str_replace_all(tweet, "Ronaldo Lessa", "Ronaldo_Lessa"),
             str_detect(tweet, "José Alexandre")            ~ str_replace_all(tweet, "José Alexandre", "José_Alexandre"),
-            str_detect(tweet, "Celso Amorim")            ~ str_replace_all(tweet, "Celso Amorim", "Celso_Amorim"),
+            str_detect(tweet, "Celso Amorim")              ~ str_replace_all(tweet, "Celso Amorim", "Celso_Amorim"),
+            str_detect(tweet, "Gleisi Hoffmann")           ~ str_replace_all(tweet, "Gleisi Hoffmann", "Gleisi_Hoffmann"),
+            str_detect(tweet, "Sérgio Moro")               ~ str_replace_all(tweet, "Sérgio Moro", "Sérgio_Moro"),
+            str_detect(tweet, "Rui Costa")                 ~ str_replace_all(tweet, "Rui Costa", "Rui_Costa"),
+            str_detect(tweet, "Ricardo Stuckert")          ~ str_replace_all(tweet, "Ricardo Stuckert", "Ricardo_Stuckert"),
             TRUE ~ as.character(tweet)
           )
         ) %>%
@@ -248,22 +256,24 @@ base %<>%
         ggraph(layout = 'fr') +
         geom_edge_link(
           aes(start_cap = label_rect(node1.name),
-              end_cap = label_rect(node2.name)), 
+              end_cap = label_rect(node2.name)),
+          # edge_alpha = n, edge_width = n), 
           arrow = arrow(length = unit(2, 'mm'))
         ) +
         geom_node_point() +
-        geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+        geom_node_text(aes(label = name), repel = TRUE,
+                       point.padding = unit(0.2, "lines")) +
         theme_void() +
         ggtitle(paste0("Grafo - ", .y)) +
-        theme(plot.title = element_text(size = 20))
+        theme(plot.title = element_text(size = 18))
     )
   )
 
 # Salvando
-# walk2(base$grafos, base$presidente,
-#       ~ ggsave(
-#         paste0("../man/figures/grafos/", .y, ".png"), 
-#         plot = .x, dpi = "retina", width = 13, height = 13
-#       )
-# )
+walk2(base$grafos, base$presidente,
+      ~ ggsave(
+        paste0("../man/figures/grafos/", .y, ".png"),
+        plot = .x, dpi = "retina", width = 13, height = 13
+      )
+)
  
