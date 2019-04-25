@@ -207,7 +207,7 @@ base %<>%
 base %<>% 
   mutate(
     base_grafo = map2(
-      data, c(10,10,8,15,14),
+      data, c(9,10,10,15,13),
       ~ .x %>% 
         mutate(
           tweet = as.character(tweet) %>% str_replace_all("(://|/)", "") %>% str_remove_all("^http"),
@@ -229,6 +229,7 @@ base %<>%
             str_detect(tweet, "Sérgio Moro")               ~ str_replace_all(tweet, "Sérgio Moro", "Sérgio_Moro"),
             str_detect(tweet, "Rui Costa")                 ~ str_replace_all(tweet, "Rui Costa", "Rui_Costa"),
             str_detect(tweet, "Ricardo Stuckert")          ~ str_replace_all(tweet, "Ricardo Stuckert", "Ricardo_Stuckert"),
+            str_detect(tweet, "Henrique Meirelles")        ~ str_replace_all(tweet, "Henrique Meirelles", "Henrique_Meirelles"),
             TRUE ~ as.character(tweet)
           )
         ) %>%
@@ -273,7 +274,7 @@ base %<>%
 walk2(base$grafos, base$presidente,
       ~ ggsave(
         paste0("../man/figures/grafos/", .y, ".png"),
-        plot = .x, dpi = "retina", width = 13, height = 13
+        plot = .x, dpi = "retina", width = 11, height = 10
       )
 )
  
