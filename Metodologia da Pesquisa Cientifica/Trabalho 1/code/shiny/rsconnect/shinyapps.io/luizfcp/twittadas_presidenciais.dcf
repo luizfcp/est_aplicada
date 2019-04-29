@@ -1,0 +1,12 @@
+name: twittadas_presidenciais
+title: twittadas_presidenciais
+username:
+account: luizfcp
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 896746
+bundleId: 2045584
+url: https://luizfcp.shinyapps.io/twittadas_presidenciais/
+when: 1556499933.5138
+asMultiple: FALSE
+asStatic: FALSE
