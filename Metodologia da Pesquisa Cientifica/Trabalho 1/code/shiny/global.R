@@ -64,7 +64,7 @@ base %<>%
   base$tidytext[[3]] %<>% filter(!word %in% c("jair", "bolsonaro"))        # Bolsonaro
   base$tidytext[[4]] %<>% filter(!word %in% c("lula", "lulapresidente"))   # Lula
   base$tidytext[[5]] %<>% filter(!word %in% c("michel", "temer"))          # Temer
-  }
+}
 
 
 # Word Cloud --------------------------------------------------------------
