@@ -1,0 +1,110 @@
+---
+title: "Avaliação de Visualização de Dados"
+author: "Luiz Fernando Coelho Passos"
+date: "06 de maio de 2019"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+options(Encoding="UTF-8")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lendo o banco de dados
+
+Acesse o banco de dados neste [link](https://docs.google.com/spreadsheets/d/e/2PACX-1vSjhXv3Gs9nrkzkBXUqkF2W5nU_EtLXD6eEzDagLQsOEj144rKXVcqHQDaKswUHbcPzfgZETeAxar55/pub?output=xlsx)
+
+Com base neste banco produza visualizações para responder as seguintes perguntas:
+
+```{r message=FALSE}
+library(readxl)
+
+base <- read_excel("Questionario_Estresse.xlsx")
+```
+
+
+#Pergunta 1
+
+Qual a proporção de pessoas que moram com os pais?
+
+```{r grafico1, message=FALSE}
+library(dplyr)
+
+base_q1 <- 
+  base %>% 
+  select(Mora_pais) %>% 
+  mutate(Mora_pais = ifelse(Mora_pais==1, "Sim", "Não")) %>% 
+  table() %>% 
+  prop.table() 
+
+rotulos <- 
+  base_q1 %>% as.data.frame() %>% mutate(Freq = Freq %>% round(2)) %>% `colnames<-`(c("Nomes", "Freq"))
+
+pie(
+  x = base_q1,
+  main = "Proporção de pessoas que moram com os pais",
+  labels = paste0("(", rotulos$Freq, "%)"),
+  col = c("lightblue", "lightgreen")
+)
+legend(1,1, rotulos$Nomes, col = c("lightblue", "lightgreen"), pch = rep(20,6))
+```
+
+#Pergunta 2
+
+Compare o nível de estresse de acordo com o grupo de pessoas que estão namorando ou não. Produza uma visualização que permita comparar o nível de estresse por grupo. Apresente uma análise descritiva dos gráficos.
+
+```{r grafico2}
+base_q2 <- base %>% mutate(`Namorado(a)` = ifelse(`Namorado(a)`==1, "Sim", "Não"))
+
+boxplot(
+  base_q2$Estresse ~ base_q2$`Namorado(a)`,
+  main = "Nível de estresse de acordo com o grupo \n de pessoas que estão namorando ou não",
+  xlab = "Namorando", ylab = "Nível de Estresse",
+  col = c("lightblue", "lightgreen")
+)
+```
+
+#### Pode-se notar, pela visualização, que a mediana das pessoas que namoram tem um nível de estresse maior se comparado com quem não namora.
+
+#Pergunta 3
+
+Produza uma janela gráfica com 3 gráficos de dispersão comparando estresse com desempenho; estresse com créditos, estresse com horas de estudo. Apresente uma análise descritiva dos gráficos.
+
+```{r grafico3}
+par(mfrow=c(1,3))
+
+# Dispersão entre Estresse e Desempenho
+plot(
+  base$Desempenho, base$Estresse, col = "chocolate",
+  ylab = "Estresse", xlab = "Desempenho",
+  main = "Dispersão entre Estresse e \n Desempenho"
+)
+abline(lm(base$Estresse~base$Desempenho), col = "red")
+text(7.2, 29, "reta de regressão", col = "red")
+text(7.5, 42, paste("cor =", cor(base$Estresse, base$Desempenho) %>% round(3)))
+
+base_q4 <- na.omit(base)
+# Dispersão entre Estresse e Créditos
+plot(
+  base$Créditos, base$Estresse, col = "blue",
+  ylab = "Estresse", xlab = "Créditos",
+  main = "Dispersão entre Estresse e \n Créditos"
+)
+abline(lm(base$Estresse~base$Créditos), col = "red")
+text(37, 29, "reta de regressão", col = "red")
+text(33, 43, paste("cor =", cor(base_q4$Estresse, base_q4$Créditos) %>% round(3)))
+
+# Dispersão entre Estresse e Horas de estudo
+plot(
+  base$Horas_estudo, base$Estresse, col = "darkgreen",
+  ylab = "Estresse", xlab = "Horas de estudo",
+  main = "Dispersão entre Estresse e \n Horas de estudo"
+)
+abline(lm(base$Estresse~base$Horas_estudo), col = "red")
+text(47, 22, "reta de regressão", col = "red")
+text(43, 43, paste("cor =", cor(base$Estresse, base$Horas_estudo) %>% round(3)))
+
+```
+
+#### Baseado na visualização e nos resultados obtidos a partir do cálculo da correlação, nota-se que as variáveis Desempenho, Créditos e Horas de Estudo não possuem correlação com a variável Estresse, ou seja, as variáveis Desempenho, Créditos e Horas de Estudo não influenciam no Nível de Estresse das pessosas.
