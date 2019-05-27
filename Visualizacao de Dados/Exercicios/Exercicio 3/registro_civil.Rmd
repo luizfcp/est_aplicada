@@ -1,0 +1,50 @@
+---
+title: "Registro Civil"
+subtitle: "Visualização de Dados"
+output: pdf_document
+---
+
+```{r}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+data <- read_excel("Registro Civil.xlsx", skip = 2)
+```
+
+## Registro de Nascidos Vivos 
+
+```{r}
+data %>%  
+  .[1, 2:6] %>%
+  gather(Ano, Total) %>% 
+  ggplot(aes(Ano, Total)) +
+  geom_bar(fill = "#661313", stat = 'identity') +
+  geom_text(aes(label = Total), nudge_y = 0.2) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank()) +
+  ggtitle("Registro de Nascidos Vivos")
+```
+
+```{r}
+data %>% 
+  .[3:5, ] %>% 
+  rename("Sexo" = `Registros de nascidos vivos`) %>%
+  gather(Ano, Total, -Sexo) %>% 
+  ggplot() +
+  geom_col(aes(x = Ano, y = Total, fill = Sexo), position = "dodge")
+```
+
+```{r}
+data %>% 
+  .[7:50, ] %>% 
+  # rename("Sexo" = `Registros de nascidos vivos`) %>%
+  gather(Ano, Total, -`Registros de nascidos vivos`) %>% 
+  # filter(Ano == 2013) %>% 
+  # .[c(1,45,89,133,177), ] %>% 
+  ggplot(aes(x=Ano, y=Total)) +
+  facet_wrap(~`Registros de nascidos vivos`) +
+  geom_bar(stat = 'identity')
+```
+
