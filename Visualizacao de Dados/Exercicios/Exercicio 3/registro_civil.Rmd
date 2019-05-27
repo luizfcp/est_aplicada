@@ -5,6 +5,11 @@ output: pdf_document
 ---
 
 ```{r}
+options(scipen = 99999999)
+```
+
+
+```{r}
 library(readxl)
 library(dplyr)
 library(ggplot2)
@@ -29,11 +34,18 @@ data %>%
 
 ```{r}
 data %>% 
-  .[3:5, ] %>% 
+  .[3:4, ] %>% 
   rename("Sexo" = `Registros de nascidos vivos`) %>%
   gather(Ano, Total, -Sexo) %>% 
-  ggplot() +
-  geom_col(aes(x = Ano, y = Total, fill = Sexo), position = "dodge")
+  mutate(Total = as.numeric(Total)) %>% 
+  ggplot(aes(x = "", y = Total, fill = Sexo)) +
+  geom_col(position = "dodge") +
+  facet_grid(~ Ano) +
+  geom_text(aes(label = Total), position = position_dodge(width = 1), angle = 90) +
+  scale_y_continuous(limits = c(0, 1650000)) +
+  scale_fill_manual(values = c("lightblue", "lightgreen")) +
+  theme_linedraw() +
+  labs(x = "")
 ```
 
 ```{r}
