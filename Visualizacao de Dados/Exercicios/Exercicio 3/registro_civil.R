@@ -54,6 +54,8 @@ rnv_idade_mae <-
   theme(strip.text.y = element_text(angle = 180)) +
   labs(x = "Idade da mãe na ocasião do parto", title = "Idade da mãe na ocasião do parto por Ano")
 
+rnv_sexo / (rnv_idade_mae + rnv_total)
+
 
 # data %>% 
 #   .[c(7,8,14,20,26,32,38,44,50), ] %>% 
@@ -90,8 +92,6 @@ rnv_idade_mae <-
 #   geom_col() +
 #   # geom_text(aes(label = Total)) +
 #   coord_flip()
-
-rnv_sexo / (rnv_idade_mae + rnv_total)
 
 
 
