@@ -19,12 +19,13 @@ rnv_total <-
   data %>%  
   .[1, 2:6] %>%
   gather(Ano, Total) %>% 
+  mutate(Total = as.numeric(Total)) %>% 
   ggplot(aes(Ano, Total)) +
   geom_bar(fill = "#661313", stat = 'identity') +
-  geom_text(aes(label = Total), nudge_y = 0.2) +
+  geom_text(aes(label = Total), nudge_y = -99000, col = "white", fontface = "bold") +
   theme_minimal() +
   theme(axis.text.y = element_blank()) +
-  ggtitle("Registro de Nascidos Vivos")
+  labs(title = "Registro de Nascidos Vivos Total", y = "")
 
 rnv_sexo <-
   data %>% 
@@ -36,9 +37,10 @@ rnv_sexo <-
   geom_point(shape = 15, size = 2) +
   geom_line(aes(group = Sexo), linetype = "dashed", size = 0.5) +
   scale_color_manual(values = c("#00bfbf", "#c680cd")) +
-  # scale_y_continuous(breaks = seq(1410000, 1570000, 10000)) +
+  scale_y_continuous(breaks = seq(1410000, 1570000, 20000)) +
   theme_linedraw() +
-  ggtitle("Registro de Nascidos Vivos")
+  theme(legend.position = "bottom") +
+  ggtitle("Registro de Nascidos Vivos por Sexo")
 
 rnv_idade_mae <-
   data %>% 
@@ -51,10 +53,13 @@ rnv_idade_mae <-
   facet_grid(~ Ano, switch = 'y') +
   theme_linedraw() +
   coord_flip() +
-  theme(strip.text.y = element_text(angle = 180)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.6)) +
   labs(x = "Idade da mãe na ocasião do parto", title = "Idade da mãe na ocasião do parto por Ano")
 
-rnv_sexo / (rnv_idade_mae + rnv_total)
+painel <- rnv_total + rnv_idade_mae - rnv_sexo + plot_layout(ncol = 1, heights = c(2.5, 1.5))
+painel2 <- (rnv_total / rnv_sexo) | rnv_idade_mae
+
+ggsave("painel_registro_civil.png", painel, width=13, height=10, scale=1, dpi="retina")
 
 
 # data %>% 
