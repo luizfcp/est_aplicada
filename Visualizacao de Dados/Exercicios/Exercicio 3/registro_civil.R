@@ -6,6 +6,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(patchwork)
+library(scales)
 
 options(scipen = 99999999)
 
@@ -22,7 +23,8 @@ rnv_total <-
   mutate(Total = as.numeric(Total)) %>% 
   ggplot(aes(Ano, Total)) +
   geom_bar(fill = "#661313", stat = 'identity') +
-  geom_text(aes(label = Total), nudge_y = -99000, col = "white", fontface = "bold") +
+  geom_text(aes(label = comma(Total, big.mark = ".", decimal.mark = ",")), 
+            nudge_y = -99000, col = "white", fontface = "bold") +
   theme_minimal() +
   theme(axis.text.y = element_blank()) +
   labs(title = "Registro de Nascidos Vivos Total", y = "")
@@ -36,7 +38,7 @@ rnv_sexo <-
   ggplot(aes(x = Ano, y = Total, color = Sexo)) +
   geom_point(shape = 15, size = 2) +
   geom_line(aes(group = Sexo), linetype = "dashed", size = 0.5) +
-  scale_color_manual(values = c("#00bfbf", "#c680cd")) +
+  scale_color_manual(values = c("#661313", "darkgray")) +
   scale_y_continuous(breaks = seq(1410000, 1570000, 20000)) +
   theme_linedraw() +
   theme(legend.position = "bottom") +
@@ -57,9 +59,28 @@ rnv_idade_mae <-
   labs(x = "Idade da mãe na ocasião do parto", title = "Idade da mãe na ocasião do parto por Ano")
 
 painel <- rnv_total + rnv_idade_mae - rnv_sexo + plot_layout(ncol = 1, heights = c(2.5, 1.5))
-painel2 <- (rnv_total / rnv_sexo) | rnv_idade_mae
 
 ggsave("painel_registro_civil.png", painel, width=13, height=10, scale=1, dpi="retina")
+
+
+# data %>% 
+#   .[c(7:50), ] %>% 
+#   .[-(c(7,8,14,20,26,32,38,44,50)-6), ] %>% 
+#   mutate(classes_idade = c(as.character(rep("15 a 20 anos", nrow(.)-6)) %>% 
+
+
+
+
+# data %>% 
+#   .[c(7,8,14,20,26,32,38,44,50), ] %>% 
+#   rename("idade_mae" = `Registros de nascidos vivos`) %>%
+#   gather(Ano, Total, -idade_mae) %>% 
+#   mutate(Total = as.numeric(Total)) %>% 
+#   ggplot(aes(x = Ano, y = Total)) +
+#   geom_line(aes(group = idade_mae, col = idade_mae))
+  
+  
+  
 
 
 # data %>% 
