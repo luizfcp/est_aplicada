@@ -5,4 +5,4 @@ date: "29 de Maio de 2019"
 output: pdf_document
 ---
 
-![](painel_registro_civil.png)
+![](img/painel_registro_civil.png)

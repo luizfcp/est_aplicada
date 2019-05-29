@@ -7,4 +7,4 @@ output:
     theme: Leonids
 ---
 
-![](painel_registro_civil.png)
+![](img/painel_registro_civil.png)
