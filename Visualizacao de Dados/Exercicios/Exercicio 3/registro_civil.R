@@ -1,6 +1,4 @@
 
-# Pacotes -----------------------------------------------------------------
-
 library(readxl)
 library(dplyr)
 library(ggplot2)
@@ -15,7 +13,9 @@ options(scipen = 99999999)
 data1 <- read_excel("data/Registro Civil.xlsx", skip = 2)
 data2 <- read_excel("data/Registro Civil - 2.xlsx", skip = 2)
 
-# Graficos ----------------------------------------------------------------
+# Graph -------------------------------------------------------------------
+
+## rnv = Registro de Nascidos Vivos
 
 rnv_total <- 
   data1 %>%  
@@ -56,7 +56,7 @@ rnv_idade_mae <-
   facet_grid(~ Ano, switch = 'y') +
   theme_linedraw() +
   coord_flip() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.6)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
   labs(x = "Idade da mãe na ocasião do parto", 
        title = "Número de Registros de Nascidos Vivos pela \n Idade da mãe na ocasião do parto")
 
