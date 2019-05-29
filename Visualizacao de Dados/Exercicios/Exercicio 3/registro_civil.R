@@ -27,7 +27,7 @@ rnv_total <-
             nudge_y = -99000, col = "white", fontface = "bold") +
   theme_minimal() +
   theme(axis.text.y = element_blank()) +
-  labs(title = "Registro de Nascidos Vivos Total", y = "")
+  labs(title = "Total de Registro de Nascidos Vivos", y = "")
 
 rnv_sexo <-
   data %>% 
@@ -42,7 +42,7 @@ rnv_sexo <-
   scale_y_continuous(breaks = seq(1410000, 1570000, 20000)) +
   theme_linedraw() +
   theme(legend.position = "bottom") +
-  ggtitle("Registro de Nascidos Vivos por Sexo")
+  ggtitle("Total de Registro de Nascidos Vivos por Sexo")
 
 rnv_idade_mae <-
   data %>% 
@@ -56,7 +56,8 @@ rnv_idade_mae <-
   theme_linedraw() +
   coord_flip() +
   theme(axis.text.x = element_text(angle = 45, vjust = 0.6)) +
-  labs(x = "Idade da mãe na ocasião do parto", title = "Idade da mãe na ocasião do parto por Ano")
+  labs(x = "Idade da mãe na ocasião do parto", 
+       title = "Total de Registro de Nascidos Vivos pela \n Idade da mãe na ocasião do parto")
 
 painel <- rnv_total + rnv_idade_mae - rnv_sexo + plot_layout(ncol = 1, heights = c(2.5, 1.5))
 
