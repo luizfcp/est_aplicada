@@ -85,19 +85,19 @@ painel <-
     rnv_mes +
       labs(
         title = "Painel com dados de Registros de Nascidos Vivos \n",
-        subtitle = "Número de Registros de Nascidos Vivos por Mês"
+        subtitle = "Figura 1: Número de Registros de Nascidos Vivos por Mês"
       ) +
       theme(plot.title = element_text(hjust = 0.5)) +
       { # <--- nested plots
         #--------------------------------------------------------------------------*
         # Plot 2
         #--------------------------------------------------------------------------*
-        rnv_idade_mae + labs(subtitle = "Número de Registros de Nascidos Vivos em \n relação a Idade da mãe na ocasião do parto") +
+        rnv_idade_mae + labs(subtitle = "Figura 2: Número de Registros de Nascidos Vivos em \n relação a Idade da mãe na ocasião do parto") +
           { # <--- nested plots
             #----------------------------------------------------------------------*
             # Plot 3
             #----------------------------------------------------------------------*
-            rnv_total + labs(subtitle = "Total de Registros de Nascidos Vivos")
+            rnv_total + labs(subtitle = "Figura 3: Total de Registros de Nascidos Vivos")
           } +
           patchwork::plot_layout(ncol = 2)
       } +
@@ -106,11 +106,11 @@ painel <-
         # Plot 4
         #----------------------------------------------------------------------*
         rnv_sexo + 
-          labs(subtitle = "Número de Registros de Nascidos Vivos por Sexo",
+          labs(subtitle = "Figura 4: Número de Registros de Nascidos Vivos por Sexo",
                caption = "Fonte: IBGE - Estatísticas do Registro Civil - 2017"
           )
       } +
       plot_layout(ncol = 1, heights = c(1, 2.2, 0.8))
   ); painel
 
-ggsave("../img/painel_registro_civil.png", painel, width=11, height=10, scale=1, dpi="retina")
+ggsave("../img/painel_registro_civil_pdf.png", painel, width=11, height=10, scale=1, dpi="retina")
