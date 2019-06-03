@@ -7,7 +7,36 @@ output:
     theme: leonids
 ---
 
+### Código
+
 ```{r eval=FALSE, message=FALSE, warning=FALSE}
+# Figura 1
+
+rnv_mes <-
+  data_rnv_mes %>% 
+  ggplot(aes(mes, Total, color = Ano)) +
+  geom_point(shape = 18, size = 3) +
+  geom_line(aes(group = Ano, linetype = Ano), size = 0.5) +
+  scale_linetype_manual(values = c(rep("solid", 4), "dashed")) +
+  scale_color_manual(values = c("cyan3", "green4", "yellow3", "darkblue", "red")) +
+  scale_y_continuous(breaks = seq(195000, 275000, 10000)) +
+  labs(x = "Mês") +
+  theme_minimal()
+
+# Figura 2
+
+rnv_idade_mae <-
+  data_rnv_idade_mae %>% 
+  ggplot(aes(x = `Registros de nascidos vivos`, y = Total)) +
+  geom_line(aes(group = Ano)) +
+  facet_grid(~ Ano, switch = 'y') +
+  theme_linedraw() +
+  coord_flip() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  labs(x = "Idade da mãe na ocasião do parto")
+
+# Figura 3
+
 rnv_total <- 
   data_rnv_total %>% 
   ggplot(aes(Ano, Total)) +
@@ -20,6 +49,8 @@ rnv_total <-
         panel.grid.minor = element_blank()) +
   labs(y = "")
 
+# Figura 4
+
 rnv_sexo <-
   data_rnv_sexo %>% 
   ggplot(aes(x = Ano, y = Total, color = Sexo)) +
@@ -29,26 +60,7 @@ rnv_sexo <-
   scale_y_continuous(breaks = seq(1410000, 1570000, 20000)) +
   theme_minimal()
 
-rnv_idade_mae <-
-  data_rnv_idade_mae %>% 
-  ggplot(aes(x = `Registros de nascidos vivos`, y = Total)) +
-  geom_line(aes(group = Ano)) +
-  facet_grid(~ Ano, switch = 'y') +
-  theme_linedraw() +
-  coord_flip() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
-  labs(x = "Idade da mãe na ocasião do parto")
-
-rnv_mes <-
-  data_rnv_mes %>% 
-  ggplot(aes(mes, Total, color = Ano)) +
-  geom_point(shape = 18, size = 3) +
-  geom_line(aes(group = Ano, linetype = Ano), size = 0.5) +
-  scale_linetype_manual(values = c(rep("solid", 4), "dashed")) +
-  scale_color_manual(values = c("cyan3", "green4", "yellow3", "darkblue", "red")) +
-  scale_y_continuous(breaks = seq(195000, 275000, 10000)) +
-  labs(x = "Mês") +
-  theme_minimal()
+# Painel
 
 rnv_mes +
   labs(
@@ -71,5 +83,7 @@ rnv_mes +
   } +
   plot_layout(ncol = 1, heights = c(1, 2.2, 0.8))
 ```
+
+### Resultados
 
 ![](../img/painel_registro_civil_pdf.png)
