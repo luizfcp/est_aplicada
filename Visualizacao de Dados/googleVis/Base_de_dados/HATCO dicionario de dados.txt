@@ -1,0 +1,15 @@
+﻿ID Identificação da pessoa 
+X1 Velocidade de entrega: quantidade de tempo que leva para entregar o celular uma vez que uma ordem foi confirmada
+X2 Preço do produto (valores próximos de zero = Barato; valores próximos de seis = caro)
+X3 Flexibilidade de preços: percepção sobre a forma de pagamento (Dinheiro, Cartao, Crediário, em 10X, Desconto, etc...)
+X4 Imagem do fabricante: imagem geral do fabricante / fornecedor
+X5 Avaliação da Embalagem:nível de qualidade percebido da embalagem
+X6 Imagem da força de vendas: imagem geral da força da empresa de vendas
+X7 Qualidade do produto: nível de qualidade percebido de um determinado produto
+X8 Tamanho da empresa: tamanho da empresa em relação a outros neste mercado. Esta variável tem duas categorias: 1 = grande e 0 = pequena
+X9 Nível de uso: quantos celulares da empresa são comprados, medido em uma escala de porcentagem de 100 pontos, variando de 0 a 100 %
+X10 Nível de satisfação: o grau de satisfação do usuário
+X11 Internet: 0 = Usuário eventual da Internet; 1 = Usuário acostumado com a Internet;
+X12 Faixa de Idade: Esta variável tem duas categorias: 0 = Jovem; 1 = Adulto
+X13 Sexo: Esta variável tem duas categorias: 1 =Feminino, e 0 = Masculino
+X14 Local da Compra: Esta variável tem três categorias: 1 = Capital e 2 = Região Metropolitana, 3 = Interior

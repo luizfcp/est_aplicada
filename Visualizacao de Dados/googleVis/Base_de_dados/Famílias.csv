@@ -1,0 +1,121 @@
+familia;local;p.a.p;instr;tam;renda
+1;Monte Verde;Não usa;Ensino médio;4;10,3
+2;Monte Verde;Não usa;Ensino médio;4;15,4
+3;Monte Verde;Usa;Ensino fundamental;4;9,6
+4;Monte Verde;Não usa;Ensino fundamental;5;5,5
+5;Monte Verde;Usa;Ensino médio;4;9
+6;Monte Verde;Usa;Sem Instrução;1;2,4
+7;Monte Verde;Não usa;Ensino médio;2;4,1
+8;Monte Verde;Usa;Ensino médio;3;8,4
+9;Monte Verde;Usa;Ensino médio;6;10,3
+10;Monte Verde;Usa;Ensino fundamental;4;4,6
+11;Monte Verde;Não usa;Ensino fundamental;6;18,6
+12;Monte Verde;Usa;Sem Instrução;4;7,1
+13;Monte Verde;Não usa;Ensino fundamental;4;12,9
+14;Monte Verde;Não usa;Ensino fundamental;6;8,4
+15;Monte Verde;Não usa;Ensino médio;3;19,3
+16;Monte Verde;Não usa;Ensino fundamental;5;10,4
+17;Monte Verde;Usa;Ensino médio;3;8,9
+18;Monte Verde;Não usa;Ensino médio;4;12,9
+19;Monte Verde;Não usa;Ensino médio;4;5,1
+20;Monte Verde;Usa;Ensino médio;4;12,2
+21;Monte Verde;Usa;Ensino médio;5;5,8
+22;Monte Verde;Usa;Ensino médio;5;12,9
+23;Monte Verde;Não usa;Ensino médio;5;7,7
+24;Monte Verde;Não usa;Ensino fundamental;4;1,1
+25;Monte Verde;Não usa;Ensino fundamental;8;7,5
+26;Monte Verde;Usa;Ensino médio;4;5,8
+27;Monte Verde;Usa;Sem Instrução;5;7,2
+28;Monte Verde;Não usa;Ensino médio;3;8,6
+29;Monte Verde;Usa;Ensino fundamental;4;5,1
+30;Monte Verde;Não usa;Ensino médio;5;2,6
+31;Monte Verde;Usa;Ensino médio;5;7,7
+32;Monte Verde;Usa;Ensino fundamental;2;2,4
+33;Monte Verde;Usa;Ensino médio;5;4,8
+34;Monte Verde;Usa;Sem Instrução;2;2,1
+35;Monte Verde;Usa;Sem Instrução;6;4
+36;Monte Verde;Usa;Sem Instrução;8;12,5
+37;Monte Verde;Usa;Ensino médio;3;6,8
+38;Monte Verde;Usa;Ensino médio;5;3,9
+39;Monte Verde;Não usa;Ensino médio;5;9
+40;Monte Verde;Não usa;Ensino médio;3;10,9
+41;Parque da Figueira;Usa;Ensino fundamental;5;5,4
+42;Parque da Figueira;Usa;Sem Instrução;3;6,4
+43;Parque da Figueira;Usa;Sem Instrução;6;4,4
+44;Parque da Figueira;Usa;Sem Instrução;5;2,5
+45;Parque da Figueira;Não usa;Sem Instrução;6;5,5
+46;Parque da Figueira;Usa;Sem Instrução;8;
+47;Parque da Figueira;Usa;Ensino médio;4;14
+48;Parque da Figueira;Usa;Ensino fundamental;4;8,5
+49;Parque da Figueira;Usa;Sem Instrução;5;7,7
+50;Parque da Figueira;Não usa;Ensino fundamental;3;5,8
+51;Parque da Figueira;Usa;Ensino médio;5;5
+52;Parque da Figueira;Não usa;Sem Instrução;3;4,8
+53;Parque da Figueira;Usa;Ensino fundamental;2;2,8
+54;Parque da Figueira;Usa;Ensino fundamental;4;4,2
+55;Parque da Figueira;Usa;Ensino médio;3;10,2
+56;Parque da Figueira;Usa;Ensino fundamental;4;7,4
+57;Parque da Figueira;Usa;Ensino fundamental;5;5
+58;Parque da Figueira;Não usa;Ensino médio;2;6,4
+59;Parque da Figueira;Não usa;Ensino médio;4;5,7
+60;Parque da Figueira;Usa;Ensino fundamental;4;10,8
+61;Parque da Figueira;Não usa;Ensino médio;1;2,3
+62;Parque da Figueira;Usa;Sem Instrução;7;6,1
+63;Parque da Figueira;Usa;Sem Instrução;3;5,5
+64;Parque da Figueira;Usa;Sem Instrução;7;3,5
+65;Parque da Figueira;Usa;Ensino médio;3;9
+66;Parque da Figueira;Usa;Ensino médio;6;5,8
+67;Parque da Figueira;Não usa;Sem Instrução;6;4,2
+68;Parque da Figueira;Usa;Ensino médio;3;6,8
+69;Parque da Figueira;Usa;Ensino fundamental;5;4,8
+70;Parque da Figueira;Usa;Ensino médio;5;6
+71;Parque da Figueira;Usa;Ensino fundamental;7;9
+72;Parque da Figueira;Usa;Sem Instrução;4;5,3
+73;Parque da Figueira;Usa;Ensino médio;4;3,1
+74;Parque da Figueira;Não usa;Ensino médio;1;6,4
+75;Parque da Figueira;Usa;Sem Instrução;3;3,9
+76;Parque da Figueira;Usa;Ensino fundamental;3;6,4
+77;Parque da Figueira;Usa;Ensino médio;4;2,7
+78;Parque da Figueira;Não usa;Ensino fundamental;4;2,4
+79;Parque da Figueira;Não usa;Ensino fundamental;4;3,6
+80;Parque da Figueira;Não usa;Ensino médio;5;6,4
+81;Parque da Figueira;Não usa;Ensino médio;2;11,3
+82;Parque da Figueira;Usa;Sem Instrução;5;3,8
+83;Parque da Figueira;Usa;Ensino fundamental;3;4,1
+84;Encosta do Morro;Usa;Sem Instrução;5;1,8
+85;Encosta do Morro;Usa;Ensino médio;5;7,1
+86;Encosta do Morro;Não usa;Sem Instrução;3;13,9
+87;Encosta do Morro;Usa;Ensino fundamental;6;4
+88;Encosta do Morro;Usa;Sem Instrução;6;2,9
+89;Encosta do Morro;Usa;Ensino fundamental;9;3,9
+90;Encosta do Morro;Usa;Sem Instrução;4;2,2
+91;Encosta do Morro;Não usa;Ensino fundamental;3;5,8
+92;Encosta do Morro;Não usa;Ensino fundamental;5;2,8
+93;Encosta do Morro;Usa;Ensino fundamental;5;4,5
+94;Encosta do Morro;Não usa;Ensino fundamental;4;5,8
+95;Encosta do Morro;Não usa;Ensino médio;8;3,9
+96;Encosta do Morro;Não usa;Ensino fundamental;7;2,8
+97;Encosta do Morro;Usa;Sem Instrução;3;1,3
+98;Encosta do Morro;Usa;Ensino médio;5;3,9
+99;Encosta do Morro;Usa;Ensino médio;5;5
+100;Encosta do Morro;Usa;Sem Instrução;5;0,1
+101;Encosta do Morro;Não usa;Ensino fundamental;3;4,6
+102;Encosta do Morro;Usa;Ensino fundamental;4;2,6
+103;Encosta do Morro;Não usa;Sem Instrução;6;2,3
+104;Encosta do Morro;Usa;Ensino fundamental;5;4,9
+105;Encosta do Morro;Usa;Sem Instrução;5;2,3
+106;Encosta do Morro;Usa;Sem Instrução;3;3,9
+107;Encosta do Morro;Usa;Sem Instrução;4;2,1
+108;Encosta do Morro;Usa;Sem Instrução;4;2,7
+109;Encosta do Morro;Usa;Ensino fundamental;5;11,1
+110;Encosta do Morro;Usa;Sem Instrução;6;6,4
+111;Encosta do Morro;Não usa;Ensino médio;7;25,7
+112;Encosta do Morro;Usa;Sem Instrução;4;0,9
+113;Encosta do Morro;Usa;Ensino médio;5;3,9
+114;Encosta do Morro;Usa;Sem Instrução;5;5,1
+115;Encosta do Morro;Usa;Ensino fundamental;6;4,2
+116;Encosta do Morro;Usa;Sem Instrução;6;4,4
+117;Encosta do Morro;Usa;Sem Instrução;7;7,9
+118;Encosta do Morro;Não usa;Sem Instrução;4;4,2
+119;Encosta do Morro;Não usa;Sem Instrução;4;3,5
+120;Encosta do Morro;Não usa;Ensino fundamental;6;11,4

@@ -1,0 +1,17 @@
+        List of Statements For Soft Drink Data
+	(Questions: 5.14, 6.11, 12.6)
+----------------------------------------------------------------------------
+1. Brand X has a refreshing taste.
+2. I prefer Brand X because it has fewer calories than other drinks.
+3. Brand X quenches my thirst immediately.
+4. I like the sweet taste of Brand X.
+5. I prefer drinking Brand X after workouts and sports because it gives me
+   energy.
+6. I prefer Brand X because it comes in environment friendly packaging.
+7. Brand X has minerals and vitamins that help quench my deep down body thirst.
+8. Brand X has a unique flavor of its own.
+9. Brand X has the right mix of minerals and vitamins that are healthy for my
+   body.
+10. I prefer to drink Brand X when I am really thirsty.
+----------------------------------------------------------------------------
+
