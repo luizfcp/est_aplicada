@@ -97,7 +97,6 @@ ggplot(dfr,aes(x=week,y=day))+
         legend.key.size=unit(0.3,"cm"),
         legend.spacing.x=unit(0.2,"cm"))
 
-
 # referencia --------------------------------------------------------------
 
 # http://www.roymfrancis.com/calendar-plot-with-ggplot2/
