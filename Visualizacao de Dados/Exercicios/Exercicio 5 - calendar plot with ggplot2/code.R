@@ -56,26 +56,18 @@ chuva <-
 
 chuva$precip_chuva
 
-# chuva %>% 
-#   mutate(
-#     day = factor(strftime(dfr$data, format="%a"),
-#                  levels=rev(c("Wed","Thu","Fri","Sat","Sun","Mon","Tue"))),
-#     week = factor(strftime(dfr$data, format="%V")),
-#     month = factor(strftime(dfr$data, format="%B"),levels=c("May")),
-#     dday = factor(strftime(dfr$data,format="%d"))
-#   )
-
-dfr <- data.frame(date=seq(as.Date('2019-05-01'),as.Date('2019-05-31'),by=1))
-dfr$day <- factor(strftime(dfr$date,format="%a"),levels=rev(c("Wed","Thu","Fri","Sat","Sun","Mon","Tue")))
+dfr <- data.frame(date=seq(as.Date('2019-04-29'), as.Date('2019-05-31'), by=1))
+dfr$date <- dfr$date[3:33]
+dfr$day <- factor(strftime(dfr$date,format="%a"), levels=rev(c("Mon","Tue","Wed","Thu","Fri","Sat","Sun")))
 dfr$week <- factor(strftime(dfr$date,format="%V"))
-dfr$month <- factor(strftime(dfr$date,format="%B"),levels=c("May"))
+dfr$month <- factor(strftime(dfr$date,format="%B"), levels=c("April","May"))
 dfr$ddate <- factor(strftime(dfr$date,format="%d"))
 head(dfr)
 
 dfr$comment <- "Não Choveu"
-dfr$comment[dfr$date==as.Date('2019-05-07') & dfr$date==as.Date('2019-05-08')] <- "Choveu"
-dfr$comment[dfr$date==as.Date('2019-05-15') & dfr$date==as.Date('2019-05-17')] <- "Choveu"
-dfr$comment[dfr$date==as.Date('2019-05-18') & dfr$date==as.Date('2019-05-19')] <- "Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-07') | dfr$date==as.Date('2019-05-08')] <- "Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-15') | dfr$date==as.Date('2019-05-17')] <- "Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-18') | dfr$date==as.Date('2019-05-19')] <- "Choveu"
 
 dfr$comment <- factor(dfr$comment,levels=c("Não Choveu","Choveu"))
 
