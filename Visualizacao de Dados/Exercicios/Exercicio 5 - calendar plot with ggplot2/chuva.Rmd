@@ -1,0 +1,71 @@
+---
+title: "Visualização de Dados"
+author: "Luiz Fernando Coelho Passos"
+output:
+  prettydoc::html_pretty:
+    theme: leonids
+---
+
+## Base de dados
+
+A base de dados foi obtida no site do [Instituto Nacional de Metereologia](http://www.inmet.gov.br/sonabra/pg_dspDadosCodigo_sim.php?QTYyNw==).
+
+```{r message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r message=FALSE, warning=FALSE}
+dados <- read_csv("dados.txt")
+dados
+```
+
+Em nossa base de dados a coluna de interesse é a de precipitação, baseado nela foi realizada manipulação fazendo a soma dos valores agrupados pela data. Após, baseado na coluna resultante da manipulação realizada, foi criado uma coluna auxiliar `prec_chuva` para indicar se houve ou não chuva, utilizando a condição de que se o valor observado for maior que 0, houve chuva.
+
+```{r}
+chuva <- 
+  dados %>% 
+  group_by(data) %>% 
+  summarise(precip_chuva = sum(precipitacao)) %>% 
+  mutate(chuva = ifelse(precip_chuva!=0,1,0))
+
+chuva$precip_chuva
+```
+
+## Visualização
+
+```{r}
+dfr <- data.frame(date=seq(as.Date('2019-04-29'), as.Date('2019-05-31'), by=1))
+dfr$day <- factor(strftime(dfr$date,format="%a"), levels=rev(c("Mon","Tue","Wed","Thu","Fri","Sat","Sun")))
+dfr$week <- factor(strftime(dfr$date,format="%V"))
+dfr$month <- factor(strftime(dfr$date,format="%B"), levels=c("April","May"))
+dfr$ddate <- factor(strftime(dfr$date,format="%d"))
+head(dfr[-c(1:2),])
+
+dfr$comment <- "Não Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-07') | dfr$date==as.Date('2019-05-08')] <- "Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-15') | dfr$date==as.Date('2019-05-17')] <- "Choveu"
+dfr$comment[dfr$date==as.Date('2019-05-18') | dfr$date==as.Date('2019-05-19')] <- "Choveu"
+
+dfr$comment <- factor(dfr$comment,levels=c("Não Choveu","Choveu"))
+
+ggplot(dfr[-c(1:2),],aes(x=week,y=day))+
+  geom_tile(aes(fill=comment))+
+  geom_text(aes(label=ddate))+
+  scale_fill_manual(values=c("#8dd3c7","#ffffb3"))+
+  facet_grid(~month,scales="free",space="free")+
+  labs(x="Semana",y="")+
+  theme_bw(base_size=10)+
+  theme(legend.title=element_blank(),
+        panel.grid=element_blank(),
+        panel.border=element_blank(),
+        axis.ticks=element_blank(),
+        strip.background=element_blank(),
+        legend.position="top",
+        legend.justification="right",
+        legend.direction="horizontal",
+        legend.key.size=unit(0.3,"cm"),
+        legend.spacing.x=unit(0.2,"cm"))
+```
+
