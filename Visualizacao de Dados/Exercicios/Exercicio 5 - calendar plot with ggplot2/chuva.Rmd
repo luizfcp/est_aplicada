@@ -8,7 +8,7 @@ output:
 
 ## Base de dados
 
-A base de dados foi obtida no site do [Instituto Nacional de Metereologia](http://www.inmet.gov.br/sonabra/pg_dspDadosCodigo_sim.php?QTYyNw==).
+A base de dados foi obtida no site do [Instituto Nacional de Meteorologia](http://www.inmet.gov.br/sonabra/pg_dspDadosCodigo_sim.php?QTYyNw==).
 
 ```{r message=FALSE, warning=FALSE}
 library(readr)
@@ -28,7 +28,7 @@ chuva <-
   dados %>% 
   group_by(data) %>% 
   summarise(precip_chuva = sum(precipitacao)) %>% 
-  mutate(chuva = ifelse(precip_chuva!=0,1,0))
+  mutate(chuva = ifelse(precip_chuva>0,1,0))
 
 chuva$precip_chuva
 ```

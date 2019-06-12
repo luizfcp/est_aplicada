@@ -112,7 +112,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <article class="post-content">
 <div id="base-de-dados" class="section level2">
 <h2>Base de dados</h2>
-<p>A base de dados foi obtida no site do <a href="http://www.inmet.gov.br/sonabra/pg_dspDadosCodigo_sim.php?QTYyNw==">Instituto Nacional de Metereologia</a>.</p>
+<p>A base de dados foi obtida no site do <a href="http://www.inmet.gov.br/sonabra/pg_dspDadosCodigo_sim.php?QTYyNw==">Instituto Nacional de Meteorologia</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(readr)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>dados <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(data) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">precip_chuva =</span> <span class="kw">sum</span>(precipitacao)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chuva =</span> <span class="kw">ifelse</span>(precip_chuva<span class="op">!=</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chuva =</span> <span class="kw">ifelse</span>(precip_chuva<span class="op">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">chuva<span class="op">$</span>precip_chuva</a></code></pre></div>
 <pre><code>##  [1]  0.0  0.0  0.0  0.0  0.0  0.0 32.2  1.8  0.0  0.0  0.0  0.0  0.0  0.0
