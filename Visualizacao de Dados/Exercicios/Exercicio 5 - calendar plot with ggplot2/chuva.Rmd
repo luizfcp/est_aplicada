@@ -17,7 +17,7 @@ library(ggplot2)
 ```
 
 ```{r message=FALSE, warning=FALSE}
-dados <- read_csv("dados.txt")
+dados <- read_csv("chuva_maio.txt")
 dados
 ```
 

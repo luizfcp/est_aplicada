@@ -44,7 +44,7 @@ ggplot(dfr,aes(x=week,y=day))+
 library(readr)
 library(dplyr)
 
-dados <- read_csv("dados.txt")
+dados <- read_csv("chuva_maio.txt")
 
 dados
 
