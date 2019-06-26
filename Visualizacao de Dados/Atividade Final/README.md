@@ -1,2 +1,2 @@
 
-Utilizando os dados do (ibge/sidra)[https://sidra.ibge.gov.br/pesquisa/registro-civil/tabelas] para apresentar visualizações que representem as informações da seguinte (matéria)[https://g1.globo.com/ciencia-e-saude/noticia/2019/02/18/brasileiros-nascem-mais-entre-marco-e-maio-mas-razao-intriga-cientistas.ghtml].
+Utilizando os dados do [ibge/sidra](https://sidra.ibge.gov.br/pesquisa/registro-civil/tabelas) para apresentar visualizações que representem as informações da seguinte [matéria](https://g1.globo.com/ciencia-e-saude/noticia/2019/02/18/brasileiros-nascem-mais-entre-marco-e-maio-mas-razao-intriga-cientistas.ghtml).
