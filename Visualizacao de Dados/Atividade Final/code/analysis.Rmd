@@ -1,6 +1,10 @@
 ---
 title: "Visualização de Dados"
-output: html_document
+author: 
+date:
+output:
+  prettydoc::html_pretty:
+    theme: leonids
 ---
 
 ```{r setup, include=FALSE}
