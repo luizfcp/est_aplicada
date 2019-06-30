@@ -1,52 +1,35 @@
 ---
-title: "Visualização de Dados"
-output: html_document
+title: 'Visualização de Dados'
+date: '03 de Julho de 2019'
+author: 'Luiz Fernando, Lyncoln, Ronaldo'
+output:
+  prettydoc::html_pretty:
+    theme: leonids
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, memessage = F, warning = F, fig.width = 11, fig.height = 8)
+Sys.setlocale("LC_ALL","pt_BR.UTF-8")
+
+knitr::opts_chunk$set(memessage = F, warning = F, fig.width = 11, fig.height = 8)
 options(scipen = 999999)
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-library(readxl)
 library(dplyr)
-library(stringr)
-library(magrittr)
-library(purrr)
 library(tidyr)
 library(ggplot2)
+library(GGally)
 
-base_gr <-
-  map(1:5,
-      ~ read_excel("../data/tabela_registro_civil.xlsx", skip = 4, n_max = 15, sheet = .x) %>%
-        select(-c(1:4)) %>%
-        rename_at(1, ~ c("ano")) %>%
-        cbind(
-          "GR" = read_excel("../data/tabela_registro_civil.xlsx", skip = 2, n_max = 2, sheet = .x) %>%
-            select(1) %>%
-            names() %>%
-            str_sub(start = 49)
-        ) %>%
-        as_tibble() %>%
-        mutate(GR = as.character(GR))
-  )
+# Base de dados separada por UF - Unidade da Federação
+base_uf <- read.csv("../data/base por uf.csv") %>% as_tibble()
 
-base_uf <-
-  map(6:32,
-      ~ read_excel("../data/tabela_registro_civil.xlsx", skip = 4, n_max = 15, sheet = .x) %>%
-        select(-c(1:4)) %>%
-        rename_at(1, ~ c("ano")) %>%
-        cbind(
-          "UF" = read_excel("../data/tabela_registro_civil.xlsx", skip = 2, n_max = 2, sheet = .x) %>%
-            select(1) %>%
-            names() %>%
-            str_sub(start = 49)
-        ) %>%
-        as_tibble() %>%
-        mutate(UF = as.character(UF))
-  )
+# Base de dados separada por GR - Grande Região
+base_gr <- read.csv("../data/base por gr.csv") %>% as_tibble() %>% select(-X)
+
+base_uf
+
+base_gr
 ```
 
 ## 1
@@ -82,19 +65,34 @@ A alta de nascimentos em março e queda em novembro ocorre em todo o Brasil, exc
 base_gr %>% 
   bind_rows() %>% 
   gather(mes, value, -ano, -GR) %>% 
-  # mutate(value = as.numeric(value)) %>% 
   group_by(GR, mes) %>% 
   summarise(media = mean(value, na.rm = T)) %>% 
   ungroup() %>% 
   mutate(mes = factor(mes, levels = meses_12$mes)) %>% 
   ggplot(aes(mes, media)) +
   geom_bar(stat = 'identity', fill = "#800000") +
-  # scale_y_continuous(limits = c(0, 140000)) +
   facet_wrap(~ GR) +
   theme_minimal() +
   coord_flip() +
   geom_text(aes(label = media %>% round), nudge_y = 9000) +
   labs(x = "", y = "Média", title = "Média de nascimento por mês (2003-2017)")
   
+```
+
+## 3
+
+```{r message=FALSE, warning=FALSE}
+base_gr %>% 
+  gather(meses, value, -ano, -GR) %>% 
+  spread(GR, value) %>% 
+  select(-meses) %>% 
+  tail(36) %>% 
+  mutate(ano = as.character(ano)) %>% 
+  ggpairs(
+    columns = 2:6, mapping = aes(color = ano),
+    lower = list( continuous = wrap(ggally_smooth_loess, size = 1, color = "darkblue")), 
+    diag = list(continuous=wrap(ggally_barDiag, color="darkblue")), 
+    upper = list( continuous = wrap("cor", size = 4.0, alignPercent = 1) )) + 
+  theme(panel.background = ggplot2::element_rect(fill = "lightgray")) 
 ```
 

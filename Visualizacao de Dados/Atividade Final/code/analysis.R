@@ -55,7 +55,8 @@ base_uf <-
         mutate(UF = as.character(UF))
   )
 
-# base_uf %>% bind_rows() %>% write.csv("../data/base por uf.csv")
+# base_gr %>% bind_rows() %>% write.csv("../data/base por gr.csv", row.names = F)
+# base_uf %>% bind_rows() %>% write.csv("../data/base por uf.csv", row.names = F)
 
 
 # rascunho ----------------------------------------------------------------
