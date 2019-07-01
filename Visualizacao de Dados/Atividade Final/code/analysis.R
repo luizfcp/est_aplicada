@@ -6,6 +6,7 @@ library(magrittr)
 library(purrr)
 library(tidyr)
 library(ggplot2)
+library(janitor)
 
 # base de dados -----------------------------------------------------------
 
@@ -58,6 +59,24 @@ base_uf <-
 # base_gr %>% bind_rows() %>% write.csv("../data/base por gr.csv", row.names = F)
 # base_uf %>% bind_rows() %>% write.csv("../data/base por uf.csv", row.names = F)
 
+base1 <- 
+  read_excel("../data/tabela2612.xlsx", skip = 2, n_max = 64800) %>% 
+  clean_names() %>% 
+  select(-c(1,2,4)) 
+
+gr <- base1 %>% select(1) %>% distinct() %>% remove_missing() %$% grande_regiao
+idade_mae <- base1 %>% select(2) %>% distinct() %>% remove_missing() %$% idade_da_mae_na_ocasiao_do_parto
+
+
+base1_mod <- 
+  base1 %>% 
+  mutate(grande_regiao = rep(gr, each = 12960),
+         idade_da_mae_na_ocasiao_do_parto = rep(idade_mae, each = 360, times = 5),
+         ano = rep(rep(2003:2017, each = 24, times = 36), each = 5),
+         mes_do_nascimento = rep(meses_12$mes, each = 2, times = 2700))
+
+write.csv(base1_mod, "../data/base por gr - idade da mae, sexo e local de nascimento.csv",
+          row.names = F)
 
 # rascunho ----------------------------------------------------------------
 

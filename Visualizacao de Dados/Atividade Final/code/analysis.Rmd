@@ -20,16 +20,23 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(GGally)
+library(readr)
 
 # Base de dados separada por UF - Unidade da Federação
-base_uf <- read.csv("../data/base por uf.csv") %>% as_tibble()
+base_uf <- read_csv("../data/base por uf.csv")
 
-# Base de dados separada por GR - Grande Região
-base_gr <- read.csv("../data/base por gr.csv") %>% as_tibble() %>% select(-X)
+# Base de dados separada por GR - Grande Região, apenas com o número de nascidos vivos por mês
+base_gr <- read_csv("../data/base por gr.csv")%>% select(-X)
+
+# Base de dados separada por GR - Grande Região, com a idade da mãe na ocasião do parto, sexo do nascido vivo e local de nasicmento
+base_completa <- read_csv("../data/base por gr - idade da mae, sexo e local de nascimento.csv") %>% 
+  mutate(domicilio = as.numeric(domicilio))
 
 base_uf
 
 base_gr
+
+base_completa
 ```
 
 ## 1
@@ -94,5 +101,40 @@ base_gr %>%
     diag = list(continuous=wrap(ggally_barDiag, color="darkblue")), 
     upper = list( continuous = wrap("cor", size = 4.0, alignPercent = 1) )) + 
   theme(panel.background = ggplot2::element_rect(fill = "lightgray")) 
+```
+
+# rascunho
+
+```{r}
+base_completa %>% 
+  group_by(grande_regiao) %>% 
+  summarise(hospital = sum(hospital, na.rm = T),
+            domicilio = sum(domicilio, na.rm = T)) %>% 
+  gather(local, value, -grande_regiao) %>% 
+  ggplot(aes(x = grande_regiao, y = value, fill = local)) +
+  geom_bar(stat = 'identity')
+```
+
+```{r eval}
+base_completa %>% 
+  select(grande_regiao, sexo, hospital, domicilio) %>% 
+  group_by(grande_regiao, sexo) %>% 
+  summarise(hospital = sum(hospital, na.rm = T),
+            domicilio = sum(domicilio, na.rm = T)) %>% 
+  mutate(total = hospital+domicilio) %>%
+  select(-hospital, -domicilio) %>% 
+  ggplot(aes(x = sexo, y = total, fill = grande_regiao)) +
+  facet_grid(~ grande_regiao) +
+  geom_bar(stat = 'identity')
+```
+
+```{r}
+base_completa %>% 
+  select(grande_regiao, sexo, hospital, domicilio, mes_do_nascimento) %>% 
+  group_by(grande_regiao, mes_do_nascimento, sexo) %>% 
+  summarise(hospital = sum(hospital, na.rm = T),
+            domicilio = sum(domicilio, na.rm = T)) %>% 
+  mutate(total = hospital+domicilio) %>%
+  select(-hospital, -domicilio) 
 ```
 
