@@ -10,26 +10,39 @@ output:
 ```{r setup, include=FALSE}
 Sys.setlocale("LC_ALL","pt_BR.UTF-8")
 
-knitr::opts_chunk$set(memessage = F, warning = F, fig.width = 11, fig.height = 8)
+knitr::opts_chunk$set(memessage = FALSE, warning = FALSE, fig.width = 11, fig.height = 8)
 options(scipen = 999999)
 ```
 
+## Pacotes Utilizados
 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidyr)
-library(ggplot2)
-library(GGally)
 library(readr)
+library(purrr)
+library(magrittr)
+library(sf)
+library(scales)
+library(GGally)
+library(ggpubr)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+```
 
+## Bases de dados
+
+```{r message=FALSE, warning=FALSE}
 # Base de dados separada por UF - Unidade da Federação
-base_uf <- read_csv("../data/base por uf.csv")
+base_uf <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20uf.csv")
 
 # Base de dados separada por GR - Grande Região, apenas com o número de nascidos vivos por mês
-base_gr <- read_csv("../data/base por gr.csv")%>% select(-X)
+base_gr <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20gr.csv") %>% 
+  select(-X)
 
 # Base de dados separada por GR - Grande Região, com a idade da mãe na ocasião do parto, sexo do nascido vivo e local de nasicmento
-base_completa <- read_csv("../data/base por gr - idade da mae, sexo e local de nascimento.csv") %>% 
+base_completa <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20gr%20-%20idade%20da%20mae%2C%20sexo%20e%20local%20de%20nascimento.csv") %>% 
   mutate(domicilio = as.numeric(domicilio))
 
 base_uf
@@ -39,15 +52,15 @@ base_gr
 base_completa
 ```
 
-## 1
+
+## Visualizações
+
+### 1
 
 Há uma questão científica ainda sem resposta nas estatísticas de nascimento do Brasil. Os brasileiros nascem mais entre março e maio, nove meses após o inverno. E nascem menos em novembro e dezembro - os filhos dos meses de Carnaval. Por que isso acontece ainda não é sabido.
 
 ```{r}
-meses_12 <- base_gr %>% 
-  bind_rows() %>% 
-  gather(mes, value, -ano, -GR) %>% 
-  distinct(mes)
+meses_12 <- base_gr %>% bind_rows() %>% gather(mes, value, -ano, -GR) %>% distinct(mes)
 
 base_gr %>% 
   bind_rows() %>% 
@@ -64,7 +77,7 @@ base_gr %>%
   labs(x = "", y = "Média", title = "Média de nascimento por mês (2003-2017)")
 ```
 
-## 2
+### 2
 
 A alta de nascimentos em março e queda em novembro ocorre em todo o Brasil, exceto na região Norte.
 
@@ -86,7 +99,7 @@ base_gr %>%
   
 ```
 
-## 3
+### 3
 
 ```{r message=FALSE, warning=FALSE}
 base_gr %>% 
@@ -97,44 +110,190 @@ base_gr %>%
   mutate(ano = as.character(ano)) %>% 
   ggpairs(
     columns = 2:6, mapping = aes(color = ano),
-    lower = list( continuous = wrap(ggally_smooth_loess, size = 1, color = "darkblue")), 
-    diag = list(continuous=wrap(ggally_barDiag, color="darkblue")), 
-    upper = list( continuous = wrap("cor", size = 4.0, alignPercent = 1) )) + 
+    lower = list(continuous = wrap(ggally_smooth_loess, size = 1, color = "darkblue")), 
+    diag = list(continuous = wrap(ggally_barDiag, color = "darkblue")), 
+    upper = list(continuous = wrap("cor", size = 4.0, alignPercent = 1))) + 
   theme(panel.background = ggplot2::element_rect(fill = "lightgray")) 
 ```
 
-# rascunho
+### 4
 
 ```{r}
-base_completa %>% 
-  group_by(grande_regiao) %>% 
-  summarise(hospital = sum(hospital, na.rm = T),
-            domicilio = sum(domicilio, na.rm = T)) %>% 
-  gather(local, value, -grande_regiao) %>% 
-  ggplot(aes(x = grande_regiao, y = value, fill = local)) +
-  geom_bar(stat = 'identity')
-```
-
-```{r eval}
 base_completa %>% 
   select(grande_regiao, sexo, hospital, domicilio) %>% 
   group_by(grande_regiao, sexo) %>% 
   summarise(hospital = sum(hospital, na.rm = T),
             domicilio = sum(domicilio, na.rm = T)) %>% 
-  mutate(total = hospital+domicilio) %>%
+  ungroup() %>% 
+  mutate(total = hospital+domicilio,
+         grande_regiao = factor(grande_regiao, levels = c("Norte", "Nordeste", "Centro-Oeste", "Sul", "Sudeste"))) %>%
   select(-hospital, -domicilio) %>% 
   ggplot(aes(x = sexo, y = total, fill = grande_regiao)) +
   facet_grid(~ grande_regiao) +
+  scale_fill_manual(values = c("green", "chocolate", "yellow3", "steelblue", "#800000")) +
+  theme_linedraw() +
+  theme(legend.position = "none") +
   geom_bar(stat = 'identity')
 ```
 
+### 5
+
 ```{r}
 base_completa %>% 
-  select(grande_regiao, sexo, hospital, domicilio, mes_do_nascimento) %>% 
-  group_by(grande_regiao, mes_do_nascimento, sexo) %>% 
+  select(mes_do_nascimento, ano, hospital, domicilio) %>% 
+  filter(mes_do_nascimento %in% c("Março", "Abril", "Maio", "Outubro", "Novembro", "Dezembro")) %>% 
+  group_by(ano, mes_do_nascimento) %>% 
   summarise(hospital = sum(hospital, na.rm = T),
             domicilio = sum(domicilio, na.rm = T)) %>% 
-  mutate(total = hospital+domicilio) %>%
-  select(-hospital, -domicilio) 
+  ungroup() %>% 
+  mutate(total = hospital+domicilio,
+         ano = as.character(ano),
+         mes_do_nascimento = factor(mes_do_nascimento, levels = c("Março", "Abril", "Maio", "Outubro", "Novembro", "Dezembro"))) %>% 
+  ggplot() +
+  facet_grid(~ mes_do_nascimento, scales = "free_x") +
+  geom_boxplot(aes(x = mes_do_nascimento, y = total), fill = "purple") +
+  theme_linedraw() +
+  theme(axis.text.x.bottom = element_blank(), axis.ticks.x.bottom = element_blank()) +
+  labs(x = "", y = "Número total de Nascimentos em cada ano",
+       title = "Número total de Nascimentos por mês entre os anos de 2003 a 2017")
 ```
+
+### 6
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+bd = base_uf
+
+mapa = sf::st_read("../malha/BRUFE250GC_SIR.shp")
+
+fancy_scientific <- function(l) {
+  # turn in to character string in scientific notation
+  l <- format(l, scientific = TRUE)
+  # quote the part before the exponent to keep all the digits
+  l <- gsub("^(.*)e", "'\\1'e", l)
+  # turn the 'e+' into plotmath format
+  l <- gsub("e", "%*%10^", l)
+  # return this as an expression
+  parse(text=l)
+}
+
+bd = bd %>% group_by(UF) %>% select(-ano) %>% summarise_all(sum)
+
+bd %<>% mutate(UF = toupper(UF)) 
+
+mapa = mapa %>% inner_join(bd, by= c("NM_ESTADO"="UF"))
+
+mapaMar = ggplot(mapa) +
+  geom_sf(aes(fill = `Março`)) +
+  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  ggtitle("Março") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+
+mapaMai = ggplot(mapa) +
+  geom_sf(aes(fill = `Maio`)) +
+  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  ggtitle("Maio") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()#,
+    # legend.title = "Nascimentos"
+  )
+
+mapaNov = ggplot(mapa) +
+  geom_sf(aes(fill = `Novembro`)) +
+  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  ggtitle("Novembro") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+
+mapaOut = ggplot(mapa) +
+  geom_sf(aes(fill = `Outubro`)) +
+  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  ggtitle("Outubro") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+
+g_legend <- function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
+
+mylegend <- g_legend(mapaMai)
+
+lay <- rbind(c(1,1,1,2), c(1,1,1,2))
+
+grid.arrange(
+  arrangeGrob(
+    mapaMar + theme(legend.position = "none"),
+    mapaMai + theme(legend.position = "none"),
+    mapaOut + theme(legend.position = "none"),
+    mapaNov + theme(legend.position = "none"),
+    nrow = 2
+  ),
+  mylegend,
+  layout_matrix = lay
+)
+```
+
+### 7
+
+```{r}
+bd = base_uf
+
+bd %<>% select(-UF) %>% group_by(ano) %>% summarise_all(sum)
+
+bd = bd %>% gather(meses, valores,-ano)
+
+bd$meses = factor(bd$meses,levels = meses_12$mes)
+bd$ano = factor(bd$ano)
+
+ggplot(bd,aes(x = meses, y = ano))+
+  geom_tile(aes(fill = valores), col = "black") +
+  scale_fill_gradient2(low = "white", mid = "royalblue", high = "blue", midpoint = mean(pull(bd[,3])),
+                       name = "Nascimentos", limits = c(min(bd[,3]), max(bd[,3])), labels = comma) +
+  facet_grid(~ meses,scales = "free") +
+  labs(x = "Meses", y = "Anos") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks = element_blank(),
+    strip.background = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+
+
+
+
+
+
+
+
+
 

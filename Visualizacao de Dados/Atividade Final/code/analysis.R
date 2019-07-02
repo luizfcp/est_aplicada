@@ -138,9 +138,50 @@ base_gr %>%
   labs(x = "", y = "Média", title = "Média de nascimento por mês (2003-2017)")
   
 
+# rascunho ----------------------------------------------------------------
 
+base_completa %>% 
+  select(idade_da_mae_na_ocasiao_do_parto, mes_do_nascimento, ano, hospital, domicilio) %>% 
+  filter(mes_do_nascimento %in% c("Março", "Outubro")) %>% 
+  group_by(idade_da_mae_na_ocasiao_do_parto, ano, mes_do_nascimento) %>% 
+  summarise(hospital = sum(hospital, na.rm = T),
+            domicilio = sum(domicilio, na.rm = T)) %>% 
+  ungroup() %>% 
+  mutate(total = hospital+domicilio,
+         ano = as.character(ano)) %>% 
+  ggplot() +
+  facet_grid(~ ano, scales = "free_x")+
+  geom_boxplot(aes(x = ano, y = total, fill = mes_do_nascimento)) +
+  theme_linedraw() +
+  theme(axis.text.x.bottom = element_blank(), axis.ticks.x.bottom = element_blank()) +
+  scale_fill_manual(name = "Mês do Nascimento", values = c("lightblue", "purple")) +
+  labs(x = "", 
+       y = "Total de Nascimentos de acordo com a idade da mãe na ocasião do parto",
+       title = "Número total de Nascimentos de acordo com a idade da mãe na \n ocasião do parto nos meses de Março e Outubro entre os anos de 2003 a 2017")
 
+base_completa %>% select(grande_regiao) %>% distinct() %$% grande_regiao %>% 
+  map(
+    ~ base_completa %>% 
+      select(grande_regiao, sexo, hospital, domicilio, mes_do_nascimento) %>% 
+      group_by(grande_regiao, mes_do_nascimento, sexo) %>% 
+      summarise(hospital = sum(hospital, na.rm = T),
+                domicilio = sum(domicilio, na.rm = T)) %>% 
+      ungroup() %>% 
+      mutate(total = hospital+domicilio) %>%
+      select(-hospital, -domicilio) %>% 
+      filter(grande_regiao == .x) %>% 
+      ggplot(aes(x = mes_do_nascimento, y = total, fill = sexo)) +
+      geom_bar(stat = 'identity', position = "dodge") +
+      ggtitle(.x)
+  )
 
+base_completa %>% 
+  group_by(grande_regiao) %>% 
+  summarise(hospital = sum(hospital, na.rm = T),
+            domicilio = sum(domicilio, na.rm = T)) %>% 
+  gather(local, value, -grande_regiao) %>% 
+  ggplot(aes(x = grande_regiao, y = value, fill = local)) +
+  geom_bar(stat = 'identity')
 
 
 
