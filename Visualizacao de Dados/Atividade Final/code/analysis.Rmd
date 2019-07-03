@@ -35,14 +35,17 @@ library(gridExtra)
 
 ```{r message=FALSE, warning=FALSE}
 # Base de dados separada por UF - Unidade da Federação
-base_uf <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20uf.csv")
+base_uf <- read_csv("http://bit.ly/base_uf")
 
-# Base de dados separada por GR - Grande Região, apenas com o número de nascidos vivos por mês
-base_gr <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20gr.csv") %>% 
+# Base de dados separada por GR - Grande Região, apenas 
+#  com o número de nascidos vivos por mês
+base_gr <- read_csv("http://bit.ly/base_gr") %>% 
   select(-X)
 
-# Base de dados separada por GR - Grande Região, com a idade da mãe na ocasião do parto, sexo do nascido vivo e local de nasicmento
-base_completa <- read_csv("https://raw.githubusercontent.com/luizfcp/uff/master/Visualizacao%20de%20Dados/Atividade%20Final/data/base%20por%20gr%20-%20idade%20da%20mae%2C%20sexo%20e%20local%20de%20nascimento.csv") %>% 
+# Base de dados separada por GR - Grande Região, com 
+#  a idade da mãe na ocasião do parto, sexo do nascido 
+#  vivo e local de nasicmento
+base_completa <- read_csv("http://bit.ly/base_completa") %>% 
   mutate(domicilio = as.numeric(domicilio))
 
 base_uf
@@ -55,12 +58,13 @@ base_completa
 
 ## Visualizações
 
-### 1
-
-Há uma questão científica ainda sem resposta nas estatísticas de nascimento do Brasil. Os brasileiros nascem mais entre março e maio, nove meses após o inverno. E nascem menos em novembro e dezembro - os filhos dos meses de Carnaval. Por que isso acontece ainda não é sabido.
+### Figura 1
 
 ```{r}
-meses_12 <- base_gr %>% bind_rows() %>% gather(mes, value, -ano, -GR) %>% distinct(mes)
+meses_12 <- base_gr %>% 
+  bind_rows() %>% 
+  gather(mes, value, -ano, -GR) %>% 
+  distinct(mes)
 
 base_gr %>% 
   bind_rows() %>% 
@@ -73,13 +77,17 @@ base_gr %>%
   ggplot(aes(mes, media)) +
   geom_bar(stat = 'identity', fill = "#800000") +
   theme_minimal() +
-  geom_text(aes(label = media %>% round), nudge_y = -1000, color = "white") +
-  labs(x = "", y = "Média", title = "Média de nascimento por mês (2003-2017)")
+  geom_text(aes(label = media %>% round),
+            nudge_y = -1000,
+            color = "white") +
+  labs(x = "", 
+       y = "Média", 
+       title = "Média de nascimento por mês (2003-2017)")
 ```
 
-### 2
+Mediante ao gráfico de barras, pode-se concluir que a média de nascimentos para os anos de 2003 a 2017 nos meses de março a maio são maiores se comparado aos outros meses do ano. Diferente dos meses de novembro a dezembro que possuem a menor média de nascimentos. Assim, nove meses pós os meses do inverno são os que mais tiveram nascimentos no Brasil.
 
-A alta de nascimentos em março e queda em novembro ocorre em todo o Brasil, exceto na região Norte.
+### Figura 2
 
 ```{r}
 base_gr %>% 
@@ -95,11 +103,16 @@ base_gr %>%
   theme_minimal() +
   coord_flip() +
   geom_text(aes(label = media %>% round), nudge_y = 9000) +
-  labs(x = "", y = "Média", title = "Média de nascimento por mês (2003-2017)")
-  
+  labs(x = "", 
+       y = "Média", 
+       title = "Média de nascimento por mês (2003-2017)")
 ```
 
-### 3
+A média do número de nascimentos na região Sudeste é bem maior das demais regiões do Brasil, um fator que é bem compreensível, dado que é a região onde se concentram mais de 40% da população do Brasil [(G1, 2018).](https://g1.globo.com/economia/noticia/2018/08/29/brasil-tem-mais-de-208-milhoes-de-habitantes-segundo-o-ibge.ghtml)
+
+Decidimos então verificar se haveria alguma região em que estivesse afetando o fenômeno observado no gráfico anterior. Após a análise dos dados e a contrução do gráfico, concluímos que esse fenômeno (Maiores nascimentos nos meses de março a maio) acontece em todas as regiões do Brasil, exceto na região Norte, onde a média de nascimentos no mês de Janeiro é maior que a média de nascimentos no mês de Abril.
+
+### Figura 3
 
 ```{r message=FALSE, warning=FALSE}
 base_gr %>% 
@@ -116,7 +129,11 @@ base_gr %>%
   theme(panel.background = ggplot2::element_rect(fill = "lightgray")) 
 ```
 
-### 4
+Para reforçarmos a ideia, decidimos utilizar de uma análise mais completa fazendo correlações do número de nascimentos nos últimos três anos entre as cinco regiões do Brasil. Podemos observar que analisando os anos mais recentes, todas as regiões estao fortemente correlacionadas entre elas. 
+
+As regiões Sul e Sudeste obtiveram a correlação mais forte (0.975), mostrando que há evidências de que o número de nascimentos entre estas 2 regiões se comporta de modo bem parecido. Por outro lado, temos que a menor correlação (0.72) foi entre as regiões Norte e Sul. Assim, pode-se afirmar que todos as variáveis se comportam de modo bem parecido.
+
+### Figura 4
 
 ```{r}
 base_completa %>% 
@@ -126,55 +143,58 @@ base_completa %>%
             domicilio = sum(domicilio, na.rm = T)) %>% 
   ungroup() %>% 
   mutate(total = hospital+domicilio,
-         grande_regiao = factor(grande_regiao, levels = c("Norte", "Nordeste", "Centro-Oeste", "Sul", "Sudeste"))) %>%
+         grande_regiao = factor(grande_regiao, levels = c("Norte", "Nordeste", 
+                                                          "Centro-Oeste", "Sul", "Sudeste"))) %>%
   select(-hospital, -domicilio) %>% 
   ggplot(aes(x = sexo, y = total, fill = grande_regiao)) +
   facet_grid(~ grande_regiao) +
-  scale_fill_manual(values = c("green", "chocolate", "yellow3", "steelblue", "#800000")) +
+  scale_fill_manual(values = c("green4", "chocolate", "yellow3", "steelblue", "#800000")) +
   theme_linedraw() +
   theme(legend.position = "none") +
-  geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity') +
+  geom_text(aes(label = total), nudge_y = 120000) +
+  labs(x = "", 
+       y = "Média", 
+       title = "Número de nascimento por sexo em cada Grande Região (2003-2017)")
 ```
 
-### 5
+Um outro fator relevante para ser analisado foi a questão do número de nascimentos por sexo, tanto em hospitais quanto em domicílios. No gráfico acima podemos verificar que em todas as regiões do brasil o número de nascimentos de homens é maior ao de mulheres. Essa diferença é maior ainda quando olhamos apenas para a região sudeste, onde o valor dessa diferença chega a mais de 400 mil nascimentos.
+
+### Figura 5
 
 ```{r}
 base_completa %>% 
   select(mes_do_nascimento, ano, hospital, domicilio) %>% 
-  filter(mes_do_nascimento %in% c("Março", "Abril", "Maio", "Outubro", "Novembro", "Dezembro")) %>% 
+  filter(mes_do_nascimento %in% c("Março", "Abril", "Maio", 
+                                  "Outubro", "Novembro", "Dezembro")) %>% 
   group_by(ano, mes_do_nascimento) %>% 
   summarise(hospital = sum(hospital, na.rm = T),
             domicilio = sum(domicilio, na.rm = T)) %>% 
   ungroup() %>% 
   mutate(total = hospital+domicilio,
          ano = as.character(ano),
-         mes_do_nascimento = factor(mes_do_nascimento, levels = c("Março", "Abril", "Maio", "Outubro", "Novembro", "Dezembro"))) %>% 
+         mes_do_nascimento = factor(mes_do_nascimento, levels = c("Março", "Abril", "Maio", 
+                                                                  "Outubro", "Novembro", "Dezembro"))) %>% 
   ggplot() +
   facet_grid(~ mes_do_nascimento, scales = "free_x") +
   geom_boxplot(aes(x = mes_do_nascimento, y = total), fill = "purple") +
   theme_linedraw() +
   theme(axis.text.x.bottom = element_blank(), axis.ticks.x.bottom = element_blank()) +
-  labs(x = "", y = "Número total de Nascimentos em cada ano",
+  labs(x = "", 
+       y = "Número total de Nascimentos em cada ano",
        title = "Número total de Nascimentos por mês entre os anos de 2003 a 2017")
 ```
 
-### 6
+Tentando entender melhor o comportamento da nossa variável, construimos boxplots para o número total de nascimentos dos meses em que têm mais (Março, Abril, Maio) e menos (Outubro,Novembro, Dezembro) nascimentos nos anos de 2003 até 2017. A diferença de nascimentos das duas trincas é bem maior quando analisamos elas separadamente.
+
+O mês de março nos evidenciou um padrão de nascimento se concentrando sempre em torno de 260 mil, onde a variância do número de nascimentos pouco muda. O mês de dezembro foi o que chamou mais a atenção. Apesar de variar bastante o número de nascimentos ao longo dos anos, esse valor em quase todos os anos se concentrou abaixo dos 220 mil nascimentos.
+
+### Figura 6
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 bd = base_uf
 
-mapa = sf::st_read("../malha/BRUFE250GC_SIR.shp")
-
-fancy_scientific <- function(l) {
-  # turn in to character string in scientific notation
-  l <- format(l, scientific = TRUE)
-  # quote the part before the exponent to keep all the digits
-  l <- gsub("^(.*)e", "'\\1'e", l)
-  # turn the 'e+' into plotmath format
-  l <- gsub("e", "%*%10^", l)
-  # return this as an expression
-  parse(text=l)
-}
+mapa = sf::st_read("malha/BRUFE250GC_SIR.shp")
 
 bd = bd %>% group_by(UF) %>% select(-ano) %>% summarise_all(sum)
 
@@ -184,81 +204,73 @@ mapa = mapa %>% inner_join(bd, by= c("NM_ESTADO"="UF"))
 
 mapaMar = ggplot(mapa) +
   geom_sf(aes(fill = `Março`)) +
-  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  scale_fill_continuous(name = "Nascimentos", 
+                        type = "viridis",
+                        limits = c(min(bd[2:13]),max(bd[2:13])),
+                        labels = comma)+
   ggtitle("Março") +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()
   )
 
 mapaMai = ggplot(mapa) +
   geom_sf(aes(fill = `Maio`)) +
-  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  scale_fill_continuous(type = "viridis",
+                        limits = c(min(bd[2:13]),max(bd[2:13])),
+                        labels = comma) +
   ggtitle("Maio") +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()#,
-    # legend.title = "Nascimentos"
-  )
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
 
 mapaNov = ggplot(mapa) +
   geom_sf(aes(fill = `Novembro`)) +
-  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  scale_fill_continuous(type = "viridis",
+                        limits = c(min(bd[2:13]), max(bd[2:13])),
+                        labels = comma) +
   ggtitle("Novembro") +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  )
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
 
 mapaOut = ggplot(mapa) +
   geom_sf(aes(fill = `Outubro`)) +
-  scale_fill_gradient2(limits = c(min(bd[2:13]), max(bd[2:13])), labels = comma) +
+  scale_fill_continuous(type = "viridis",
+                        limits = c(min(bd[2:13]), max(bd[2:13])),
+                        labels = comma) +
   ggtitle("Outubro") +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  )
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
 
-g_legend <- function(a.gplot){
-  tmp <- ggplot_gtable(ggplot_build(a.gplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)}
-
-mylegend <- g_legend(mapaMai)
-
-lay <- rbind(c(1,1,1,2), c(1,1,1,2))
-
-grid.arrange(
-  arrangeGrob(
-    mapaMar + theme(legend.position = "none"),
-    mapaMai + theme(legend.position = "none"),
-    mapaOut + theme(legend.position = "none"),
-    mapaNov + theme(legend.position = "none"),
-    nrow = 2
-  ),
-  mylegend,
-  layout_matrix = lay
+ggarrange(
+  mapaMar,
+  mapaMai,
+  mapaOut,
+  mapaNov,
+  ncol = 2,
+  nrow = 2,
+  common.legend = TRUE,
+  legend = "right"
 )
 ```
 
-### 7
+Selecionamos 2 dos meses com maior número médio de nascimentos (Março e Maio) e 2 dos meses com menor número médio de nascimentos (Outubro e Novembro) para verificar o número de nascimentos em cada estado do Brasil. Realizamos a soma dos valores de nascimento dos anos de 2003 a 2017 para os meses selecionados e com a visualização pode-se perceber que São Paulo possui o maior número total de nascimentos e aparenta ser o causador do número de nascimento em março e maio ser tão grande.
+
+### Figura 7
 
 ```{r}
 bd = base_uf
@@ -272,8 +284,15 @@ bd$ano = factor(bd$ano)
 
 ggplot(bd,aes(x = meses, y = ano))+
   geom_tile(aes(fill = valores), col = "black") +
-  scale_fill_gradient2(low = "white", mid = "royalblue", high = "blue", midpoint = mean(pull(bd[,3])),
-                       name = "Nascimentos", limits = c(min(bd[,3]), max(bd[,3])), labels = comma) +
+  scale_fill_gradient2(
+    low = "white",
+    mid = "royalblue",
+    high = "blue",
+    midpoint = mean(pull(bd[, 3])),
+    name = "Nascimentos",
+    limits = c(min(bd[, 3]), max(bd[, 3])),
+    labels = comma
+  ) +
   facet_grid(~ meses,scales = "free") +
   labs(x = "Meses", y = "Anos") +
   theme(
@@ -287,13 +306,8 @@ ggplot(bd,aes(x = meses, y = ano))+
   )
 ```
 
+Utilizamos um gráfico no estilo calendário para obter uma visualização mais completa de todos os meses de todos os anos do número de nascimentos no Brasil. O calendário veio a corroborar a hipótese, confirmando que nos 15 anos analisados, os meses de março a maio possuem muito mais nascimentos que os demais, em especial os meses de outubro a dezembro.
 
+#### RPUBS
 
-
-
-
-
-
-
-
-
+O trabalho se encontra disponível no [RPubs.](http://www.rpubs.com/luizfcp/trab_final_visualizacao)
