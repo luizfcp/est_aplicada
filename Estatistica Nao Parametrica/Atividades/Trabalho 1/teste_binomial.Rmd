@@ -13,4 +13,67 @@ Desenvolva a solução para os seguintes problemas. Entregue aqui arquivo pdf co
 
 #### 1) Acredita-se que 30% das pessoas tenham problemas de audição. Numa amostra de 80 indivíduos 20 apresentaram o problema. Execute um teste binomial não paramétrico. Avalie o poder do teste. 
 
+Seja X a variável aleatória que representa se a pessoa tem ou não problemas de audição.
+
+Temos que, numa amostra de 80 indivíduos, 20 apresentaram o problema.
+
+Pelo enunciado, acredita-se que 30% das pessoas tenham o problema, assim, nossas hipóteses são:
+
+$H_0: p = 0.3$
+$H_1: p \neq 0.3$
+
+Definindo $T$ como sendo o número de pessoas que tem o problema, $T=20$.
+
+Sob a hipótese $H_0$, a variável aleatória $T$ tem distribuição Binomial(80;0.30)
+
+sig 3%
+
+```{r}
+pbinom(15,80,0.3)+pbinom(33,80,0.3,lower.tail = F)
+
+```
+
+Teremos que t1=15 e t2=34, o que gera $\alpha_1=$```r pbinom(15,80,0.3)``` e $\alpha_2=$```r pbinom(33,80,0.3,lower.tail = F)```. Logo, $\alpha=$```r pbinom(15,80,0.3)+pbinom(33,80,0.3,lower.tail = F)```
+
+Assim, não rejeitamos a hipótese nula há um nível de significância de 3%, ou seja, há evidências de que 30% das pessoas tenham problemas de audição.
+
+Avaliando agora o poder do teste, temos,
+
+```{r}
+x=seq(0,1,0.03)
+y=round(1-pbinom(20,80,x),4)
+plot(x,y, type="l")
+```
+
+<!-- Temos que quando $p=$ o poder do teste é superior -->
+<!-- a 0.05 (poder = 0.054) -->
+
+
+
 #### 2) Um industrial afirma que seu processo de fabricação produz  90% de peças dentro das especificações. Deseja-se investigar se este processo de fabricação ainda está sob controle. Uma amostra de 15  peças foi analisada e foram constatadas 10 peças dentro das especificações. Ao nível de 5% de significância, podemos dizer ser verdadeira essa afirmação?
+
+Pelo enunciado temos que um industrial afirma que produz 90% de peças dentro das especificações, ou seja, 10% fora das especificações. Temos também, uma amostra de 15 peças foi analisada e foram constatadas 5 peças fora das especificações.
+
+$H_0: p = 0.1$
+$H_1: p \neq 0.1$
+
+Definindo $T$ como sendo o número de peças fora das especificações, $T=5$.
+
+Sob a hipótese $H_0$, a variável aleatória $T$ tem distribuição Binomial(15;0.10)
+
+```{r}
+pbinom(4,15,0.1)
+pbinom(4,15,0.1,lower.tail = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
