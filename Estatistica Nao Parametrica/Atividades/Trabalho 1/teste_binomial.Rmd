@@ -7,7 +7,7 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.width = 6, fig.height = 4)
+knitr::opts_chunk$set(echo = TRUE, fig.width = 5, fig.height = 3)
 
 library(ggplot2)
 ```
@@ -51,45 +51,57 @@ Assim, temos que,
 ```
 
 
-$P(Y \leq 80) \approx P(Z \leq -0.85) = 1 - P(Z \leq 0.85) = 0,1977$
+$P(Y \leq 80) \approx P(Z \leq -0.8539) = 1 - P(Z \leq 0.8539) = 0,1966$
 
-Logo, p-valor = $2 \times P(Y \leq 80) = 0,3954$. Assim, com base no nível de significância de 5%, não rejeitamos $H_0$, ou seja, há evidências de que 30% das pessoas têm problemas de audição.
+Logo, p-valor = $2 \times P(Y \leq 80) = 0,3932$. 
 
-### Calculando utilizando a distribuição binomial
-
-Usando a distribuição binomial, o p-valor será obtido por:
-
-$P(T \leq 20) + P(T \geq np^*+(np^*-20)) = P(T \leq 20) + P(T \geq 28)$
+#### Teste Binomial
 
 ```{r}
-# Cálculos
-# (np*)+(np*-tobs)
-(80*0.3)+(80*0.3-20)
+binom.test(20, 80, 0.3)
 ```
 
-```{r}
-pbinom(20, 80, 0.3) + pbinom(28, 80, 0.3, lower.tail = F)
-```
+O p-valor obtido foi de 0,39. Logo, com base no nível de significância de 5%, não rejeitamos $H_0$, ou seja, há evidências de que 30% das pessoas têm problemas de audição.
 
-$P(T \leq 20) + P(T \geq 28) = 0,3345$
+<!-- ### Calculando utilizando a distribuição binomial -->
+
+<!-- Usando a distribuição binomial, o p-valor será obtido por: -->
+
+<!-- $P(T \leq 20) + P(T \geq np^*+(np^*-20)) = P(T \leq 20) + P(T \geq 28)$ -->
+
+<!-- ```{r} -->
+<!-- # Cálculos -->
+<!-- # (np*)+(np*-tobs) -->
+<!-- (80*0.3)+(80*0.3-20) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- pbinom(20, 80, 0.3) + pbinom(28, 80, 0.3, lower.tail = F) -->
+<!-- ``` -->
+
+<!-- $P(T \leq 20) + P(T \geq 28) = 0,3345$ -->
 
 
 ### Poder do teste
 
+O poder do teste é dado por $P(rejeitar H_0 | H_0 é falsa)$.
+
 ```{r}
 x = seq(0, 1, 0.05)
-y = round( 1-pbinom(20,80,x), 4)
+y = round( 1-(pbinom(28,80,x)-pbinom(20,80,x)), 4)
 
 ggplot(data.frame(x), aes(x, y)) +
+  scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) +
   geom_line() +
-  geom_vline(xintercept = 0.17, color = "red", linetype = "dashed") +
-  geom_hline(yintercept = 0.05, color = "red", linetype = "dashed") +
-  labs(x = "p", y = expression(alpha)) +
+  geom_vline(xintercept = 0.3, color = "red", linetype = "dashed") +
+  geom_hline(yintercept = 0.3345, color = "blue", linetype = "dashed") +
+  labs(x = "p", y = "Poder do teste") +
   theme_minimal()
 ```
 
-A partir de p=0,17, aproximadamente, o poder do teste é superior a 0,05.
+<!-- A partir de p=0,17, aproximadamente, o poder do teste é superior a 0,05. -->
 
+Com base no o poder do teste acima, temos que o poder do teste é superior a 0,33, aproximadamente, para todos os casos. Assumindo $\alpha = 0,33$ quando $p = 0,3$.
 
 ### 2) Um industrial afirma que seu processo de fabricação produz 90% de peças dentro das especificações. Deseja-se investigar se este processo de fabricação ainda está sob controle. Uma amostra de 15 peças foi analisada e foram constatadas 10 peças dentro das especificações. Ao nível de 5% de significância, podemos dizer ser verdadeira essa afirmação?
 
@@ -121,14 +133,14 @@ cat("t1 = ", t1, "\nt2 = ", t2)
 Logo, o p-valor é igual a
 
 ```{r}
-pbinom(t1,15,0.9) + pbinom(t2,15,0.9, lower.tail = F)
+pbinom(t1, 15, 0.9) + pbinom(t2, 15, 0.9, lower.tail = F)
 ```
 
 
 #### Teste Binomial
 
 ```{r}
-binom.test(10, 15, 0.9, alternative = "two.sided")
+binom.test(10, 15, 0.9)
 ```
 
 O p-valor obtido com o teste binomial foi de 0,013. Logo, com base no nível de significância de 5%, rejeitamos $H_0$, ou seja, não há evidências de que o processo de fabricação produz 90% de peças dentro das especificações.
