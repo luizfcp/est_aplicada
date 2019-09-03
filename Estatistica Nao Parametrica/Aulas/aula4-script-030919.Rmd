@@ -1,0 +1,144 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 9999)
+```
+
+## Exercício 1
+
+$H_0:$ Os sistemas A e B são equivalentes (ou Não há diferença no rendimento do carro entre os sistemas A e B)
+
+$H_1:$ O sistema B é melhor que o sistema A.
+
+Formulação do Teste do Sinal
+
+$H_0: p = 0.5$
+
+$H_1: p > 0.5$
+
+Definindo $T = $ nº de sinais +
+
+$T_{obs} = 4$
+
+T ~ Bin(n=12, p=0.5)
+
+$P(T \geq 4) = 1-P(T<4) = 1-P(T \leq 3) = 1-[P(T=0) + P(T=1) + P(T=2) + P(T=3)]$
+
+```{r}
+1-pbinom(3, 12, 0.5)
+```
+```{r}
+binom.test(4, 12, 0.5, alternative = "greater")
+```
+
+Como o p-valor é 0.927, não rejeitamos $H_0$ há um nível de significância de 0.05 (5%). Ou seja, há evidências de que os sistemas A e B são equivalentes.
+
+
+## Exercício 2
+
+```{r}
+dplyr::tibble(
+  "Sinal" = c("+", "+", "+", "+", "-", "+", "+", "+")
+)
+```
+
+
+$H_0:$ As 2 marcas sao equivalentes.
+
+$H_1:$ A marca 1 é melhor do que a marca 2.
+
+Formulação do Teste do Sinal
+
+$H_0: p = 0.5$
+
+$H_1: p > 0.5$
+
+Definindo $T =$ nº de sinais +
+
+$T_{obs} = 7$
+
+T ~ Bin(n=8, p=0.5)
+
+$P(T \geq 7) = P(T = 7) + P(T=8)$
+
+```{r}
+pbinom(6, 8, 0.5, lower.tail = F) #= 1-pbinom(7)
+```
+
+
+```{r}
+binom.test(7, 8, 0.5, alternative = "greater")
+```
+
+
+## Exercício 3
+
+## Complementar
+
+Exercício baseado no exercício 2
+
+Suponha uma amostra de tamanho n=100
+
+```{r}
+set.seed(030919)
+
+x1 = rnorm(100, 40, 10)
+y1 = rnorm(100, 35, 1)
+```
+
+x1 = marca 1, y1 = marca 2
+
+Executar o teste t pareado e o teste de sinais (exato e aproximado pela normal)
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+
+dados <- tibble(x1, y1, 
+                sinais = ifelse((x1-y1)>0, "+", "-"),
+                sinais_ind = ifelse((x1-y1)>0, 1, 0))
+
+# Analisando o total de sinais +
+t = dados$sinais_ind %>% sum()
+t
+```
+
+$H_0:$ As marcas 1 e 2 são equivalentes.
+
+$H_1:$ A marca 2 é melhor que a marca 2.
+
+Formulação do teste do sinal
+
+$H_0: p = 0.5$
+
+$H_1: p > 0.5$
+
+Definindo $T = $ nº de sinais +
+
+$T_{obs} = $ ```r t```
+
+T ~ Bin(n=100, p=0.5)
+
+```{r}
+result = binom.test(t, 100, 0.5, alternative = "greater")
+result
+```
+
+Como o p-valor é ```r result$p.value %>% round(7)```, rejeitamos $H_0$ há um nível de significância de 0.05 (5%). Ou seja, há evidências de que as 2 marcas são equivalentes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
