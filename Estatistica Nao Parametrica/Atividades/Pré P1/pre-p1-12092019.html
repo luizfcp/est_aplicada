@@ -394,11 +394,13 @@ summary {
 <p>Formulação do Teste do Sinal</p>
 <p><span class="math inline">\(H_0: p = 0.5\)</span></p>
 <p><span class="math inline">\(H_1: p \neq 0.5\)</span></p>
+<p>Seja <span class="math inline">\(X_i\)</span> os valores do pH na posição <span class="math inline">\(i\)</span></p>
+<p>Temos que, T = +, se <span class="math inline">\(X_i-7&gt;0\)</span> e -, se <span class="math inline">\(X_i-7&lt;0\)</span></p>
 <p>Definindo $T = $ número de sinais (+)</p>
 <p><span class="math inline">\(T_{obs} = 8\)</span></p>
 <p>Temos que T ~ Bin(n=10, p=0.5)</p>
 <p>Assim,</p>
-<pre class="r"><code>binom.test(x=8, n=10, p=0.5, alternative = &quot;two.sided&quot;)</code></pre>
+<pre class="r"><code>binom.test(x = 8, n = 10, p = 0.5, alternative = &quot;two.sided&quot;)</code></pre>
 <pre><code>## 
 ##  Exact binomial test
 ## 
@@ -420,10 +422,78 @@ summary {
 <p>Formulação do Teste do Sinal</p>
 <p><span class="math inline">\(H_0: p = 0.5\)</span></p>
 <p><span class="math inline">\(H_0: p \neq 0.5\)</span></p>
+<p>Seja <span class="math inline">\(X_i\)</span> os valores do conteúdo de titânio na posição <span class="math inline">\(i\)</span></p>
+<p>Temos que, T = +, se <span class="math inline">\(X_i-8.5&gt;0\)</span> e -, se <span class="math inline">\(X_i-8.5&lt;0\)</span></p>
 <p>Definindo $T = $ número de sinais (+)</p>
 <p><span class="math inline">\(T_{obs} = 7\)</span></p>
 <p>Temos que T ~ Bin(n=19, p=0.5)</p>
-<p>Para realização do Teste dos Sinais devemos descartar da amostra os valores que, sob <span class="math inline">\(H_0\)</span>, forem nulos. Neste caso, temos um valor da amostra é 8.5 e quando fazemos a diferença sob <span class="math inline">\(H_0\)</span> (8.5 - 8.5 = 0)</p>
+<p>Para realização do Teste dos Sinais devemos descartar da amostra os valores que, sob <span class="math inline">\(H_0\)</span>, forem nulos. Neste caso, temos um valor da amostra que é 8.5 e quando fazemos a diferença, sob <span class="math inline">\(H_0\)</span> (8.5 - 8.5 = 0), dá igual a 0.</p>
+<p>Assim,</p>
+<pre class="r"><code>binom.test(x = 7, n = 19, p = 0.5, alternative = &quot;two.sided&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  7 and 19
+## number of successes = 7, number of trials = 19, p-value = 0.3593
+## alternative hypothesis: true probability of success is not equal to 0.5
+## 95 percent confidence interval:
+##  0.1628859 0.6164221
+## sample estimates:
+## probability of success 
+##              0.3684211</code></pre>
+<p>Como o p-valor obtido foi de 0.3593, não rejeitamos <span class="math inline">\(H_0\)</span> há um nível de significância de 0.05 (5%). Ou seja, há evidências de que o conteúdo mediano de titânio é de 8.5%.</p>
+</div>
+<div id="section-2" class="section level2">
+<h2>5</h2>
+<p>Temos que,</p>
+<p><span class="math inline">\(H_0:\)</span> As duas pontas produzem leituras de dureza equivalentes</p>
+<p><span class="math inline">\(H_1:\)</span> As duas pontas não produzem leituras de dureza equivalentes</p>
+<p>Formulação do Teste do Sinal</p>
+<p><span class="math inline">\(H_0: p = 0.5\)</span></p>
+<p><span class="math inline">\(H_0: p \neq 0.5\)</span></p>
+<p>Seja <span class="math inline">\(X_i\)</span> os valores da leitura da Ponta 1 e <span class="math inline">\(Y_i\)</span> da Ponta 2</p>
+<p>Temos que, T = +, se <span class="math inline">\(Xi - Yi &gt; 0\)</span>, -, se <span class="math inline">\(Xi - Yi &lt; 0\)</span></p>
+<p>Definindo <span class="math inline">\(T =\)</span> número de sinais (+)</p>
+<p>T ~ Bin(n=8, p=0.5)</p>
+</div>
+<div id="section-3" class="section level2">
+<h2>13</h2>
+<pre class="r"><code>c1 = c(251, 255, 258, 257, 250, 251, 254, 250, 248)
+c2 = c(250, 253, 249, 256, 259, 252, 260, 251, NA)</code></pre>
+<p><span class="math inline">\(H_0: \mu_1 = \mu_2\)</span></p>
+<p><span class="math inline">\(H_1: \mu_1 &gt; \mu_2\)</span></p>
+<p><span class="math inline">\(H_0: p = 0.5\)</span></p>
+<p><span class="math inline">\(H_0: p &gt; 0.5\)</span></p>
+<pre class="r"><code>wilcox.test(c1, c2, alternative = &quot;greater&quot;, paired = T)</code></pre>
+<pre><code>## Warning in wilcox.test.default(c1, c2, alternative = &quot;greater&quot;, paired =
+## T): cannot compute exact p-value with ties</code></pre>
+<pre><code>## 
+##  Wilcoxon signed rank test with continuity correction
+## 
+## data:  c1 and c2
+## V = 17.5, p-value = 0.5564
+## alternative hypothesis: true location shift is greater than 0</code></pre>
+<p>Calculando a EST. DO TESTE</p>
+<pre class="r"><code>c1_c2 = c1-c2
+c1_c2</code></pre>
+<pre><code>## [1]  1  2  9  1 -9 -1 -6 -1 NA</code></pre>
+<p>Desconsiderando o valor faltante temos que n=8</p>
+<pre class="r"><code>sort(abs(c1_c2))</code></pre>
+<pre><code>## [1] 1 1 1 1 2 6 9 9</code></pre>
+<!-- Quando há repetição de valores (postos diferentes), devemos achar a média dos postos que tem os valores repetidos e associar o posto de cada valor repetido a média -->
+<!-- Nesse caso, para 1 1 1 1 -->
+<!-- m = (1+2+3+4)/4 = 2.5 -->
+<p>Quando temos valores repetidos nos postos, atribuimos a média da soma destes postos:</p>
+<p>Pstos de 1 a 4</p>
+<p>Soma destes postos = 1+2+3+4 = 10</p>
+<p>Media desta soma = 2.5</p>
+<p>Postos 7 e 8</p>
+<p>Soma = 7+8 = 15</p>
+<p>Media = 15/2 = 7.5</p>
+<p><span class="math inline">\(R_+ = 2.5 + 2.5 + 5 + 7.5 = 17.5\)</span></p>
+<p><span class="math inline">\(R_- = 2.5 + 2.5 + 6 + 7.5 = 18.5\)</span></p>
+<p>APROX. NORMAL</p>
+<p><span class="math inline">\(P(R \leq 17,5) =~ P(Z \leq (17.5-\mu)/\sigma) = P(Z \leq (17.5-18)/7.1 = P(Z \leq -0.07)\)</span></p>
 </div>
 </div>
 
