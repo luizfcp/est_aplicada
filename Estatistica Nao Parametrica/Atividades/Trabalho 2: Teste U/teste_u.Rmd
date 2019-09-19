@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- Os alunos deverão estudar o capítulo 4 do arquivo anexo, realizar o exemplo da página 62 a 66 utilizando o R (pesquisar o comando que realiza o teste). Finalizar com a resolução do exercício questão 1 pág 74. Esta tarefa deverá ser feita como compensação da semana em que estarei no LatinR. -->
