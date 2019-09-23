@@ -1,0 +1,242 @@
+---
+title: "ESTATÍSTICA NÃO PARAMÉTRICA"
+subtitle: "Avaliação Prática da parte 1"
+author: "Luiz Fernando Coelho Passos"
+date: "19 de Setembro de 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 5, fig.height = 3)
+```
+
+# Questão 1
+
+```{r}
+set.seed(19092019); x = rnorm(n = 100, mean = 30, sd = 10)
+```
+
+Pelo enunciado, nossas hipóteses são
+
+$H_0: mediana = 30$
+
+$H_1: mediana > 30$
+
+#### Teste dos Sinais
+
+Formulação do Teste dos Sinais
+
+$H_0: p = 0.5$
+
+$H_1: p > 0.5$
+
+Seja $X_i$ os valores de X na posição $i$
+
+Temos que, $T$ = +, se $X_i > 30$ e -, se $X_i < 30$ 
+
+```{r}
+x1 = x[x>30]
+x2 = x[x<30]
+x3 = x[x==30]
+
+length(x3)
+```
+
+Como não temos valores nulos, ou seja, valores onde $X_i - 30 = 0$, então, definindo $T =$ número de sinais (+).
+
+```{r}
+length(x1)
+```
+
+
+$T_{obs} = 46$
+
+Temos que $T$ ~ Bin(n=100, p=0.5)
+
+Assim, calculando o p-valor para o Teste dos Sinais
+
+```{r}
+binom.test(x = 46, n = 100, p = 0.5, alternative = "greater")
+```
+
+Como o p-valor obtido foi de 0.8159, não rejeitamos $H_0$ a um nível de significância de 0.05 (5%). Ou seja, há evidências de que a mediana é igual a 30.
+
+#### Teste de Wilcoxon
+
+Calculando o p-valor para o Teste de Wilcoxon
+
+```{r}
+wilcox.test(x = x, mu = 30, alternative = "greater")
+```
+
+Como o p-valor obtido foi de 0.6719, não rejeitamos $H_0$ a um nível de significância de 0.05 (5%). Ou seja, há evidências de que a mediana é igual a 30.
+
+# Questão 2
+
+Pelo enunciado, temos que n=10 e nossas hipóteses são
+
+$H_0: p = 0.5$
+
+$H_1: p > 0.5$
+
+#### Região Crítica
+
+```{r}
+tibble::tibble("x" = 0:10, y = sprintf("%.4f", 1-pbinom(-1:9, 10, 0.5), 4))
+```
+
+Como podemos observar, com base num nível de significância de 5%, a região crítica para o teste em questão é $P(T>8)$.
+
+#### Poder do teste
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+ 
+x = seq(0, 1, 0.05)
+y = round(1 - pbinom( 8, 10, x), 4)
+
+ggplot(data.frame(x, y), aes(x, y)) + 
+  geom_line() +
+  geom_hline(yintercept = 0.05, color = "red", linetype = "dashed") + 
+  geom_vline(xintercept = 0.60, color = "red", linetype = "dashed") + 
+  labs(x = "p", y = "poder do teste") +
+  theme_minimal()
+```
+
+Como podemos observar, a partir de p = 0.6, aproximadamente, o poder do teste é superior a 0.05 (nível de significância de 5%). Assim, temos que o teste é não tendencioso para estes valores de p.
+
+# Questão 3
+
+Dados
+
+```{r}
+x1 = c( 2, 3, 4,10, 8, 3,10,10, 8, 6, 8, 8)
+x2 = c( 2, 2, 4, 6, 6, 2, 4, 8,10, 8, 3, 4)
+
+tibble::tibble("idoso"=1:12, x1, x2)
+```
+
+Temos que nossas hipóteses são
+
+$H_0:$ Não houve melhora no nível de estresse
+
+$H_1:$ Houve melhora no nível de estresse
+
+Ou seja, 
+
+$H_0: \text{nível de estresse antes }(X_1) = \text{nível de estresse depois }(X_2)$
+
+$H_1: \text{nível de estresse antes }(X_1) > \text{nível de estresse depois }(X_2)$
+
+#### Utilizaremos o Teste de Wilcoxon
+
+Foi escolhido o Teste de Wilcoxon, pois além de considerar o sinal, como no Teste do Sinal, também leva em conta a posição das diferenças entre as variáveis $X_1$ e $X_2$.
+
+#### Formulação
+
+Calculando a diferença entre $X_1$ e $X_2$
+
+```{r}
+x1_x2 = x1-x2
+x1_x2
+```
+
+Desconsiderando os valores nulos temos que n = 10.
+
+Colocando em ordem crescente os valores absolutos resultante da diferença e desconsiderando os nulos, temos
+
+```{r}
+sort(abs(x1_x2[x1_x2!=0]))
+```
+
+Como há valores repetidos, devemos fazer a média dos postos entre eles
+
+\textit{Postos 1 e 2 (valores iguais a 1)}
+
+Média da soma dos postos = $1+2 \over 2$ = 1.5
+
+\textit{Postos 3 a 6 (valores iguais a 2)}
+
+Média da soma dos postos = $3+4+5+6 \over 4$ = 4.5
+
+\textit{Postos 7 e 8 (valores iguais a 4)}
+
+Média da soma dos postos = $7+8 \over 2$ = 7.5
+
+Assim, temos que
+
+$R_+$ = soma dos postos com sinal positivo = $1.5 + 1.5 + 4.5 + 4.5 + 7.5 + 7.5 + 9 + 10 = 46$
+
+$R_-$ = soma dos postos com sinal negativo = $4.5 + 4.5 = 9$
+
+Logo, como definido em sala, a estatística de teste é R = min{$R_+$ , $R_-$}.
+
+#### P-valor
+
+```{r}
+wilcox.test(x1, x2, paired = TRUE, alternative = "greater")
+```
+
+\textit{\textbf{OBS:} Pode-se notar que a função} `wilcox.test()` \textit{utilizou o valor de $R_+ = 46$.}
+
+Como o p-valor obtido foi de 0.03221, rejeitamos $H_0$ a um nível de significância de 0.05 (5%). Ou seja, há evidências de que houve melhora no nível de estresse dos idosos com a adoção do programa.
+
+
+<!-- Utilizaremos o Teste de Sinais -->
+
+<!-- #### Formulação -->
+
+<!-- $H_0: p = 0.5$ -->
+
+<!-- $H_1: p > 0.5$ -->
+
+<!-- Seja $X_{1i}$ os valores de $X_1$ na posição $i$ e $X_{2i}$ os valores de $X_2$ na posição $i$ -->
+
+<!-- Temos que, $T = + \text{, se } X_{1i} - X_{2i} > 0 \text{ e } - \text{, se } X_{1i} - X_{2i} < 0$ -->
+
+<!-- ```{r} -->
+<!-- x1_x2 = x1-x2  -->
+<!-- x1_x2 -->
+<!-- ``` -->
+
+<!-- Como temos valores nulos, ou seja, valores onde $X_{1i} - X_{2i} = 0$, então, vamos retira-los para formulação do Teste. Assim, temos que n=10. -->
+
+<!-- ```{r} -->
+<!-- x1_x2 = x1_x2[x1_x2!=0] -->
+<!-- length(x1_x2) -->
+<!-- ``` -->
+
+<!-- Definindo $T = \text{número de sinais (+).}$ -->
+
+<!-- ```{r} -->
+<!-- length(x1_x2[x1_x2>0]) -->
+<!-- ``` -->
+
+<!-- $T_{obs} = 8$ -->
+
+<!-- Temos que T ~ Bin(n=10, p=0.5) -->
+
+<!-- Assim, calculando o p-valor para o Teste de Sinais -->
+
+<!-- ```{r} -->
+<!-- binom.test(x = 8, n = 10, p = 0.5, alternative = "less") -->
+<!-- ``` -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
