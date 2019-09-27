@@ -1,7 +1,8 @@
 ---
-title: ""
-subtitle: ""
-date: ""
+title: "Estatística Não Paramétrica"
+subtitle: "Mann-Whitney U-test"
+author: "Luiz Fernando Coelho Passos"
+date: "27 de Setembro de 2019"
 output: pdf_document
 ---
 
@@ -10,3 +11,85 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 <!-- Os alunos deverão estudar o capítulo 4 do arquivo anexo, realizar o exemplo da página 62 a 66 utilizando o R (pesquisar o comando que realiza o teste). Finalizar com a resolução do exercício questão 1 pág 74. Esta tarefa deverá ser feita como compensação da semana em que estarei no LatinR. -->
+
+## Páginas 62 a 66
+
+```{r message=FALSE, warning=FALSE}
+library(knitr)
+
+Method = rep(1:2, each = 7)
+Score = c(38, 39, 40, 41, 48, 50, 53, 10, 12, 14, 17, 18, 20, 102)
+
+kable(data.frame(Method, Score))
+```
+
+Nossas hipóteses são:
+
+$H_0:$ Os métodos 1 e 2 são equivalentes.
+
+$H_1:$ Os métodos 1 e 2 não são equivalentes.
+
+Realizaremos o teste de Wilcoxon-Mann-Whitney (Mann-Whitney U-test):
+
+```{r}
+wilcox.test(Score~Method)
+```
+
+O p-valor obtido foi 0.02622. Logo, com base num nível de significância de 5%, rejeitamos $H_0$, ou seja, há evidências de que os métodos 1 e 2 não são equivalentes.
+
+
+## Exercício questão 1 pág 74
+
+```{r}
+Method = rep(c("One-on-one", "Small group"), each = 10)
+gain_score = c(16, 13, 16, 16, 13, 9, 12, 12, 20, 17, 11, 2, 10, 4, 9, 8, 5, 6, 4, 16)
+
+kable(data.frame(Method, "Gain Score" = gain_score))
+```
+
+Nossas hipóteses são:
+
+$H_0:$ Os métodos One-on-one e Small group são equivalentes.
+
+$H_1:$ Os métodos One-on-one e Small group não são equivalentes.
+
+Realizaremos o teste de Wilcoxon-Mann-Whitney (Mann-Whitney U-test):
+
+```{r}
+wilcox.test(gain_score~Method)
+```
+
+O p-valor obtido foi 0.002086. Logo, com base num nível de significância de 5%, rejeitamos $H_0$, ou seja, há evidências de que os métodos One-on-one e Small group não são equivalentes.
+
+### Encontrando a soma dos ranks para os 2 métodos:
+
+\newpage
+
+#### Método One-on-one
+
+```{r}
+sum(rank(gain_score)[ 1:10])
+```
+
+#### Método Small group
+
+```{r}
+sum(rank(gain_score)[11:20])
+```
+
+### Encontrando o valor W para os 2 métodos:
+
+#### Método One-on-one
+
+```{r}
+sum(rank(gain_score)[ 1:10]) - 10*11/2
+```
+
+#### Método Small group
+
+```{r}
+sum(rank(gain_score)[11:20]) - 10*11/2
+```
+
+Assim, temos que a soma dos ranks do método One-on-one é maior que a soma dos ranks do método Small group. Portanto, podemos afirmar que o método One-on-one foi melhor para o ensino da leitura.
+
