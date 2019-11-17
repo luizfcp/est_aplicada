@@ -111,10 +111,9 @@ ic
 
 # Questão 3
 
-Para realizar uma pesquisa a fim de estimar a proporção de indivíduos com renda maior que R\$1500,00 foi considerado uma população, os moradores do município V, que para realizar a estimação será implementada a técnica de amostragem estratificada com alocação proporcional sem reposição, onde os estratos serão diferenciados pela localidade do município onde o morador reside. Para utilizar este modelo é necessário que a população tenha um cadastro prévio com informações sobre os moradores. Satisfazendo esta condição, já se tem um cadastro dos moradores do município V, com isso é possível prosseguir com a amostragem estratificada. Dentro de cada estrato é definido um tamanho de amostra que será definido por $n_h$, que tem sua fórmula abaixo: 
+Para realizar uma pesquisa a fim de estimar a proporção de indivíduos com renda maior que R\$1500,00 foi considerado uma população, os moradores do município V, e para realizar a estimação será implementada a técnica de amostragem estratificada com alocação proporcional sem reposição, onde os estratos serão diferenciados pela localidade do município onde o morador reside. Para utilizar este modelo é necessário que a população tenha um cadastro prévio com informações sobre os moradores. Satisfazendo esta condição, tendo um cadastro dos moradores do município V, com informações sobre a escolaridade do pai, sexo e localidade onde o morador reside dentro do município. Com o cadastro em mãos, o método de coleta de informações sobre a renda será por uma amostragem aleatória sistemática, onde o entrevistador a partir de uma casa inicial é instruído a ir de três em três casas solicitando ao morador ou moradores que respondam o formulário sobre a renda. Caso na casa onde será feita a entrevista não houver ninguém no momento, é instruído ao entrevistador que volte no dia seguinte nesta mesma casa para tentar mais uma vez. Caso mesmo assim não houver ninguém em casa, é orientado que prossiga a pesquisa na casa seguinte. Dado esta listagem de informações feita, será calculado o tamanho da amostra em cada estrato, que será definido por $n_h$ e tem sua fórmula observada abaixo:
 
 $$ n_h = nW_h $$
-
 Onde $n$ é o tamanho da amostra e  $N_h$ é o tamanho da população no estrato $h$ e $N$ é o tamanho total da população.
 
 ```{r}
@@ -172,7 +171,7 @@ which.min(df_vars)
 
 Assim, temos que a *localidade* possui menor variância em relação a renda. Logo, utilizaremos a variável *localidade* para estratificar a população.
 
-Agora calcularemos o valor de `\hat{p_h}` baseado na amostra piloto e de $n$, utilizando a fórmula $n = \frac{\sum_{h=1}^{H} W_h S^2_h }{D + \frac{1}{N} \sum_{h=1}^{H}  W_h S^2_h }$
+Agora calcularemos o valor de `\hat{p_h}` baseado na amostra piloto e de $n$, utilizando a fórmula $$ n = \frac{\sum_{h=1}^{H} W_h S^2_h }{D + \frac{1}{N} \sum_{h=1}^{H}  W_h S^2_h } $$
 
 ```{r}
 Y1 = amostra_piloto %>% filter(localidade=="A" & renda>=1500) %>% nrow()
@@ -235,7 +234,7 @@ sum(n1, n2, n3)
 
 Calculado o tamanho da amostra em cada estrato é possível calcular a estimativa da variância do estimador, onde o estimador é a proporção de indivíduos com renda maior que R$1500,00. A fórmula pode ser observada abaixo:
 
-$$ \widehat{Var(\hat{p})} = \sum_{h=1}^{H} W^2_h (1-f_h) \frac{\hat{p_h}(1-\hat{p_h})}{n_h-1} $$
+$$ \widehat{Var(\hat{p}_{es})} = \sum_{h=1}^{H} W^2_h (1-f_h) \frac{\hat{p_h}(1-\hat{p_h})}{n_h-1} $$
 
 Calculando a estimativa para a variância do estimador usado neste contexto:
 
@@ -285,3 +284,20 @@ ic
 ```
 
 # Questão 5
+
+Para verificarmos qual plano amostral é o mais eficiente na execução da pesquisa, vamos aplicar o método do Efeito do Planejamento. Dessa  maneira, a partir das variâncias observadas em cada um dos planos vamos tomar a decisão de qual plano amostral vamos adotar.
+
+A fórmula do Efeito do Planejamento é dada por: $$ EPA = \frac{V_{AE_{pr}} (\hat{p}) }{V_{AAS_S} (\hat{p}) }  = 1 - \frac{ \widehat{Var(\hat{p}_{es})} }{ \widehat{Var(\hat{p})} }$$.
+
+Veja que se $EPA > 1$, o plano no numerador é o menos eficiente, no entanto se $EPA < 1$, o plano no denominador é o menos eficiente e caso $EPA = 1$ ambos os planos são de igual maneira eficientes.
+
+```{r}
+EPA = 1-(varhat_phat_es/varhat)
+EPA
+```
+
+Logo, podemos concluir, como esperado, que o plano $AAS_s$ é menos eficiente em relação ao plano $AE_{pr}$.
+
+
+
+
