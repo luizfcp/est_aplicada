@@ -12,6 +12,9 @@ options(scipen = 999999)
 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
+library(purrr)
+library(tidyr)
+library(magrittr)
 
 munic = read.csv2("dados_municipioV.csv")
 renda = read.csv2("dados_renda.csv")
@@ -21,8 +24,7 @@ df = inner_join(munic, renda)
 
 # Questão 1
 
-Deseja-se realizar uma pesquisa a fim de fazer um levantamento para estimar a porcentagem de indivíduos que possuem a renda superior a R$ 1500,00. A população considerada para tal pesquisa foram os indivíduos moradores do município V.
-Foi implementado um modelo de amostra probabilística do tipo amostra aleatória simples sem reposição, que para ser efetuado é necessário um cadastro prévio da população observada, que para esta pesquisa são os moradores do município V, onde já se tem um cadastro contendo informações suficientes para a efetuar a amostragem simples. Dado esta condição satisfeita, o primeiro passo é definir o tamanho da amostra, que será representada por “n”, que tem sua fórmula representada abaixo:
+Deseja-se realizar uma pesquisa a fim de fazer um levantamento para estimar a porcentagem de indivíduos que possuem a renda superior a R$ 1500,00. A população considerada para tal pesquisa foram os indivíduos moradores do município V. Para tal foi implementado um modelo de amostra probabilística do tipo amostra aleatória simples sem reposição, que para ser efetuado é necessário um cadastro prévio da população observada, e para os moradores do município V já se tem um cadastro contendo informações sobre o sexo, escolaridade do pai e a localidade do município onde o morador reside. Para estimar a proporção de renda maior que mil e quinhentos reais, primeiramente com o cadastro em mãos e com uma amostragem aleatória sistemática definida como, ir de três em três casas coletando informações sobre a renda do morador ou moradores, será de responsabilidade do entrevistador realizar a pesquisa nas casas, preenchendo um formulário de acordo com as respostas do morador. Caso não houver ninguém em casa, é instruído ao entrevistador voltar no dia seguinte na mesma casa. E se mesmo assim não houver sucesso é orientado a efetuar a pesquisa na casa ao lado. Com a listagem da renda feita, o segundo passo é definir o tamanho da amostra, que será representada por “n”, e tem sua fórmula observada abaixo:
 
 $$
 n = \frac{N}{ \frac{(N-1)D}{p(1-p)} +1}
@@ -42,7 +44,7 @@ Assim, vamos calcular $n$ e $\hat{p}$.
 Utilizaremos em nossos cálculos um erro ($B$) de 0.05.
 
 ```{r}
-set.seed(2019); D = (0.05)^2/(qnorm(0.975))^2
+set.seed(2019); D = ((0.05)^2)/(qnorm(0.975))^2
 
 set.seed(2019); amost_piloto = sample_n(df, 50)
 amost_phat = amost_piloto %>% filter(renda>=1500)
@@ -116,37 +118,102 @@ $$ n_h = nW_h $$
 Onde $n$ é o tamanho da amostra e  $N_h$ é o tamanho da população no estrato $h$ e $N$ é o tamanho total da população.
 
 ```{r}
-h = df %>% select(localidade) %>% distinct() %>% nrow()
+n_piloto = 5
 
-h1 = df %>% filter(localidade=="A") 
-h2 = df %>% filter(localidade=="B") 
-h3 = df %>% filter(localidade=="C") 
-
-set.seed(2019); piloto_A = sample_n(h1, 10)
-set.seed(2019); piloto_B = sample_n(h2, 10)
-set.seed(2019); piloto_C = sample_n(h3, 10)
-
-phat1 = (piloto_A %>% filter(renda>=1500) %>% nrow())/10
-phat2 = (piloto_B %>% filter(renda>=1500) %>% nrow())/10
-phat3 = (piloto_C %>% filter(renda>=1500) %>% nrow())/10
+amostra_piloto = df %>%
+  group_by(localidade, escolaridade_pai, sexo) %>%
+  group_split() %>% 
+  map(~ .x %>% sample_n(n_piloto)) %>% 
+  bind_rows()
 ```
 
-Descartando a amostra piloto do nosso banco de dados:
+#### Localidade
 
 ```{r}
-h1_modificada = anti_join(h1, piloto_A, by = "codigo")
-h2_modificada = anti_join(h2, piloto_B, by = "codigo")
-h3_modificada = anti_join(h3, piloto_C, by = "codigo")
+var_loc = 
+  amostra_piloto %>% 
+  nest(-localidade) %>% 
+  mutate(vars = map(
+    data, ~ .x %$% var(renda)
+  )) %$% vars %>% unlist() %>% sum()
+```
 
-N1 = nrow(h1_modificada)
-N2 = nrow(h2_modificada)
-N3 = nrow(h3_modificada)
+#### Escolaridade do pai
 
-W1 = (N1/N) %>% round(1)
-W2 = (N2/N) %>% round(1)
-W3 = (N3/N) %>% round(1)
+```{r}
+var_escol = 
+  amostra_piloto %>% 
+  nest(-escolaridade_pai) %>% 
+  mutate(vars = map(
+    data, ~ .x %$% var(renda)
+  )) %$% vars %>% unlist() %>% sum()
+```
+
+#### Sexo
+
+```{r}
+var_sexo = 
+  amostra_piloto %>% 
+  nest(-sexo) %>% 
+  mutate(vars = map(
+    data, ~ .x %$% var(renda)
+  )) %$% vars %>% unlist() %>% sum()
+```
+
+#### Menor variância
+
+```{r}
+df_vars = data.frame("Localidade" = var_loc, 
+                     "Escolaridade do pai" = var_escol, 
+                     "Sexo" = var_sexo)
+
+which.min(df_vars)
+```
+
+Assim, temos que a *localidade* possui menor variância em relação a renda. Logo, utilizaremos a variável *localidade* para estratificar a população.
+
+Agora calcularemos o valor de `\hat{p_h}` baseado na amostra piloto e de $n$, utilizando a fórmula $n = \frac{\sum_{h=1}^{H} W_h S^2_h }{D + \frac{1}{N} \sum_{h=1}^{H}  W_h S^2_h }$
+
+```{r}
+Y1 = amostra_piloto %>% filter(localidade=="A" & renda>=1500) %>% nrow()
+Y2 = amostra_piloto %>% filter(localidade=="B" & renda>=1500) %>% nrow()
+Y3 = amostra_piloto %>% filter(localidade=="C" & renda>=1500) %>% nrow()
+
+N1_amostra = amostra_piloto %>% filter(localidade=="A") %>% nrow()
+N2_amostra = amostra_piloto %>% filter(localidade=="B") %>% nrow()
+N3_amostra = amostra_piloto %>% filter(localidade=="C") %>% nrow()
+
+phat1 = Y1/N1_amostra
+phat2 = Y2/N2_amostra
+phat3 = Y3/N3_amostra
+
+df_modificada_h = anti_join(df, amostra_piloto)
+
+N1 = df_modificada_h %>% filter(localidade=="A") %>% nrow()
+N2 = df_modificada_h %>% filter(localidade=="B") %>% nrow()
+N3 = df_modificada_h %>% filter(localidade=="C") %>% nrow()
+
+N = nrow(df_modificada_h)
+
+W1 = (N1/N)
+W2 = (N2/N)
+W3 = (N3/N)
 
 sum(W1, W2, W3)
+
+S1 = ( N1/(N1-1) )*(phat1*(1-phat1))
+S2 = ( N2/(N2-1) )*(phat2*(1-phat2))
+S3 = ( N3/(N3-1) )*(phat3*(1-phat3))
+
+numerador = (W1*S1)+(W2*S2)+(W3*S3)
+
+# Utilizaremos em nossos cálculos um erro B de 0.05
+D = ((0.05)^2)/(qnorm(0.975))^2
+
+denominador = D + ((1/N)*numerador)
+
+n = (numerador/denominador) %>% ceiling()
+n
 ```
 
 Assim, $\hat{p}_{es} = \sum_{h=1}^{H}W_h\hat{p}_h$
@@ -156,7 +223,7 @@ phat_es = (W1*phat1) + (W2*phat2) + (W3*phat3)
 phat_es
 ```
 
-Encontrando os $n_h$. Utilizaremos o valor de $n$ já calculado em questão anterior:
+Encontrando os $n_h$.
 
 ```{r}
 n1 = n*W1
@@ -216,3 +283,5 @@ zphat_es = z_alfa2*sqrt(parcela_1 + parcela_2 + parcela_3)
 ic = paste("IC(p, 0.95%):", "[", phat_es-zphat_es %>% round(4), ";", phat_es+zphat_es %>% round(4), "]")
 ic
 ```
+
+# Questão 5
