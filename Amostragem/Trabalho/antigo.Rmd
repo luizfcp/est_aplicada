@@ -287,12 +287,12 @@ ic
 
 Para verificarmos qual plano amostral é o mais eficiente na execução da pesquisa, vamos aplicar o método do Efeito do Planejamento. Dessa  maneira, a partir das variâncias observadas em cada um dos planos vamos tomar a decisão de qual plano amostral vamos adotar.
 
-A fórmula do Efeito do Planejamento é dada por: $$ EPA = \frac{V_{AE_{pr}} (\hat{p}) }{V_{AAS_S} (\hat{p}) }  = 1 - \frac{ \widehat{Var(\hat{p}_{es})} }{ \widehat{Var(\hat{p})} }$$.
+A fórmula do Efeito do Planejamento é dada por: $$ EPA = \frac{V_{AE_{pr}} (\hat{p}) }{V_{AAS_S} (\hat{p}) }  = \frac{ \widehat{Var(\hat{p}_{es})} }{ \widehat{Var(\hat{p})} }$$.
 
 Veja que se $EPA > 1$, o plano no numerador é o menos eficiente, no entanto se $EPA < 1$, o plano no denominador é o menos eficiente e caso $EPA = 1$ ambos os planos são de igual maneira eficientes.
 
 ```{r}
-EPA = 1-(varhat_phat_es/varhat)
+EPA = (varhat_phat_es/varhat)
 EPA
 ```
 
