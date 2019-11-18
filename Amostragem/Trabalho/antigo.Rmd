@@ -19,7 +19,7 @@ library(magrittr)
 munic = read.csv2("dados_municipioV.csv")
 renda = read.csv2("dados_renda.csv")
 
-df = inner_join(munic, renda) # Base de dados
+df = inner_join(munic, renda)
 ```
 
 # Questão 1
@@ -41,24 +41,20 @@ Onde $\hat{p}$ é o estimador da proporção e $f = \frac{n}{N}$.
 
 Assim, vamos calcular $n$ e $\hat{p}$.
 
+Utilizaremos em nossos cálculos um erro ($B$) de 0.05.
+
 ```{r}
-# Cálculo de 'D'
 set.seed(2019); D = ((0.05)^2)/(qnorm(0.975))^2
 
-# Amostra piloto
 set.seed(2019); amost_piloto = sample_n(df, 50)
-
 amost_phat = amost_piloto %>% filter(renda>=1500)
 
-# Cálculo do 'p chapéu'
 phat = nrow(amost_phat)/nrow(amost_piloto)
-phat
 
 df_modificada = anti_join(df, amost_piloto, by = "codigo")
 
 N = nrow(df_modificada)
 
-# Cálculo de 'n'
 n = (N/( ( (N-1)*D/phat*(1-phat) ) + 1 )) %>% ceiling() # ceiling() arredonda para cima
 n
 ```
@@ -72,15 +68,9 @@ df_hajek = cbind(df_modificada, hajek) %>% arrange(hajek) %>% .[1:n, ]
 df_hajek %>% head()
 
 sumYi_amostra = nrow(df_hajek %>% filter(renda>=1500))
-sumYi_amostra
 
 phat = sumYi_amostra/n
-phat
-```
 
-Assim, temos que a variância do estimador é dada por:
-
-```{r}
 varhat = (1-n/N)*( phat*(1-phat)/(n-1) )
 varhat
 ```
@@ -98,7 +88,7 @@ $$
 Assim,
 
 ```{r}
-phat = nrow(df_hajek %>% filter(renda>=1500))/n
+phat = (nrow(df_hajek %>% filter(renda>=1500))/n) %>% round(2)
 phat
 ```
 
@@ -129,13 +119,11 @@ Onde $n$ é o tamanho da amostra e  $N_h$ é o tamanho da população no estrato
 ```{r}
 n_piloto = 5
 
-set.seed(2019); amostra_piloto = df %>%
+amostra_piloto = df %>%
   group_by(localidade, escolaridade_pai, sexo) %>%
   group_split() %>% 
   map(~ .x %>% sample_n(n_piloto)) %>% 
   bind_rows()
-
-amostra_piloto
 ```
 
 #### Localidade
@@ -178,12 +166,10 @@ df_vars = data.frame("Localidade" = var_loc,
                      "Escolaridade do pai" = var_escol, 
                      "Sexo" = var_sexo)
 
-df_vars
-
 which.min(df_vars)
 ```
 
-Assim, temos que a variável *localidade* possui a menor variância em relação a renda. Logo, utilizaremos a variável *localidade* para estratificar a população.
+Assim, temos que a *localidade* possui menor variância em relação a renda. Logo, utilizaremos a variável *localidade* para estratificar a população.
 
 Agora calcularemos o valor de `\hat{p_h}` baseado na amostra piloto e de $n$, utilizando a fórmula $$ n = \frac{\sum_{h=1}^{H} W_h S^2_h }{D + \frac{1}{N} \sum_{h=1}^{H}  W_h S^2_h } $$
 
@@ -192,38 +178,36 @@ Y1 = amostra_piloto %>% filter(localidade=="A" & renda>=1500) %>% nrow()
 Y2 = amostra_piloto %>% filter(localidade=="B" & renda>=1500) %>% nrow()
 Y3 = amostra_piloto %>% filter(localidade=="C" & renda>=1500) %>% nrow()
 
-data.frame(Y1, Y2, Y3)
-
 N1_amostra = amostra_piloto %>% filter(localidade=="A") %>% nrow()
 N2_amostra = amostra_piloto %>% filter(localidade=="B") %>% nrow()
 N3_amostra = amostra_piloto %>% filter(localidade=="C") %>% nrow()
-
-data.frame(N1_amostra, N2_amostra, N3_amostra)
-
-N_amostra = N1_amostra+N2_amostra+N3_amostra
-N_amostra
 
 phat1 = Y1/N1_amostra
 phat2 = Y2/N2_amostra
 phat3 = Y3/N3_amostra
 
-data.frame(phat1, phat2, phat3)
+df_modificada_h = anti_join(df, amostra_piloto)
 
-W1 = (N1_amostra/N_amostra)
-W2 = (N2_amostra/N_amostra)
-W3 = (N3_amostra/N_amostra)
+N1 = df_modificada_h %>% filter(localidade=="A") %>% nrow()
+N2 = df_modificada_h %>% filter(localidade=="B") %>% nrow()
+N3 = df_modificada_h %>% filter(localidade=="C") %>% nrow()
 
-data.frame(W1, W2, W3, "soma" = sum(W1, W2, W3))
+N = nrow(df_modificada_h)
 
-S1 = ( N1_amostra/(N1_amostra-1) )*( phat1*(1-phat1) )
-S2 = ( N2_amostra/(N2_amostra-1) )*( phat2*(1-phat2) )
-S3 = ( N3_amostra/(N3_amostra-1) )*( phat3*(1-phat3) )
+W1 = (N1/N)
+W2 = (N2/N)
+W3 = (N3/N)
 
-data.frame(S1, S2, S3)
+sum(W1, W2, W3)
+
+S1 = ( N1/(N1-1) )*(phat1*(1-phat1))
+S2 = ( N2/(N2-1) )*(phat2*(1-phat2))
+S3 = ( N3/(N3-1) )*(phat3*(1-phat3))
 
 numerador = (W1*S1)+(W2*S2)+(W3*S3)
 
-D = ((0.03)^2)/(qnorm(0.975))^2
+# Utilizaremos em nossos cálculos um erro B de 0.05
+D = ((0.05)^2)/(qnorm(0.975))^2
 
 denominador = D + ((1/N)*numerador)
 
@@ -231,58 +215,21 @@ n = (numerador/denominador) %>% ceiling()
 n
 ```
 
+Assim, $\hat{p}_{es} = \sum_{h=1}^{H}W_h\hat{p}_h$
+
+```{r}
+phat_es = (W1*phat1) + (W2*phat2) + (W3*phat3)
+phat_es
+```
+
 Encontrando os $n_h$.
 
 ```{r}
-df_modificada_h = anti_join(df, amostra_piloto, by = "codigo")
-
-N1 = df_modificada_h %>% filter(localidade=="A") %>% nrow()
-N2 = df_modificada_h %>% filter(localidade=="B") %>% nrow()
-N3 = df_modificada_h %>% filter(localidade=="C") %>% nrow()
-
-N = N1+N2+N3
-
-W1 = (N1/N)
-W2 = (N2/N)
-W3 = (N3/N)
-
-n1 = ( n*W1 )
-n2 = ( n*W2 )
-n3 = ( n*W3 )
-
-data.frame(n1, n2, n3)
-
-# Assim,
-
-n1 = ( n*W1 ) %>% floor()
-n2 = ( n*W2 ) %>% round()
-n3 = ( n*W3 ) %>% round()
-
-data.frame(n1, n2, n3)
+n1 = n*W1
+n2 = n*W2
+n3 = n*W3
 
 sum(n1, n2, n3)
-```
-
-Assim, $\hat{p}_{es} = \sum_{h=1}^{H}W_h\hat{p}_h$, onde $\hat{p}_h = \frac{1}{n_h}\sum_{i \in S}Y_{{i}_h}$
-
-```{r}
-set.seed(2019); sumY1_amostra = df_modificada_h %>% sample_n(n1) %>% 
-  filter(localidade=="A" & renda>=1500) %>% nrow()
-set.seed(2019); sumY2_amostra = df_modificada_h %>% sample_n(n2) %>% 
-  filter(localidade=="B" & renda>=1500) %>% nrow()
-set.seed(2019); sumY3_amostra = df_modificada_h %>% sample_n(n3) %>% 
-  filter(localidade=="C" & renda>=1500) %>% nrow()
-
-data.frame(sumY1_amostra, sumY2_amostra, sumY3_amostra)
-
-phat_h1 = sumY1_amostra/n1
-phat_h2 = sumY2_amostra/n2
-phat_h3 = sumY3_amostra/n3
-
-data.frame(phat_h1, phat_h2, phat_h3)
-
-phat_es = (W1*phat_h1) + (W2*phat_h2) + (W3*phat_h3)
-phat_es
 ```
 
 Calculado o tamanho da amostra em cada estrato é possível calcular a estimativa da variância do estimador, onde o estimador é a proporção de indivíduos com renda maior que R$1500,00. A fórmula pode ser observada abaixo:
@@ -292,12 +239,12 @@ $$ \widehat{Var(\hat{p}_{es})} = \sum_{h=1}^{H} W^2_h (1-f_h) \frac{\hat{p_h}(1-
 Calculando a estimativa para a variância do estimador usado neste contexto:
 
 ```{r}
-parcela_1 = (W1^2)*( 1-(n1/N1) )*( phat_h1*(1-phat_h1)/(n1-1) )
-parcela_2 = (W2^2)*( 1-(n2/N2) )*( phat_h2*(1-phat_h2)/(n2-1) )
-parcela_3 = (W3^2)*( 1-(n3/N3) )*( phat_h3*(1-phat_h3)/(n3-1) )
+parcela_1 = (W1^2)*( 1-(n1/N1) )*( phat1*(1-phat1)/(n1-1) )
+parcela_2 = (W2^2)*( 1-(n2/N2) )*( phat2*(1-phat2)/(n2-1) )
+parcela_3 = (W3^2)*( 1-(n3/N3) )*( phat3*(1-phat3)/(n3-1) )
 
 varhat_phat_es = parcela_1 + parcela_2 + parcela_3
-varhat_phat_es
+varhat_phat_es %>% round(6)
 ```
 
 # Questão 4
@@ -313,7 +260,7 @@ $$
 Assim,
 
 ```{r}
-phat_es = (W1*phat_h1) + (W2*phat_h2) + (W3*phat_h3)
+phat_es = (W1*phat1) + (W2*phat2) + (W3*phat3)
 phat_es
 ```
 
@@ -332,9 +279,7 @@ set.seed(2019); z_alfa2 = qnorm(0.975)
 
 zphat_es = z_alfa2*sqrt(parcela_1 + parcela_2 + parcela_3)
 
-ic = paste(
-  "IC(p, 0.95%):", "[", phat_es-zphat_es %>% round(4), ";", phat_es+zphat_es %>% round(4), "]"
-)
+ic = paste("IC(p, 0.95%):", "[", phat_es-zphat_es %>% round(4), ";", phat_es+zphat_es %>% round(4), "]")
 ic
 ```
 
@@ -342,12 +287,12 @@ ic
 
 Para verificarmos qual plano amostral é o mais eficiente na execução da pesquisa, vamos aplicar o método do Efeito do Planejamento. Dessa  maneira, a partir das variâncias observadas em cada um dos planos vamos tomar a decisão de qual plano amostral vamos adotar.
 
-A fórmula do Efeito do Planejamento é dada por: $$ EPA = \frac{V_{AE_{pr}} (\hat{p}) }{V_{AAS_S} (\hat{p}) }  = \frac{ \widehat{Var(\hat{p}_{es})} }{ \widehat{Var(\hat{p})} }$$.
+A fórmula do Efeito do Planejamento é dada por: $$ EPA = \frac{V_{AE_{pr}} (\hat{p}) }{V_{AAS_S} (\hat{p}) }  = 1 - \frac{ \widehat{Var(\hat{p}_{es})} }{ \widehat{Var(\hat{p})} }$$.
 
 Veja que se $EPA > 1$, o plano no numerador é o menos eficiente, no entanto se $EPA < 1$, o plano no denominador é o menos eficiente e caso $EPA = 1$ ambos os planos são de igual maneira eficientes.
 
 ```{r}
-EPA = varhat_phat_es/varhat
+EPA = 1-(varhat_phat_es/varhat)
 EPA
 ```
 
