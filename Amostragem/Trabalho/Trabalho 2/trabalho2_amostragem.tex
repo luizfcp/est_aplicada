@@ -1,0 +1,166 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[left = 3 cm, right = 2 cm, top = 3 cm, bottom = 2 cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+\usepackage{geometry}
+\usepackage{fontspec}
+
+\begin{document}
+
+\fontspec{Arial}
+
+O objetivo da pesquisa é obter a intenção de votos para a Chapa 1 e
+Chapa 2, da eleição de Colegiado do Instituto de Matemática e
+Estatística da Universidade Federal Fluminense. Queremos, então, estimar
+a proporção de eleitores em cada chapa. Portanto, foi necessário coletar
+uma amostra que representasse bem a população de interesse, a fim de se
+obter uma boa estimativa. Para coletar a amostra foi utilizado o plano
+amostral probabilístico de Amostra Aleatória Simples Sem Reposição,
+porque, além da população ser pequena (156 docentes), o prazo não era
+tão longo para aplicação de planos amostrais mais elaborados.
+
+Para aplicação do Plano de Amostragem Aleatória Simples Sem Reposição é
+necessário possuir um cadastro prévio de todos os elementos da população
+alvo, onde cada unidade elementar tem a mesma probabilidade de ser
+incluída na amostra. Para sortear a amostra utilizaremos o algoritmo de
+Hajek. Uma vez sorteada a amostra, os elementos devem ser entrevistados
+a fim de coletar as informações desejadas.
+
+Para começarmos a pesquisa, precisamos calcular o tamanho da amostra.
+Para tanto, precisamos adotar uma margem de erro máxima e um nível de
+confiança. A margem de erro é um número que estima o maior erro dos
+resultados da pesquisa, com base na amostra. Por exemplo, se a margem de
+erro de uma pesquisa é de 7\%, e o resultado com base na amostra for de
+60\%, devemos considerar que este número na verdade pode oscilar de 53\%
+a 67\%. O ideal é que não tenhamos uma margem de erro tão grande, senão
+a pesquisa perde precisão. Entretanto, para diminuir a margem de erro é
+necessário aumentar o tamanho da amostra. Já o nível de confiança
+representa a probabilidade de uma pesquisa ter os mesmos resultados, com
+amostras diferentes; desde que a amostra seja proveniente da mesma
+população e com mesma margem de erro. Por exemplo, se uma pesquisa é
+realizada com nível de confiança de 95\%, isso significa que, se a
+pesquisa for feita 100 vezes, em 95 delas o resultado estaria dentro da
+margem de erro.
+
+De início, pensamos em utilizar o cenário mais conservador (supor que o
+parâmetro de interesse é 0,5), para não precisarmos coletar uma amostra
+piloto. Porém, com o cenário conservador, o tamanho da amostra seria de
+74 professores, utilizando erro de 7\% e nível de confiança de 90\%.
+Para tentar diminuir a margem de erro e/ou aumentar o nível de
+confiança, foi requisitada uma amostra piloto, a fim de entrarmos num
+cenário mais ``real''.
+
+Uma vez coletada a amostra piloto, obtemos 52,6\% dos votos para a Chapa
+1 e 47,4\% para a Chapa 2. Assim, foi possível reduzir a margem de erro
+para 6,5\%, mantendo o nível de confiança em 90\% e obtendo uma amostra
+de 74 docentes para estimação. O tamanho da amostra foi calculado da
+seguinte forma:
+
+\[n = \frac{N}{ \frac{(N-1)D}{p(1-p)} +1 },\]
+
+\noindent onde \(D = \frac{B^2}{z^2_{ \frac{\alpha}{2} }}\) e \(B\) é o
+erro máximo.
+
+Utilizando o algoritmo de Hajek, foi criada a lista dos docentes que
+deveriam ser entrevistados. Após as informações serem coletadas, foram
+realizadas as devidas análises e os resultados estão descritos na Tabela
+1.
+
+\newpage
+
+\begin{center}
+Tabela 1: Estimativas pontuais e intervalares de ambas as Chapas.
+\end{center}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+& Chapa 1 & Chapa 2\tabularnewline
+\midrule
+\endhead
+Estimativa
+Pontual\footnote{Estimativa pontual: Valor da característica de interesse, obtido na amostra.}
+& 56,76\% & 43,24\%\tabularnewline
+Estimativa
+Intervalar\footnote{Estimativa intervalar: Intervalo aleatório que contém o verdadeiro valor do parâmetro}
+& {[}50,29\% ; 63,23\%{]} & {[}36,77\% ; 49,71\%{]}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Portanto, com nível de confiança de 90\%, a Chapa 1 vencerá a eleição de
+Colegiado.
+
+
+\end{document}

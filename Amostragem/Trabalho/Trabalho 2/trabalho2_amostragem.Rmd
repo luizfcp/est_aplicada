@@ -1,0 +1,86 @@
+---
+output: 
+  pdf_document:
+    latex_engine: xelatex
+geometry: "left = 3 cm, right = 2 cm, top = 3 cm, bottom = 2 cm"
+classoption: a4paper
+indent: true
+fontsize: 12pt
+header-includes:
+    - \usepackage{geometry}
+    - \usepackage{fontspec}
+---
+
+<!-- OBSERVAÇÃO: Provavelmente vai dar erro se compilar no RCloud, pois não tem a fonte Arial lá, apenas no Windows. -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(readxl)
+library(dplyr)
+```
+
+```{r, include=FALSE}
+base <- read_excel("data/DocentesDepart.xlsx")
+```
+
+```{r, include=FALSE}
+amostra_coletada <- read.csv("data/Amostra74 respondida.csv") %>% filter(!is.na(Voto))
+
+voto_1 <- amostra_coletada %>% filter(Voto==1)
+
+phat <- nrow(voto_1)/nrow(amostra_coletada)
+```
+
+```{r, include=FALSE}
+# retirando a amostra piloto
+N = 156-19
+```
+
+<!-- Para calcular o tamanho da amostra (n), usaremos a fórmula $n = \frac{N}{ \frac{(N-1)D}{p(1-p)} +1 }$, onde $D = \frac{B^2}{z^2_{ \frac{\alpha}{2} }}$ e $B$ é o erro máximo. -->
+
+```{r, include=FALSE}
+# utilizando um erro de 6.5%
+B = 0.065
+D = ( B^2 )/( qnorm(0.95) )^2
+
+# proporção na amostra
+p = phat
+
+
+n = (N / ( ( ((N-1)*D)/(p*(1-p)) ) + 1 )) %>% ceiling()
+n
+```
+
+\fontspec{Arial}
+
+O objetivo da pesquisa é obter a intenção de votos para a Chapa 1 e Chapa 2, da eleição de Colegiado do Instituto de Matemática e Estatística da Universidade Federal Fluminense.
+Queremos, então, estimar a proporção de eleitores em cada chapa. Portanto, foi necessário coletar uma amostra que representasse bem a população de interesse, a fim de se obter uma boa estimativa. Para coletar a amostra foi utilizado o plano amostral probabilístico de Amostra Aleatória Simples Sem Reposição, porque, além da população ser pequena (156 docentes), o prazo não era tão longo para aplicação de planos amostrais mais elaborados. 
+
+Para aplicação do Plano de Amostragem Aleatória Simples Sem Reposição é necessário possuir um cadastro prévio de todos os elementos da população alvo, onde cada unidade elementar tem a mesma probabilidade de ser incluída na amostra. Para sortear a amostra utilizaremos o algoritmo de Hajek. Uma vez sorteada a amostra, os elementos devem ser entrevistados a fim de coletar as informações desejadas.
+
+Para começarmos a pesquisa, precisamos calcular o tamanho da amostra. Para tanto, precisamos adotar uma margem de erro máxima e um nível de confiança. A margem de erro é um número que estima o maior erro dos resultados da pesquisa, com base na amostra. Por exemplo, se a margem de erro de uma pesquisa é de 7%, e o resultado com base na amostra for de 60%, devemos considerar que este número na verdade pode oscilar de 53% a 67%. O ideal é que não tenhamos uma margem de erro tão grande, senão a pesquisa perde precisão. Entretanto, para diminuir a margem de erro é necessário aumentar o tamanho da amostra. Já o nível de confiança representa a probabilidade de uma pesquisa ter os mesmos resultados, com amostras diferentes; desde que a amostra seja proveniente da mesma população e com mesma margem de erro. Por exemplo, se uma pesquisa é realizada com nível de confiança de 95%, isso significa que, se a pesquisa for feita 100 vezes, em 95 delas o resultado estaria dentro da margem de erro.
+
+De início, pensamos em utilizar o cenário mais conservador (supor que o parâmetro de interesse é 0,5), para não precisarmos coletar uma amostra piloto. Porém, com o cenário conservador, o tamanho da amostra seria de 74 professores, utilizando erro de 7% e nível de confiança de 90%. Para tentar diminuir a margem de erro e/ou aumentar o nível de confiança, foi requisitada uma amostra piloto, a fim de entrarmos num cenário mais “real”.
+
+Uma vez coletada a amostra piloto, obtemos 52,6% dos votos para a Chapa 1 e 47,4% para a Chapa 2. Assim, foi possível reduzir a margem de erro para 6,5%, mantendo o nível de confiança em 90% e obtendo uma amostra de 74 docentes para estimação. O tamanho da amostra foi calculado da seguinte forma:
+
+$$n = \frac{N}{ \frac{(N-1)D}{p(1-p)} +1 },$$
+
+\noindent onde $D = \frac{B^2}{z^2_{ \frac{\alpha}{2} }}$ e $B$ é o erro máximo.
+
+Utilizando o algoritmo de Hajek, foi criada a lista dos docentes que deveriam ser entrevistados. Após as informações serem coletadas, foram realizadas as devidas análises e os resultados estão descritos na Tabela 1.
+
+\newpage
+
+\begin{center}
+Tabela 1: Estimativas pontuais e intervalares de ambas as Chapas.
+\end{center}
+
+|                                                                                                                       | Chapa 1           | Chapa 2           |
+| :-------------------------------------------------------------------------------------------------------------------- | :---------------- | :---------------- |
+| Estimativa Pontual\footnote{Estimativa pontual: Valor da característica de interesse, obtido na amostra.}             | 56,76%            | 43,24%            |
+| Estimativa Intervalar\footnote{Estimativa intervalar: Intervalo aleatório que contém o verdadeiro valor do parâmetro} | [50,29% ; 63,23%] | [36,77% ; 49,71%] |
+
+Portanto, com nível de confiança de 90%, a Chapa 1 vencerá a eleição de Colegiado.
