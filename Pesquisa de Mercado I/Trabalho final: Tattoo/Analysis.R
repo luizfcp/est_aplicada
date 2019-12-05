@@ -96,7 +96,6 @@ raw_data %>% select(13) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% 
 
 # idade primeira tatuagem
 raw_data %>% select(14) %>% `colnames<-`("variavel") %>% 
-  # mutate(variavel = as.character(variavel)) %>% 
   group_by(variavel) %>% count() %>% 
   ggplot(aes(x = variavel, y = n)) + 
   geom_segment(aes(x=variavel, xend=variavel, y=0, yend=n), color="orange", linetype="dotdash") +
@@ -105,7 +104,53 @@ raw_data %>% select(14) %>% `colnames<-`("variavel") %>%
   geom_label(aes(label = n), hjust = -0.3, vjust = -0.1) +
   scale_x_continuous(breaks = seq(14,32,2))
 
+# ano primeira tatuagem
+raw_data %>% select(15) %>% `colnames<-`("variavel") %>% 
+  group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_segment(aes(x=variavel, xend=variavel, y=0, yend=n), color="orange", linetype="dotdash") +
+  geom_point(size=5, color="black", fill=alpha("orange", 0.3), alpha=0.7, shape=21, stroke=2) + 
+  labs(x = "Ano", y = "Total de pessoas", title = "Ano que fez a primeira tatuagem") + 
+  geom_label(aes(label = n), hjust = -0.3, vjust = -0.1) +
+  scale_x_continuous(breaks = seq(2001,2019,1))
 
+# ???????? custo
+raw_data %>% select(16) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "Lugar do corpo", y = "Total de pessoas", title = "Lugar do corpo da primeira tatuagem") + 
+  geom_label(aes(label = n))
+
+# ?????????????
+raw_data %>% select(17) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "Lugar do corpo", y = "Total de pessoas", title = "Lugar do corpo da primeira tatuagem") + 
+  geom_label(aes(label = n))
+
+# tatuagens com desenhos ou textos
+raw_data %>% select(18) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "Preferência", y = "Total de pessoas", title = "Preferência entre tatuagem com desenhos ou textos") + 
+  geom_label(aes(label = n))
+
+# sofre discriminação
+raw_data %>% select(19) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "", y = "Total de pessoas", title = "Total de pessoas que sofreu/sofre discriminação por ter tatuagem") + 
+  geom_label(aes(label = n))
+
+# preconceito no mercado
+raw_data %>% select(20) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "", y = "Total de pessoas", title = "Total de pessoas que acredita ter preconceito no mercado de trabalho com pessoas que possuem tatuagem") + 
+  geom_label(aes(label = n))
+
+
+
+
+raw_data %>% select(26) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
+  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  labs(x = "", y = "Total de pessoas", title = "Total de pessoas que acredita ter preconceito no mercado de trabalho com pessoas que possuem tatuagem") + 
+  geom_label(aes(label = n))
 
 
 
