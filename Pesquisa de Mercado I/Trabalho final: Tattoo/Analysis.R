@@ -4,6 +4,7 @@ library(dplyr)
 library(stringr)
 library(magrittr)
 library(purrr)
+library(ggsci)
 
 
 raw_data <- read_csv("basecorrigida.csv")
@@ -12,41 +13,63 @@ raw_data <- read_csv("basecorrigida.csv")
 # Análise Inicial ---------------------------------------------------------
 
 # sexo
-p1 <- 
+p1 <-
   raw_data %>% select(4) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Sexo", y = "Total de pessoas", title = "Sexo dos respondentes") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf", "#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000", "#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # cidade
 p2 <- 
   raw_data %>% select(5) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Cidade", y = "Total de pessoas", title = "Cidade onde mora") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # passatempo favorito
 p3 <- 
   raw_data %>% select(6) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel,n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel,n), y = n)) + geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Passatempo", y = "Total de pessoas", title = "Passatempo favorito") + 
-  coord_flip() + geom_label(aes(label = n))
+  coord_flip() + geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # estilo musical
 p4 <- 
   raw_data %>% select(7) %>% `colnames<-`("variavel") %>% 
   mutate(variavel = str_to_title(variavel)) %>% 
   group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Estilo musical", y = "Total de pessoas", title = "Estilo musical preferido") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # ??????? razao emoçao
 p5 <- 
   raw_data %>% select(8) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Sexo", y = "Total de pessoas", title = "Sentimento de razão ou emoção ao fazer a primeira tatuagem") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # # ??????? momento atual
 # p6 <- 
@@ -58,9 +81,14 @@ p5 <-
 # motivação para a primeira tattoo
 p7 <- 
   raw_data %>% select(10) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Motivação", y = "Total de pessoas", title = "Motivação para a primeira tatuagem") + 
-  coord_flip() + geom_label(aes(label = n))
+  coord_flip() + geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # significado da sua primeira tatuagem
 p8 <- 
@@ -73,9 +101,14 @@ p8 <-
       )
   ) %>%
   group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Significado", y = "Total de pessoas", title = "Significado da sua primeira tatuagem") + 
-  coord_flip() + geom_label(aes(label = n))
+  coord_flip() + geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # quantidade de tatuagem possui
 p9 <- 
@@ -87,14 +120,19 @@ p9 <-
   geom_point(size=5, color="black", fill=alpha("orange", 0.7), alpha=0.7, shape=21, stroke=2) + 
   labs(x = "Quantidade de tatuagem", y = "Total de pessoas", title = "Quantidade de tatuagens que possui") + 
   geom_label(aes(label = n), hjust = -0.3, vjust = -0.1) +
-  scale_x_continuous(breaks = seq(0,32,2))
+  scale_x_continuous(breaks = seq(0,32,2)) + theme_bw()
 
 # lugar primeira tatuagem
 p10 <- 
   raw_data %>% select(13) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Lugar do corpo", y = "Total de pessoas", title = "Lugar do corpo da primeira tatuagem") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # idade primeira tatuagem
 p11 <- 
@@ -105,7 +143,7 @@ p11 <-
   geom_point(size=5, color="black", fill=alpha("orange", 0.7), alpha=0.7, shape=21, stroke=2) + 
   labs(x = "Idade", y = "Total de pessoas", title = "Idade que fez a primeira tatuagem") + 
   geom_label(aes(label = n), hjust = -0.3, vjust = -0.1) +
-  scale_x_continuous(breaks = seq(14,32,2))
+  scale_x_continuous(breaks = seq(14,32,2)) + theme_bw()
 
 # ano primeira tatuagem
 p12 <- 
@@ -116,7 +154,7 @@ p12 <-
   geom_point(size=5, color="black", fill=alpha("orange", 0.7), alpha=0.7, shape=21, stroke=2) + 
   labs(x = "Ano", y = "Total de pessoas", title = "Ano que fez a primeira tatuagem") + 
   geom_label(aes(label = n), hjust = -0.3, vjust = -0.1) +
-  scale_x_continuous(breaks = seq(2001,2019,1))
+  scale_x_continuous(breaks = seq(2001,2019,1)) + theme_bw()
 
 # custo
 p13 <- 
@@ -127,9 +165,14 @@ p13 <-
                                ))) %>% 
   mutate(value = factor(value, levels = c("R$0 a R$499","R$500 a R$999","R$1000 a R$1999","R$2000 ou mais"))) %>% 
   group_by(value) %>% count() %>% 
-  ggplot(aes(x = value, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = value, y = n)) + 
+  geom_bar(aes(fill = value, color = value), stat = 'identity') +
   labs(x = "Lugar do corpo", y = "Total de pessoas", title = "Custo, em reais, da tatuagem mais cara") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # # ?????????????
 # p14 <- 
@@ -141,23 +184,38 @@ p13 <-
 # tatuagens com desenhos ou textos
 p15 <- 
   raw_data %>% select(18) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = reorder(variavel, n), y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = reorder(variavel, n), y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Preferência", y = "Total de pessoas", title = "Preferência entre tatuagem com desenhos ou textos") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # sofre discriminação
 p16 <- 
   raw_data %>% select(19) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Resposta", y = "Total de pessoas", title = "Total de pessoas que sofreu/sofre discriminação por ter tatuagem") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # preconceito no mercado
 p17 <- 
   raw_data %>% select(20) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Resposta", y = "Total de pessoas", title = "Total de pessoas que acredita ter preconceito no mercado de trabalho com pessoas que possuem tatuagem") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # cobriu ou penseou em cobrir alguma tattoo
 p18 <- 
@@ -170,7 +228,7 @@ p18 <-
   labs(x = "Resposta", y = "Total de pessoas", title = "Cobriu ou pensou em cobrir alguma das suas tatuagens? Qual o motivo?") + 
   geom_label(aes(label = paste(n, "-", variavel)), position = position_stack(vjust = 0.5)) +
   geom_label(aes(x = 2, y = 30, label = paste("Não:", 33, "\nSim:", sum(n)-33)), fill = "white") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_fill_jco() + theme_bw()
 
 # remover ou penseou em remover alguma tattoo
 p19 <- 
@@ -183,21 +241,31 @@ p19 <-
   labs(x = "Resposta", y = "Total de pessoas", title = "Removeu ou pensou em remover alguma das suas tatuagens? Qual o motivo?") + 
   geom_label(aes(label = paste(n, "-", variavel)), position = position_stack(vjust = 0.5)) +
   geom_label(aes(x = 2, y = 30, label = paste("Não:", 40, "\nSim:", sum(n)-40)), fill = "white") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_fill_jco() + theme_bw()
 
 # preza pelo estudio
 p20 <- 
   raw_data %>% select(23) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Resposta", y = "Total de pessoas", title = "Total de pessoas que prezam pelo estúdio de tatuagem") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # tamanho pelo preço
 p21 <- 
   raw_data %>% select(24) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "Resposta", y = "Total de pessoas", title = "Escolha do tamanho da tatuagem pelo preço") + 
-  geom_label(aes(label = n))
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 # num de tattoo
 p22 <- 
@@ -210,28 +278,62 @@ p22 <-
   labs(x = "Resposta", y = "Total de pessoas", title = "Importância em ter um número ímpar ou par de tatuagens") + 
   geom_label(aes(label = paste(n, "-", variavel)), position = position_stack(vjust = 0.5)) +
   geom_label(aes(x = 2, y = 30, label = paste("Não:", 43, "\nSim:", sum(n)-43)), fill = "white") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + scale_fill_jco() + theme_bw()
 
 # tattoo de graça
 p23 <- 
   raw_data %>% select(26) %>% `colnames<-`("variavel") %>% group_by(variavel) %>% count() %>% 
-  ggplot(aes(x = variavel, y = n)) + geom_bar(stat = 'identity') +
+  ggplot(aes(x = variavel, y = n)) + 
+  geom_bar(aes(fill = variavel, color = variavel), stat = 'identity') +
   labs(x = "", y = "Total de pessoas", title = "Total de pessoas que fariam mais tatuagens caso fosse de graça") + 
-  geom_label(aes(label = n)) 
+  geom_label(aes(label = n)) +
+  scale_fill_manual(values = alpha(c("#bfbfbf","#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf", "#bfbfbf","#bfbfbf"), 0.7)) +
+  scale_color_manual(values = alpha(c("#000000","#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000", "#000000","#000000"), 0.8)) +
+  theme_bw() +
+  theme(legend.position = "none")
 
 
 # Salvando
 
+# plots <- list(p1,p2,p3,p4,p5,p7,p8,p9,p10,p11,p12,p13,p15,p16,p17,p18,p19,p20,p21,p22,p23)
 plots <- mget(ls()[1:21])
 
-walk(plots, ~ ggsave(
-  paste0("img/", .x, ".png"),
-  plot = .x, dpi = "retina"))
-
+walk2(plots, 1:length(plots),
+      ~ ggsave(
+        paste0("img/fig_", .y, ".png"),
+        plot = .x +
+          theme(legend.position = "none"), 
+        dpi = "retina", device = "png", 
+        width = 10, height = 8))
 
 
 
 # sexo x qtd tattoo
+wt <- raw_data %>% 
+  select(`Qual seu sexo?`, `Quantas tatuagens você possui? (Responda apenas o número.)`) %>% 
+  `colnames<-`(c("x", "y"))
+
+wilcox.test(y~x, data = wt) # mediana diferente alpha = 5%
+
+q1 <- 
+  raw_data %>% select(`Qual seu sexo?`, `Quantas tatuagens você possui? (Responda apenas o número.)`) %>% 
+  `colnames<-`(c("Sexo", "qtd")) %>% 
+  ggplot(aes(x = Sexo, y = qtd)) + 
+  geom_boxplot(aes(fill = Sexo), outlier.alpha = 0) +
+  geom_point(aes(fill = Sexo), size = 3, shape = 21, position = position_jitterdodge()) +
+  scale_y_continuous(breaks = seq(0, 32, 2)) +
+  labs(y = "Quantidade de tatuagens", title = "Quantidade de tatuagens por Sexo") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_label(aes(x = 1, y = 26, label = paste("Wilcoxon teste para mediana \np-valor:", wilcox.test(y~x, data = wt)$p.value %>% round(3)))) + 
+  scale_fill_jco()
+
+
+ggsave(plot = q1, "img/qtd_sexo.png",
+       dpi = "retina", device = "png", 
+       width = 10, height = 8)
+
+
 
 # o local que a pessoa fez a primeira tattoo influencia em fazer mais?
 
