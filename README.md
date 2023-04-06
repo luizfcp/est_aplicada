@@ -2,9 +2,4 @@
 
 ---
 
-Luiz Fernando Coelho Passos 
-
-Curso: Bacharel em Estatística
-
-  * [Linkedin](https://www.linkedin.com/in/luizfernandocoelhopassos/)
   * [Personal homepage](https://luizfcp.github.io/)
